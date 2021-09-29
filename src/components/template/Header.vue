@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="header">
         <div class="divdropdown"> 
             <div class="compra">
@@ -6,19 +7,27 @@
                     <v-img>  <i class="fas fa-shopping-cart carro"></i> </v-img> 
                 </v-avatar>
                 <div class="compranumero">
-                    <span class="numero"> 1 </span>
+                    <span class="numero"> {{numero}} </span>
                 </div>
             </div>
-            <!-- <i class="fas fa-grip-lines-vertical reta"></i> -->
             <span class="reta"> | </span>
             <v-avatar  size="40">
               <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
             </v-avatar>
-            <span class="texto"> {{texto}}</span>
-            <i class="fas fa-caret-down icone"></i>
+            <span class="texto"> {{texto}} </span>
+            <a @click="teste" v-show="!visible"> 
+                <i class="fas fa-caret-down fa-fw icone"> </i>
+            </a>
+            <a @click="teste" v-show="visible">
+                 <i class="fas fa-caret-up fa-fw icone"> </i>
+            </a>
         </div>
-        
     </div>
+    <div class="dropdowncontent" :class="{'drop':visible}" >
+        <a href class="font2"> <i class="fas fa-cogs fa-fw font"></i> Meu Perfil </a>
+        <a href class="font2"> <i class="fas fa-sign-out-alt fa-fw logout"> </i> Sair </a>
+    </div>
+</div>
     
 </template>
 
@@ -30,9 +39,18 @@ export default {
     },
      data: function() {
         return {
-          texto: 'Rerbert'
+          texto: 'Werbert Viana',
+          numero: '2',
+          visible: false
         }
-    }
+    },
+    methods: {
+
+        teste() {
+            this.visible = !this.visible
+            console.log(this.visible)
+        }
+    },
 }
 </script>
 
@@ -44,7 +62,8 @@ export default {
         align-content: center;
         align-items: center;
         justify-content: flex-end;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.25);
+
     }
     
     .compra {
@@ -60,7 +79,7 @@ export default {
         border-radius: 100%;
         background-color: #69F690;
         margin: -10px;
-        z-index: 10;
+        z-index: 1;
     }
 
     .circulo {
@@ -84,13 +103,14 @@ export default {
     .texto {
         
         margin-left: 10px;
-        margin-right: 10px;
+        margin-right: 5px;
         font-size: 1rem;
         color: #82D4D1;
         /* text-shadow: 1px 0.5px 0.5px rgba(0, 0, 0, 0.25); */
     }
 
     .icone {
+        margin-top: 2px;
         font-size: 20px;
         color: #82D4D1;
     }
@@ -108,6 +128,50 @@ export default {
         margin-left: 7px;
         
     }
-   
+    .dropdowncontent{
+        position: absolute;
+        right: 0px;
+        display:flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-end;
+        background-color: #82D4D1;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+        width: 190px;
+        border-radius: 0px 0px 0px 15px;
+       
+        visibility: hidden;
+        opacity: 0;
+        
+    }
+
+    .font {
+        margin-right: 30px;
+        color: #fff ;
+    }
+
+    .font2 {
+        margin-top: 10px;
+        margin-right: 30px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        color: #fff ;
+
+    }
+
+    .font2:hover {
+        animation: headShake;
+        animation-duration: 1s;
+    }
+
+    .logout {
+        margin-right: 85px;
+    }
+
+    .drop {
+        visibility: visible;
+        opacity: 1;
+    }
+    
 
 </style>

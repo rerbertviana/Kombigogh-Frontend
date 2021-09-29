@@ -1,24 +1,22 @@
 <template>
-  <div id="app" :class="{'teste': cabeca}">
-    <Menu2 class="menu"/>
+  <div id="app">
+    <Menu class="teste"/>
     <Header/>
-    <Footer/>
     <Content/>
   </div>
 </template>
 
 <script>
 
-import Menu2 from "./components/template/Menu2.vue"
+import Menu from "./components/template/Menu3.vue"
 import Header from "./components/template/Header.vue"
-import Footer from "./components/template/Footer.vue"
 import Content from "./components/template/Content.vue"
 
 
 export default {
   name: 'App',
 
-  components: { Menu2, Header, Footer, Content },
+  components: { Menu, Header, Content },
 
    data: function() {
         return {
@@ -43,24 +41,15 @@ export default {
   #app {
     height: 100vh;
     display: grid;
-    grid-template-rows: 80px 1fr 40px;
-    grid-template-columns: 120px 1fr ;
+    grid-template-rows: 80px 1fr;
+    grid-template-columns: 90px 1fr;
     grid-template-areas: 
       "menu header"
-      "menu content"
-      "menu footer";
+      "menu content";
+  }
 
-  }
-  #app.teste {
-    height: 100vh;
-    display: grid;
-    grid-template-rows: 80px 1fr 20px;
-    grid-template-columns: 256px 1fr ;
-    grid-template-areas: 
-      "menu header"
-      "menu content"
-      "footer footer";
-  }
+
+
 
 
 </style>

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="content"></div>
+    <div class="content image"></div>
     
 </template>
 
@@ -13,10 +13,12 @@ export default {
 <style>
     .content {
         grid-area: content;
-        background-image: url();
-        background-repeat: no-repeat;
-        transform: matrix(-1, 0, 0, 1, 0, 0);
-        padding: 20px;
+        background-color: white;
+        background-image: url(../../assets/Login2.jpg) ;
+        background-size: cover;
+        opacity: 0.15;
+
+        z-index: -1;
     }
 
 </style>
