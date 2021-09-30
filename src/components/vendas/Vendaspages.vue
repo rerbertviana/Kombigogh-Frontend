@@ -1,84 +1,57 @@
 <template>
     <div class="vendaspages">
-        <v-tabs slider-color="#82D4D1" v-model="tab">
-            <v-tab @click="f('v')">
-                Vender
-            </v-tab>
-            <v-tab @click="f('m')">
-                Minhas Vendas
-            </v-tab>
-            <v-tab @click="f('p')">
-                Pedidos
-            </v-tab>
+        <v-tabs slider-color="#F4CB68" slider-size="2" v-model="tab" class="radiusitems">
+            <v-tab> <i class="fas fa-dollar-sign fa-fw espaco"></i> Vender </v-tab>
+            <v-tab> <i class="fas fa-hand-holding-usd fa-fw espaco"></i> Minhas Vendas </v-tab>
+            <v-tab> <i class="fas fa-box-open fa-fw espaco"></i> Pedidos </v-tab>
         </v-tabs>
-        <div v-if="vender" class="vender"> 
-            vender 
-        </div>
-        <div v-if="minhasvendas"> 
-            minhas vendas
-        </div>
-        <div v-if="pedidos"> 
-            pedidos
-        </div>
+        <v-tabs-items class="radiusitems" v-model="tab"> 
+            <v-tab-item > 
+                <Vender/>
+            </v-tab-item>
+            <v-tab-item transition="false" > 
+                ok2 
+            </v-tab-item>
+        </v-tabs-items>
         
     </div>
     
 </template>
 
 <script>
+
+import Vender from "./Vender.vue"
+
 export default {
     name: 'Vendaspages',
+    
+    components: { Vender },
+
     data () {
         return {
-            vender: true, 
-            minhasvendas: false,
-            pedidos: false,
             tab: null,
-            items: [
-                'web', 'shopping', 'videos', 'images', 'news',
-            ],
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         }
     },
-    methods: {
-        f(f) {
-            if (f == 'm') {
-                this.minhasvendas = true;
-                this.vender = false;
-                this.pedidos = false;
-            }
-            if (f == 'v') {
-                this.vender = true;
-                this.minhasvendas = false;
-                this.pedidos = false;
-            }
-            if (f == 'p') {
-                this.pedidos = true;
-                this.minhasvendas = false;
-                this.vender = false;
-            }          
-
-        }
-    }
+  
 }
 </script>
 
 <style>
     .vendaspages {
-        margin: 15px;
+        margin: 20px;
         background-color: white;
+        box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.25);
 
-        border-radius: 10px; 
+        border-radius: 5px; 
     }
 
-    .vender {
-        margin-left: 10px;
+    .radiusitems {
+        border-radius: 5px;
     }
     
-
-    /* .vender {
-        visibility: hidden;
-    } */
+    .espaco {
+        margin-right: 7px;
+    }
 
    
 

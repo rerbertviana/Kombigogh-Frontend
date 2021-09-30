@@ -21,11 +21,11 @@ export default {
 
   components: { Menu, Header, Content, Footer },
 
-   data: function() {
-        return {
-          cabeca: false
-        }
-    }
+  data: function() {
+      return {
+        cabeca: false
+      }
+  }
 
 
 };
