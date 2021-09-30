@@ -142,6 +142,7 @@ export default {
        
         visibility: hidden;
         opacity: 0;
+        z-index: 1;
         
     }
 
@@ -162,6 +163,7 @@ export default {
     .font2:hover {
         animation: headShake;
         animation-duration: 1s;
+        color: white;
     }
 
     .logout {

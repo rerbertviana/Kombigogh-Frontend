@@ -1,6 +1,8 @@
 <template>
 
-    <div class="content image"></div>
+    <div >
+        <div class="content"> </div>
+    </div>
     
 </template>
 
@@ -13,12 +15,15 @@ export default {
 <style>
     .content {
         grid-area: content;
-        background-color: white;
         background-image: url(../../assets/Login2.jpg) ;
         background-size: cover;
-        opacity: 0.15;
+        opacity: 0.09;
+        filter: grayscale(100%);
 
         z-index: -1;
+    }
+    .fundo {
+        background-color: purple;
     }
 
 </style>
