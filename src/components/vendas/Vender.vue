@@ -1,20 +1,55 @@
 <template>
-    <div class="bottom">
 
-        <!-- <v-row align="center">
-              <v-col class="d-flex" cols="12" sm="6" xs="6">
-                    <v-select dense :items="items" label="Artista"></v-select>
-              </v-col>
-        </v-row> -->
-
-         <v-select
-          :items="items"
-          label="Standard"
-        ></v-select>
-        <!-- <v-data-table :headers="headers" :items="desserts" :items-per-page="5" class="elevation-1">
-
-        </v-data-table> -->
-    </div>
+  <div class="bottom">
+    <el-row class="lin1" >
+      <el-col span="12" >
+        <div class="l1c1">
+          <i class="fas fa-paint-brush fa-fw ico2"></i>
+          <span class="artista">ARTISTA</span>
+          <el-select v-model="value" filterable placeholder="Selecione">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+      </el-col>
+      <el-col span="12">
+        <div class="l1c2">
+          <i class="fas fa-paste fa-fw ico2 ico3"></i>
+          <span class="categoria">CATEGORIA</span>
+          <el-select v-model="value" filterable placeholder="Selecione">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+      </el-col>
+    </el-row>  
+    <el-row class="lin2" >
+      <el-col span="24">
+        <div class="l2c1">
+          <i class="fas fa-box fa-fw ico2"></i>
+          <span class="descricao"> PRODUTOS </span>
+          <el-input placeholder="Nome do produto" v-model="search" size="large">
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <el-button class="b1"><i class="fas fa-shopping-bag fa-fw ico"></i></el-button>
+          <el-button class="b2"><span class="vender">VENDER</span></el-button>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row class="lin3" >
+      <div>
+        <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
+          <el-table-column  prop="date" label="Date" width="180">
+          </el-table-column>
+          <el-table-column prop="name" label="Name" width="180">
+          </el-table-column>
+          <el-table-column prop="address" label="Address">
+          </el-table-column>
+        </el-table>
+        
+      </div>
+    </el-row>
+  </div>
     
 </template>
 
@@ -23,68 +58,182 @@ export default {
     name: 'Vender',
     data () {
       return {
-
-        headers: [
+        search: '',
+        options: [{
+          value: 'Option1',
+          label: 'Option1'
+        }, {
+          value: 'Option2',
+          label: 'Option2'
+        }, {
+          value: 'Option3',
+          label: 'Option3'
+        }, {
+          value: 'Option4',
+          label: 'Option4'
+        }, {
+          value: 'Option5',
+          label: 'Option5'
+        }],
+        value: '',
+        input: '',
+        tableData: [{
+            date: '2016-05-03',
+            name: 'Bert',
+            address: 'No. 189, Grove St, Los Angeles'
+          }, 
           {
-            text: 'Dessert (100g serving)',
-            align: 'start',
-            sortable: false,
-            value: 'name',
+            date: '2016-05-02',
+            name: 'Tom',
+            address: 'No. 189, Grove St, Los Angeles'
+          }, 
+          {
+            date: '2016-05-04',
+            name: 'Tom',
+            address: 'No. 189, Grove St, Los Angeles'
+          }, 
+          {
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
           },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' },
-        ],
-
-        desserts: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
           },
           {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
           },
           {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
+          },
+          {
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
+          },
+          {
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
+          },
+          {
+            date: '2016-05-01',
+            name: 'Tom',
+            address: 'Paraná'
           }
-        ],
-        items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+          ],
       }
     },
 
 }
 </script>
 
-<style>
+<style scoped>
     .bottom {
-        margin-top: 40px;
+      margin-top: 50px;
+      margin-right: 60px;
+      margin-left: 60px;
+      margin-bottom: 60px;
+        /* background-color: rgba(0, 0, 0, 0.25); */
     }
 
-    .m {
-        margin-left: 20px;
+    .lin1 {
+      margin-bottom: 20px;
     }
+
+    .lin2 {
+      margin-bottom: 40px;
+    }
+
+    .l1c1 {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+  
+     /* background-color: rgba(0, 0, 0, 0.25); */
+    
+    }
+
+    .l1c2 {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      /* background-color: rgba(0, 0, 0, 0.25);  */
+     
+    }
+
+    .l2c1 {
+      display: flex;
+      
+      align-items: center;
+      
+    }
+    
+    .artista {
+      margin-right: 90px;
+      font-size: 20px;
+      color: black ;
+    }
+
+    .categoria {
+      margin-right: 70px;
+      font-size: 20px;
+      color: black ;
+    }
+
+    .descricao {
+      
+      margin-right: 63px;
+      font-size: 20px;
+      color: black;
+    }
+
+    .vender {
+      color: white;
+    }
+
+    .b1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #82D4D1;
+      width: 198px;
+      height: 40px;
+      margin-left: 20px;
+    }
+    
+    .b2 {
+      width: 198px;
+      height: 40px;
+      margin-right: 20px;
+      background-color: #69F690;
+    }
+
+    .ico {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .ico2 {
+      margin-right: 10px;
+      color: black;
+      font-size: 1.2rem;
+    }
+
+    .ico3 {
+      margin-left: 25px;
+    }
+
+
 </style>

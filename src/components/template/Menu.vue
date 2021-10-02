@@ -25,7 +25,9 @@ export default {
     }
 
     .menu:hover {
-        width: 190px;
+        width: 200px;
+
+        z-index: 2;
     }
     
     .menuicones {

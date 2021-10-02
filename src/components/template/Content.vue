@@ -1,7 +1,7 @@
 <template>
 
     <div class="fundo">
-        <router-view> </router-view>
+        <router-view class="z"> </router-view>
     </div>
     
 </template>
@@ -24,6 +24,9 @@ export default {
     }
     .fundo {
         background-color: purple;
+        
     }
+
+   
 
 </style>
