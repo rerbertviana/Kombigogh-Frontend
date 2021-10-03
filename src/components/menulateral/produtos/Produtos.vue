@@ -1,6 +1,7 @@
 <template>
 
     <div class="produtos">
+      <div class="form">
         <el-row class="lin1" gutter="20">
             <el-col span="8">
                 <div class="l1c1">
@@ -26,22 +27,23 @@
                 <div class="l1c1">
                     <i class="fas fa-box-open fa-fw ico"></i>
                     <span class="letras2">PRODUTOS</span>
-                    <el-input placeholder="Nome do produto" v-model="search" size="large">
+                    <el-input placeholder="Produto" v-model="search" size="large">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
             </el-col>
         </el-row>
-        <el-row>
-            <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
-                <el-table-column  prop="date" label="Date" width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="Name" width="180">
-                </el-table-column>
-                <el-table-column prop="address" label="Address">
-                </el-table-column>
-            </el-table>
-        </el-row>
+      </div>
+      <el-row class="tabela">
+          <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
+              <el-table-column  prop="date" label="Date" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="Name" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="Address">
+              </el-table-column>
+          </el-table>
+      </el-row>
     </div>
     
 </template>
@@ -146,6 +148,16 @@ export default {
     margin-bottom: 60px;
 }
 
+.form {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  border-radius: 10px;
+  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
 .lin1 {
     margin-bottom: 20px;
 }
@@ -171,6 +183,10 @@ export default {
   margin-right: 20px;
   font-size: 17px;
   color: black ;
+}
+
+.tabela {
+  margin-top: 30px;
 }
 
 </style>

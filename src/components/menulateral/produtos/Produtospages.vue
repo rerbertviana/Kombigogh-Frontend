@@ -5,7 +5,7 @@
             <div class="menutable">
                 <v-tab> <i class="fas fa-box fa-fw espaco"></i> <span class="letras"> Produtos </span> </v-tab>
                 <v-tab> <i class="fas fa-cog fa-fw espaco"></i> <span class="letras"> Cadastrar </span> </v-tab>
-                <v-tab> <i class="fas fa-trash-alt fa-fw espaco"></i> <span class="letras"> Excluir </span> </v-tab>
+                <v-tab> <i class="fas fa-trash-alt fa-fw espaco"></i> <span class="letras"> Ações </span> </v-tab>
             </div>
         </v-tabs>
         <v-tabs-items class="radiusitems" v-model="tab"> 
@@ -14,6 +14,9 @@
             </v-tab-item>
             <v-tab-item > 
                 <Cadastrar/>
+            </v-tab-item>
+            <v-tab-item > 
+                <Acoes/>
             </v-tab-item>
         </v-tabs-items>
     </div>
@@ -24,12 +27,13 @@
 
 import Produtos from "./Produtos.vue"
 import Cadastrar from "./Cadastrar.vue"
+import Acoes from "./Acoes.vue"
 
 export default {
 
     name: 'Produtospages',
     
-    components: { Produtos, Cadastrar },
+    components: { Produtos, Cadastrar, Acoes },
 
     data () {
         return {

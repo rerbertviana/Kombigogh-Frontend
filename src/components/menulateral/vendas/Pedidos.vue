@@ -1,43 +1,45 @@
 <template>
     <div class="mv">
-        <el-row class="lin1" gutter="20" >
-            <el-col span="7">
-                <div class="l1c1">
-                    <i class="fas fa-paint-brush fa-fw ico"></i>
-                    <span class="titulos"> ARTISTA </span>
-                    <el-select v-model="value" filterable placeholder="Selecione">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-            </el-col>
-            <el-col span="10">
-                <div class="l1c2">
-                    <i class="far fa-calendar-alt fa-fw ico"></i>
-                    <span class="titulos"> DATA </span>
-                    <el-select v-model="value" filterable placeholder="Mês" class="espaco">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-select v-model="value" filterable placeholder="Ano">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-            </el-col>
-            <el-col span="7">
-                <div class="l1c1">
-                    <i class="fas fa-check fa-fw ico"></i>
-                    <span class="titulos"> STATUS </span>
-                    <el-select v-model="value" filterable placeholder="Selecione">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-            </el-col>
-        </el-row>
+        <div class="form">
+            <el-row class="lin1" gutter="20" >
+                <el-col span="7">
+                    <div class="l1c1">
+                        <i class="fas fa-paint-brush fa-fw ico"></i>
+                        <span class="titulos"> ARTISTA </span>
+                        <el-select v-model="value" filterable placeholder="Selecione">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col span="10">
+                    <div class="l1c2">
+                        <i class="far fa-calendar-alt fa-fw ico"></i>
+                        <span class="titulos"> DATA </span>
+                        <el-select v-model="value" filterable placeholder="Mês" class="espaco">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="value" filterable placeholder="Ano">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col span="7">
+                    <div class="l1c1">
+                        <i class="fas fa-check fa-fw ico"></i>
+                        <span class="titulos"> STATUS </span>
+                        <el-select v-model="value" filterable placeholder="Selecione">
+                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
         <el-row class="lin2">
-             <div>
+            <div>
                 <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
                     <el-table-column  prop="date" label="Date" width="180">
                     </el-table-column>
@@ -49,6 +51,7 @@
             </div>
         </el-row>
     </div>
+    
 </template>
 
 <script>
@@ -103,6 +106,16 @@ export default {
 </script>
 
 <style scoped>
+
+.form {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  border-radius: 10px;
+  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+}
 
 .mv {
 
