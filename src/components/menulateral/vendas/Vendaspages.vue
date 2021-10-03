@@ -45,13 +45,12 @@ export default {
 </script>
 
 <style scoped>
+
     .vendaspages {
         margin: 15px;
         background-color: white;
         box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.25);
-
         border-radius: 5px; 
-
     }
 
     .radiusitems {

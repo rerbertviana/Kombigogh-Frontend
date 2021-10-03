@@ -46,7 +46,6 @@
           <el-table-column prop="address" label="Address">
           </el-table-column>
         </el-table>
-        
       </div>
     </el-row>
   </div>
