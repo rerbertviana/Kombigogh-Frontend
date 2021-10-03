@@ -3,7 +3,7 @@
         <div class="barra"><i class="fas fa-bars fa-fw menuicones"></i></div>
         <div class="menucontent">
             <div class="itens"><router-link class="menuitens" to="/vendas"> <i class="fas fa-comments-dollar fa-fw menuicones"></i> <div class="vendas"> VENDAS </div> </router-link> </div>
-            <div class="itens"><router-link to="/home" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
+            <div class="itens"><router-link to="/produtos" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
             <div class="itens"><a href class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="relatorios"> RELATÓRIOS </div> </a></div>
         </div>
     </div>
@@ -15,13 +15,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
     .menu {
         grid-area: menu;
         box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.25);
         background-color: #82D4D1;
-        z-index: 1;
+        z-index: 2;
     }
 
     .menu:hover {
@@ -33,14 +33,6 @@ export default {
     .menuicones {
         color: white;
         font-size: 2.5rem;
-    }
-
-    .menucontent {
-        display: flex;
-        flex-direction: column;
-        width: 100px;
-        height: 100%;
-        /* background-color: rgba(0, 0, 0, 0.25); */
     }
 
     .menucontent:hover {

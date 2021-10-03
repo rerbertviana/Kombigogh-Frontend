@@ -27,7 +27,7 @@
       <el-col span="24">
         <div class="l2c1">
           <i class="fas fa-box fa-fw ico2"></i>
-          <span class="descricao"> PRODUTOS </span>
+          <span class="produtos"> PRODUTOS </span>
           <el-input placeholder="Nome do produto" v-model="search" size="large">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
@@ -140,100 +140,93 @@ export default {
 </script>
 
 <style scoped>
-    .bottom {
-      margin-top: 50px;
-      margin-right: 60px;
-      margin-left: 60px;
-      margin-bottom: 60px;
-        /* background-color: rgba(0, 0, 0, 0.25); */
-    }
 
-    .lin1 {
-      margin-bottom: 20px;
-    }
+.bottom {
+  margin-top: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  margin-bottom: 60px;
+    /* background-color: rgba(0, 0, 0, 0.25); */
+}
 
-    .lin2 {
-      margin-bottom: 40px;
-    }
+.lin1 {
+  margin-bottom: 20px;
+}
 
-    .l1c1 {
-     display: flex;
-     flex-wrap: wrap;
-     align-items: center;
-  
-     /* background-color: rgba(0, 0, 0, 0.25); */
-    
-    }
+.lin2 {
+  margin-bottom: 40px;
+}
 
-    .l1c2 {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      /* background-color: rgba(0, 0, 0, 0.25);  */
-     
-    }
+.l1c1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-    .l2c1 {
-      display: flex;
-      
-      align-items: center;
-      
-    }
-    
-    .artista {
-      margin-right: 90px;
-      font-size: 20px;
-      color: black ;
-    }
+.l1c2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-    .categoria {
-      margin-right: 70px;
-      font-size: 20px;
-      color: black ;
-    }
+.l2c1 {
+  display: flex;
+  align-items: center;
+}
 
-    .descricao {
-      
-      margin-right: 63px;
-      font-size: 20px;
-      color: black;
-    }
+.artista {
+  margin-right: 85px;
+  font-size: 17px;
+  color: black ;
+}
 
-    .vender {
-      color: white;
-    }
+.categoria {
+  margin-right: 85px;
+  font-size: 17px;
+  color: black ;
+}
 
-    .b1 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #82D4D1;
-      width: 198px;
-      height: 40px;
-      margin-left: 20px;
-    }
-    
-    .b2 {
-      width: 198px;
-      height: 40px;
-      margin-right: 20px;
-      background-color: #69F690;
-    }
+.produtos {
+  margin-right: 63px;
+  font-size: 17px;
+  color: black;
+}
 
-    .ico {
-      color: white;
-      font-size: 1.5rem;
-    }
+.vender {
+  color: white;
+}
 
-    .ico2 {
-      margin-right: 10px;
-      color: black;
-      font-size: 1.2rem;
-    }
+.b1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #82D4D1;
+  width: 198px;
+  height: 40px;
+  margin-left: 20px;
+}
 
-    .ico3 {
-      margin-left: 25px;
-    }
+.b2 {
+  width: 198px;
+  height: 40px;
+  margin-right: 20px;
+  background-color: #69F690;
+}
+
+.ico {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.ico2 {
+  margin-right: 10px;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.ico3 {
+  margin-left: 25px;
+}
 
 
 </style>

@@ -1,4 +1,5 @@
 <template>
+
     <div class="vendaspages">
         <v-tabs slider-color="#F4CB68" slider-size="3" v-model="tab" class="radiusitems" height="80">
             <div class="menutable">
@@ -43,7 +44,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .vendaspages {
         margin: 15px;
         background-color: white;

@@ -1,7 +1,10 @@
 <template>
 
-    <div class="fundo">
-        <router-view class="z"> </router-view>
+    <div class="content">
+        <div class="imagem">
+            <router-view> </router-view>
+        </div>
+
     </div>
     
 </template>
@@ -13,18 +16,21 @@ export default {
 </script>
 
 <style>
+   
     .content {
+
         grid-area: content;
+
         background-image: url(../../assets/Login2.jpg) ;
         background-size: cover;
-        opacity: 0.09;
-        filter: grayscale(100%);
 
-        z-index: -1;
+        /* opacity: 0.09;
+        filter: grayscale(100%);  */
     }
-    .fundo {
-        background-color: purple;
-        
+
+    .correcao {
+        opacity: 1;
+        filter: initial;
     }
 
    
