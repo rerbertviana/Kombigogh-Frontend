@@ -1,8 +1,8 @@
 <template>
     <div class="mv">
         <div class="form">
-            <el-row class="lin1" gutter="20" >
-                <el-col span="7">
+            <el-row class="lin1" :gutter="20" >
+                <el-col :span="7">
                     <div class="l1c1">
                         <i class="fas fa-paint-brush fa-fw ico"></i>
                         <span class="titulos"> ARTISTA </span>
@@ -12,7 +12,7 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col span="10">
+                <el-col :span="10">
                     <div class="l1c2">
                         <i class="far fa-calendar-alt fa-fw ico"></i>
                         <span class="titulos"> DATA </span>
@@ -26,7 +26,7 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col span="7">
+                <el-col :span="7">
                     <div class="l1c1">
                         <i class="fas fa-check fa-fw ico"></i>
                         <span class="titulos"> STATUS </span>

@@ -3,14 +3,14 @@
   <div class="cadastrar">
     <div class="form">
       <el-row class="lin1" gutter="20">
-        <el-col span="10">
+        <el-col span=10>
           <div class="l1c1">
             <i class="fas fa-box fa-fw ico ico2"></i>
             <span class="nome">NOME</span>
             <el-input placeholder="Please input" v-model="input"></el-input>
           </div>  
         </el-col>
-        <el-col span="14" >
+        <el-col span=14 >
           <div class="padrao">
             <i class="fas fa-pen-alt fa-fw ico"></i>
             <span class="letras">DESCRIÇÃO</span>
@@ -19,7 +19,7 @@
           </div> 
         </el-col>
       </el-row>
-      <el-row gutter="20">
+      <el-row gutter=20>
           <el-col span="10">
             <div class="padrao">
               <i class="fas fa-paste fa-fw ico"></i>
@@ -30,7 +30,7 @@
               </el-select>
             </div> 
         </el-col>
-        <el-col span="11">
+        <el-col span=11>
           <div class="padrao">
             <i class="fas fa-coins fa-fw ico ico2"></i>
             <span class="preco">PREÇO</span>
@@ -39,7 +39,7 @@
             <el-input-number v-model="num" @change="handleChange" :min="1" :max="10"></el-input-number>  
           </div>
         </el-col>
-        <el-col span="3">
+        <el-col span=3>
           <div class="padrao">
             <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" placeholder="Upload" prepend-icon="mdi-camera" dense>
             </v-file-input>
@@ -52,6 +52,9 @@
         </div>
       </el-row>
     </div>
+    <!-- <el-row>
+      {{ valor | preco}}
+    </el-row> -->
     <el-row class="tabela">
         <div>
             <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
@@ -72,9 +75,21 @@
 <script>
 export default {
 
+    filters: {
+      preco(valor) {
+        var a = "R$ "
+        return a.concat(valor);
+      }
+    },
+
     name: 'produtos',
     data () {
       return {
+        valor: '10',
+        rules2: [
+          value => !!value || 'Required.',
+          value => (value && value.length >= 3) || 'Min 3 characters',
+        ],
         rules: [
           value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
         ],

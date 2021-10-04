@@ -2,8 +2,8 @@
 
     <div class="produtos">
       <div class="form">
-        <el-row class="lin1" gutter="20">
-            <el-col span="8">
+        <el-row class="lin1" :gutter="20">
+            <el-col :span="8">
                 <div class="l1c1">
                     <i class="fas fa-paint-brush fa-fw ico"></i>
                     <span class="letras">ARTISTA</span>
@@ -13,7 +13,7 @@
                     </el-select>
                 </div>
             </el-col>
-            <el-col span="8">
+            <el-col :span="8">
                 <div class="l1c1">
                     <i class="fas fa-paste fa-fw ico"></i>
                     <span class="letras">CATEGORIA</span>
@@ -23,7 +23,7 @@
                     </el-select>
                 </div>
             </el-col>
-            <el-col span="8">
+            <el-col :span="8">
                 <div class="l1c1">
                     <i class="fas fa-box-open fa-fw ico"></i>
                     <span class="letras2">PRODUTOS</span>

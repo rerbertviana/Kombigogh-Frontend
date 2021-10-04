@@ -1,8 +1,8 @@
 <template>
     <div class="mv">
         <div class="form">
-            <el-row class="lin1" gutter="30">
-                <el-col span="12">
+            <el-row class="lin1" :gutter="30">
+                <el-col :span="12">
                     <div class="l1c1">
                         <i class="far fa-calendar-alt fa-fw ico"></i>
                         <span class="periodo"> PERÍODO </span>
@@ -16,7 +16,7 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col span="12">
+                <el-col :span="12">
                     <div class="l1c2">
                         <i class="fas fa-box fa-fw ico"></i>
                         <span class="meusprodutos"> PRODUTOS </span>

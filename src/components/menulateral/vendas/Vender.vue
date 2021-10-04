@@ -3,53 +3,56 @@
   <div class="vendervue">
     <div class="form">
       <el-row class="lin1" >
-        <el-col span="12" >
+        <el-col :span="11" >
           <div class="l1c1">
-            <i class="fas fa-paint-brush fa-fw ico2"></i>
+            <i class="fas fa-paint-brush fa-fw ico"></i>
             <span class="artista">ARTISTA</span>
-            <el-select v-model="value" filterable placeholder="Selecione">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="value" filterable placeholder="Selecione" no-match-text="Não encontrado">
+              <el-option v-for="option in options2" :key="option.id" :label="option.nome" :value="option.id">
               </el-option>
             </el-select>
           </div>
         </el-col>
-        <el-col span="12">
+        <el-col :span="13">
           <div class="l1c2">
-            <i class="fas fa-paste fa-fw ico2 ico3"></i>
+            <i class="fas fa-paste fa-fw ico"></i>
             <span class="categoria">CATEGORIA</span>
-            <el-select v-model="value" filterable placeholder="Selecione">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="value2" filterable placeholder="Selecione" clearable class="espaco">
+              <el-option v-for="option in options" :key="option.id" :label="option.nome" :value="option.id">
               </el-option>
             </el-select>
+            <el-button class="ok">OK</el-button>
           </div>
         </el-col>
       </el-row>  
       <el-row class="lin2" >
-        <el-col span="18">
+        <el-col :span="20">
           <div class="l2c1">
-            <i class="fas fa-box fa-fw ico2"></i>
+            <i class="fas fa-box fa-fw ico"></i>
             <span class="produtos"> PRODUTOS </span>
             <el-input placeholder="Nome do produto" v-model="search" size="large">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
           </div>
         </el-col>
-        <el-col span="6">
+        <el-col :span="4">
           <div class="l2c2">
-            <el-button class="b1"><i class="fas fa-shopping-bag fa-fw ico"></i></el-button>
-            <el-button class="b2"><span class="vender">VENDER</span></el-button>
+            <el-button class="b1"><i class="fas fa-shopping-bag fa-fw ico1"></i></el-button>
+            <el-button class="b2">VENDER</el-button>
           </div>
         </el-col>
       </el-row>
     </div>
       <el-row class="tabela" >
         <div>
-          <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
-            <el-table-column  prop="date" label="Date" width="180">
+          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))">
+            <el-table-column prop="nome" label="NOME">
             </el-table-column>
-            <el-table-column prop="name" label="Name" width="180">
+            <el-table-column prop="descricao" label="DESCRIÇÃO">
             </el-table-column>
-            <el-table-column prop="address" label="Address">
+            <el-table-column prop="preco" label="PREÇO">
+            </el-table-column>
+            <el-table-column prop="quantidade" label="QUANTIDADE">
             </el-table-column>
           </el-table>
         </div>
@@ -60,87 +63,69 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { baseApiurl } from '@/global'
+
 export default {
     name: 'Vender',
     data () {
       return {
         search: '',
-        options: [{
-          value: 'Option1',
-          label: 'Option1'
-        }, {
-          value: 'Option2',
-          label: 'Option2'
-        }, {
-          value: 'Option3',
-          label: 'Option3'
-        }, {
-          value: 'Option4',
-          label: 'Option4'
-        }, {
-          value: 'Option5',
-          label: 'Option5'
-        }],
+        options: [],
+        options2:[],
         value: '',
         input: '',
-        tableData: [{
-            date: '2016-05-03',
-            name: 'Bert',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          }
-          ],
+        value2: '',
+        products: []
       }
     },
+    methods: {
+
+      // getFilter() {
+
+      //   if(this.value == "" && this.value2 == "" ) {
+      //     return this.getProducts()
+      //   }
+      //   if(this.value =="") {
+      //     return this.getProductsCategory
+      //   }
+      //   if(this.value2 =='') {
+      //     return this.getProductUser
+      //   }
+      //   return this.getProductUserCategory
+      // },
+
+      // getProductUser() {
+      //   return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data);
+      // },
+
+      // getProductUserCategory() {
+      //   return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
+      // },
+
+      // getProductsCategory() {
+      //    return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
+      // },
+
+      getProducts() {
+        return axios.get(`${baseApiurl}/products`).then(res => this.products = res.data);
+      },
+
+      getCategories() {
+        return axios.get(`${baseApiurl}/categories`).then(res => this.options = res.data);
+        // console.log(this.value);
+      },
+
+      getUsers() {
+        return axios.get(`${baseApiurl}/users`).then(res => this.options2 = res.data);
+      }
+      
+    },
+    mounted() {
+      this.getProducts()
+      this.getCategories()
+      this.getUsers()
+    }
 
 }
 </script>
@@ -177,6 +162,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
 }
 
 .l1c2 {
@@ -188,73 +174,79 @@ export default {
 .l2c1 {
   display: flex;
   align-items: center;
+  margin-right: 25px;
 
-  margin-right: 10px;
 }
 
 .l2c2 {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  }
+}
 
 .artista {
-  margin-right: 85px;
+  margin-right: 73px;
   font-size: 17px;
   color: black ;
 }
 
 .categoria {
-  margin-right: 90px;
+  margin-right: 43px;
   font-size: 17px;
   color: black ;
 }
 
 .produtos {
-  margin-right: 63px;
+  margin-right: 50px;
   font-size: 17px;
   color: black;
 }
 
-.vender {
-  color: white;
-}
 
 .b1 {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #82D4D1;
-  
+
   height: 40px;
-  width: 124px;
+  width: 100px;
 
 }
 
 .b2 {
-  width: 124px;
+  width: 100px;
   height: 40px;
   background-color: #69F690;
+  color: white;
 }
 
 .ico {
-  color: white;
-  font-size: 1.5rem;
-}
-
-.ico2 {
-  margin-right: 10px;
+  margin-right: 15px;
   color: black;
   font-size: 1.2rem;
 }
 
-.ico3 {
-  margin-left: 25px;
+.ico1 {
+  color: white;
+  font-size: 1.5rem;
 }
 
 .tabela {
   margin-top: 30px;
 }
 
+.ok {
+  margin-left: 10px;
+  background-color: #69F690;
+  color: white;
+  height: 40px;
+  width: 100px;
+
+}
+
+.espaco {
+  margin-right: 0px;
+}
 
 </style>
