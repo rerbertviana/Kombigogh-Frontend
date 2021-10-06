@@ -7,7 +7,7 @@
           <div class="l1c1">
             <i class="fas fa-paint-brush fa-fw ico"></i>
             <span class="artista">ARTISTA</span>
-            <el-select v-model="value" filterable placeholder="Selecione" no-match-text="Não encontrado">
+            <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
               <el-option v-for="option in options2" :key="option.id" :label="option.nome" :value="option.id">
               </el-option>
             </el-select>
@@ -15,13 +15,13 @@
         </el-col>
         <el-col :span="13">
           <div class="l1c2">
-            <i class="fas fa-paste fa-fw ico"></i>
+            <i class="fas fa-paste fa-fw ico2"></i>
             <span class="categoria">CATEGORIA</span>
-            <el-select v-model="value2" filterable placeholder="Selecione" clearable class="espaco">
+            <el-select v-model="value2" filterable placeholder="Selecione" clearable class="espaco" no-match-text="Não encontrado" select="getFilter">
               <el-option v-for="option in options" :key="option.id" :label="option.nome" :value="option.id">
               </el-option>
             </el-select>
-            <el-button class="ok">OK</el-button>
+            <el-button @click="getFilter" class="ok">FILTRAR</el-button>
           </div>
         </el-col>
       </el-row>  
@@ -45,7 +45,7 @@
     </div>
       <el-row class="tabela" >
         <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))">
+          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
             <el-table-column prop="nome" label="NOME">
             </el-table-column>
             <el-table-column prop="descricao" label="DESCRIÇÃO">
@@ -81,31 +81,35 @@ export default {
     },
     methods: {
 
-      // getFilter() {
+      getFilter() {
+        if(!this.value) {
+          this.getProductsCategory()
+        }
+        if(!this.value2) {
+          this.getProductUser()
+        }
+        if(this.value && this.value2) {
+          this.getProductUserCategory()
+        }
+        if(!this.value && !this.value2) {
+          this.getProducts()
+        }
+      },
 
-      //   if(this.value == "" && this.value2 == "" ) {
-      //     return this.getProducts()
-      //   }
-      //   if(this.value =="") {
-      //     return this.getProductsCategory
-      //   }
-      //   if(this.value2 =='') {
-      //     return this.getProductUser
-      //   }
-      //   return this.getProductUserCategory
-      // },
+      
 
-      // getProductUser() {
-      //   return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data);
-      // },
+     
+      getProductUserCategory() {
+        return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
+      },
 
-      // getProductUserCategory() {
-      //   return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
-      // },
+      getProductsCategory() {
+        return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
+      },
 
-      // getProductsCategory() {
-      //    return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
-      // },
+      getProductUser() {
+        return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data.product);
+      },
 
       getProducts() {
         return axios.get(`${baseApiurl}/products`).then(res => this.products = res.data);
@@ -118,7 +122,10 @@ export default {
 
       getUsers() {
         return axios.get(`${baseApiurl}/users`).then(res => this.options2 = res.data);
-      }
+      },
+
+     
+
       
     },
     mounted() {
@@ -167,7 +174,7 @@ export default {
 
 .l1c2 {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -191,7 +198,8 @@ export default {
 }
 
 .categoria {
-  margin-right: 43px;
+  margin-right: 25px;
+  margin-left: 10px;
   font-size: 17px;
   color: black ;
 }
@@ -225,6 +233,10 @@ export default {
   margin-right: 15px;
   color: black;
   font-size: 1.2rem;
+}
+
+.ico2 {
+  margin-left: 30px;
 }
 
 .ico1 {
