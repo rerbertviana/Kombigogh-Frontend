@@ -2,8 +2,8 @@
 
   <div class="vendervue">
     <div class="form">
-      <el-row class="lin1" >
-        <el-col :span="11" >
+      <el-row class="lin1" :gutter="10" >
+        <el-col :span="9" >
           <div class="l1c1">
             <i class="fas fa-paint-brush fa-fw ico"></i>
             <span class="artista">ARTISTA</span>
@@ -13,7 +13,7 @@
             </el-select>
           </div>
         </el-col>
-        <el-col :span="13">
+        <el-col :span="9">
           <div class="l1c2">
             <i class="fas fa-paste fa-fw ico2"></i>
             <span class="categoria">CATEGORIA</span>
@@ -21,12 +21,17 @@
               <el-option v-for="option in options" :key="option.id" :label="option.nome" :value="option.id">
               </el-option>
             </el-select>
-            <el-button @click="getFilter" class="ok">FILTRAR</el-button>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="l1c3">
+            <el-button @click="getFilter" class="b3">FILTRAR</el-button>
+            <el-button @click="getTodos" class="b2">TODOS</el-button>
           </div>
         </el-col>
       </el-row>  
       <el-row class="lin2" >
-        <el-col :span="20">
+        <el-col :span="18">
           <div class="l2c1">
             <i class="fas fa-box fa-fw ico"></i>
             <span class="produtos"> PRODUTOS </span>
@@ -35,7 +40,7 @@
             </el-input>
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <div class="l2c2">
             <el-button class="b1"><i class="fas fa-shopping-bag fa-fw ico1"></i></el-button>
             <el-button class="b2">VENDER</el-button>
@@ -96,8 +101,11 @@ export default {
         }
       },
 
-      
-
+      getTodos() {
+        this.getProducts();
+        this.value = '';
+        this.value2 = '';
+      },
      
       getProductUserCategory() {
         return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
@@ -167,22 +175,24 @@ export default {
 
 .l1c1 {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-
 }
 
 .l1c2 {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-left: 5px;
+}
+
+.l1c3 {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .l2c1 {
   display: flex;
   align-items: center;
-  margin-right: 25px;
-
 }
 
 .l2c2 {
@@ -192,20 +202,20 @@ export default {
 }
 
 .artista {
-  margin-right: 73px;
+  margin-right: 62px;
   font-size: 17px;
   color: black ;
 }
 
 .categoria {
-  margin-right: 25px;
+  margin-right: 15px;
   margin-left: 10px;
   font-size: 17px;
   color: black ;
 }
 
 .produtos {
-  margin-right: 50px;
+  margin-right: 35px;
   font-size: 17px;
   color: black;
 }
@@ -216,18 +226,24 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: #82D4D1;
-
+  width: 115px;
   height: 40px;
-  width: 100px;
-
 }
 
 .b2 {
-  width: 100px;
+  width: 115px;
   height: 40px;
   background-color: #69F690;
   color: white;
 }
+
+.b3 {
+  width: 115px;
+  height: 40px;
+  background-color: #82D4D1;
+  color: white;
+}
+
 
 .ico {
   margin-right: 15px;
@@ -235,30 +251,22 @@ export default {
   font-size: 1.2rem;
 }
 
-.ico2 {
-  margin-left: 30px;
-}
-
 .ico1 {
   color: white;
   font-size: 1.5rem;
+}
+
+.ico2 {
+  margin-left: 10px;
 }
 
 .tabela {
   margin-top: 30px;
 }
 
-.ok {
-  margin-left: 10px;
-  background-color: #69F690;
-  color: white;
-  height: 40px;
-  width: 100px;
-
-}
-
 .espaco {
   margin-right: 0px;
 }
+
 
 </style>

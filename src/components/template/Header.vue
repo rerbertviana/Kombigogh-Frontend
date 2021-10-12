@@ -48,7 +48,6 @@ export default {
 
         teste() {
             this.visible = !this.visible
-            console.log(this.visible)
         }
     },
 }
