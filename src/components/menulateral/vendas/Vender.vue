@@ -25,12 +25,11 @@
         </el-col>
         <el-col :span="6">
           <div class="l1c3">
-            <el-button @click="getFilter" class="b3">FILTRAR</el-button>
-            <el-button @click="getTodos" class="b2">TODOS</el-button>
+            <el-button @click="getTodos" class="b3">TODOS</el-button>
           </div>
         </el-col>
       </el-row>  
-      <el-row class="lin2" >
+      <el-row class="lin2" :gutter="10" >
         <el-col :span="18">
           <div class="l2c1">
             <i class="fas fa-box fa-fw ico"></i>
@@ -48,7 +47,7 @@
         </el-col>
       </el-row>
     </div>
-      <el-row class="tabela" >
+      <el-row class="tabela">
         <div>
           <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
             <el-table-column prop="nome" label="NOME">
@@ -73,7 +72,7 @@ import { baseApiurl } from '@/global'
 
 export default {
     name: 'Vender',
-    data () {
+    data() {
       return {
         search: '',
         options: [],
@@ -81,23 +80,33 @@ export default {
         value: '',
         input: '',
         value2: '',
-        products: []
+        products: [],
       }
     },
+
+    watch: {
+      value() {
+        this.getFilter()
+      },
+      value2() {
+        this.getFilter()
+      }
+    },
+
     methods: {
 
       getFilter() {
-        if(!this.value) {
-          this.getProductsCategory()
+        if(!this.value && this.value2) {
+          return this.getProductsCategory()
         }
-        if(!this.value2) {
-          this.getProductUser()
+        if(!this.value2 && this.value) {
+          return this.getProductUser()
         }
         if(this.value && this.value2) {
-          this.getProductUserCategory()
+          return this.getProductUserCategory()
         }
         if(!this.value && !this.value2) {
-          this.getProducts()
+          return this.getProducts()
         }
       },
 
@@ -132,7 +141,7 @@ export default {
         return axios.get(`${baseApiurl}/users`).then(res => this.options2 = res.data);
       },
 
-     
+    
 
       
     },
@@ -176,6 +185,7 @@ export default {
 .l1c1 {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .l1c2 {
@@ -187,12 +197,14 @@ export default {
 
 .l1c3 {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
 }
 
 .l2c1 {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .l2c2 {
@@ -238,7 +250,7 @@ export default {
 }
 
 .b3 {
-  width: 115px;
+  width: 240px;
   height: 40px;
   background-color: #82D4D1;
   color: white;
