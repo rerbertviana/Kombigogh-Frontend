@@ -6,10 +6,16 @@
                     <div class="l1c1">
                         <i class="far fa-calendar-alt fa-fw ico"></i>
                         <span class="periodo"> PERÍODO </span>
+                        <div class="erro" v-if="visible">
+                            <span class="asterisco">*</span>
+                        </div>
                         <el-select v-model="value" filterable clearable no-match-text="..." placeholder="Mês" class="espaco">
                             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
+                        <div class="erro" v-if="visible2">
+                            <span class="asterisco">*</span>
+                        </div>
                         <el-select v-model="value2" filterable clearable no-match-text="..." placeholder="Ano">
                             <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
@@ -27,17 +33,6 @@
                         </el-input>
                     </div>
                 </el-col>
-            </el-row>
-            <el-row v-show="visible">
-                <div class="erro1">
-                    <el-col :span="6" class="l2c1">
-                        <span class="erro2" v-show="visible2"> Obrigatório </span>
-                    </el-col>
-                    <el-col :span="6" class="l2c2" >
-                        <span class="erro3" v-show="visible3"> Obrigatório </span>
-                    </el-col>
-                    
-                </div>
             </el-row>
         </div>
             <el-row class="lin2" v-if="tab1"> 
@@ -193,8 +188,19 @@ export default {
             tab3: true,
             visible: false,
             visible2: false,
-            visible3: false,
         }
+    },
+
+    watch: {
+
+        value() {
+            this.visible = false;
+        },
+
+        value2() {
+            this.visible2 = false;
+        }
+     
     },
     methods: {
 
@@ -207,28 +213,25 @@ export default {
             this.value = '',
             this.value2 = '',
             this.visible = false;
+            this.visible2 = false;
         },
 
         getFilter() {
             if (!this.value && this.value2) {
                 this.visible = true;
-                this.visible2 = true;
-                this.visible3 = false;
+                this.visible2 = false;
             }
             if (this.value && !this.value2) {
-                this.visible = true;
-                this.visible2 = false;
-                this.visible3 = true;
+                this.visible = false;
+                this.visible2 = true;
             }
             if (!this.value && !this.value2) {
                 this.visible = true;
                 this.visible2 = true;
-                this.visible3 = true;
             }
             if (this.value && this.value2) {
                 this.visible = false;
                 this.visible2 = false;
-                this.visible3 = false;
                 return this.getData();
             }
         },
@@ -395,26 +398,6 @@ export default {
     width: 180px;
 }
 
-.erro1 {
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    height: 20px;
-    animation: headShake;
-    animation-duration: 1s;
-    
-}
-.erro2 {
-    margin-right: 20px;
-    color: red;
-    font-size: 0.9rem;   
-}
-
-.erro3 {
-    margin-left: 10px;
-    color: red;
-    font-size: 0.9rem;   
-}
 
 .l2c1 {
     display: flex;
@@ -501,6 +484,16 @@ export default {
     background-color: #F4CB68;
     border-radius: 5px 5px 0px 0px;
     color: white;
+}
+
+.asterisco {
+    color: red;
+    margin-right: 5px;
+}
+
+.erro {
+    animation: headShake;
+    animation-duration: 1s;
 }
 
 

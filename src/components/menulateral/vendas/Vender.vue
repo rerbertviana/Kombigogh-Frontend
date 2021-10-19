@@ -61,12 +61,12 @@
           </el-table>
         </div>
       </el-row>
-    </div>
-  
+  </div>  
     
 </template>
 
 <script>
+
 import axios from 'axios'
 import { baseApiurl } from '@/global'
 

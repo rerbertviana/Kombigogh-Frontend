@@ -2,45 +2,64 @@
     <div class="mv">
         <div class="form">
             <el-row class="lin1" :gutter="20" >
-                <el-col :span="7">
+                <el-col :span="10">
                     <div class="l1c1">
                         <i class="fas fa-paint-brush fa-fw ico"></i>
-                        <span class="titulosheader"> ARTISTA </span>
+                        <span class="titulosheader espacoartista"> ARTISTA </span>
                         <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                             <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
                             </el-option>
                         </el-select>
                     </div>
                 </el-col>
-                <el-col :span="10">
+                <el-col :span="14">
                     <div class="l1c2">
-                        <i class="far fa-calendar-alt fa-fw ico"></i>
-                        <span class="titulosheader"> DATA </span>
-                        <el-select v-model="value2" filterable placeholder="Mês" class="espaco">
+                        <i class="far fa-calendar-alt fa-fw icodata"></i>
+                        <span class="titulosheader dat"> DATA </span>
+                        <div class="erro" v-if="visible">
+                            <span class="asterisco">*</span>
+                        </div>
+                        <el-select v-model="value2" filterable placeholder="Mês" class="espaco" clearable no-match-text="Não encontrado">
                             <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
-                        <el-select v-model="value2" filterable placeholder="Ano">
+                        <div class="erro" v-if="visible2">
+                            <span class="asterisco">*</span>
+                        </div>
+                        <el-select v-model="value3" filterable placeholder="Ano" clearable no-match-text="Não encontrado">
                             <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-button @click="getFilter" class="b1">FILTRAR</el-button>
+                        <el-button @click="getTodos" class="b2">TODOS</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="10">
+                    <div class="l2c1">
+                        <i class="fas fa-check fa-fw ico"></i>
+                        <span class="titulosheader espacostatus"> STATUS </span>
+                        <el-select v-model="value4" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                            <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
                 </el-col>
-                <el-col :span="7">
-                    <div class="l1c1">
-                        <i class="fas fa-check fa-fw ico"></i>
-                        <span class="titulosheader"> STATUS </span>
-                        <el-select v-model="value3" filterable placeholder="Selecione">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                            </el-option>
-                        </el-select>
+                <el-col :span="14">
+                    <div class="l2c2">
+                        <i class="fas fa-box-open fa-fw ico"></i>
+                        <span class="ped"> PEDIDOS </span>
+                        <el-input placeholder="Nome do cliente" v-model="search" size="large">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                        </el-input>
                     </div>
                 </el-col>
             </el-row>
         </div>
         <el-row class="lin2" v-if="tab1">
             <div>
-                <el-table  :data="orders.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%" empty-text="Sem resultados">
+                <el-table  :data="orders.filter(data => !search || data.cliente.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
                     <el-table-column prop="cliente" label="CLIENTE" width="230">
                     </el-table-column>
                     <el-table-column prop="mes" label="MES">
@@ -116,6 +135,7 @@ export default {
             value: '',
             value2: '',
             value3: '',
+            value4: '',
             input: '',
             orders: '',
             vendas:[],
@@ -123,6 +143,8 @@ export default {
             options: [],
             tab1: true,
             tab2: false,
+            visible: false,
+            visible2: false,
             options2: [
                 {
                     value: '0',
@@ -191,31 +213,81 @@ export default {
                     label: '2023'
                 }, 
             ],
+            options4: [
+                {
+                    value: 'Estornado',
+                    label: 'ESTORNADO'
+                }, 
+                {
+                    value: 'ok',
+                    label: 'OK'
+                }, 
+            ]
         }
     },
 
     watch: {
-      value() {
-        this.getOrderUsers()
-      },
+
+        value() {
+            this.getOrderUsers();
+        },
+
+        value2() {
+            this.visible = false;
+        },
+
+        value3() {
+            this.visible2 = false;
+        },
+
+        value4() {
+            this.getStatus();
+        }
+     
     },
 
     methods: {
 
-    //     getFilter() {
-    //         if(!this.value && this.value2) {
-    //             return this.getProductsCategory()
-    //         }
-    //         if(!this.value2 && this.value) {
-    //             return this.getProductUser()
-    //         }
-    //         if(this.value && this.value2) {
-    //             return this.getProductUserCategory()
-    //         }
-    //         if(!this.value && !this.value2) {
-    //             return this.getProducts()
-    //         }
-    //   },
+        getFilter() {
+            if(!this.value2 && this.value3) {
+                this.visible = true;
+                this.visible2 = false;
+            }
+            if(this.value2 && !this.value3) {
+                this.visible = false;
+                this.visible2 = true;
+            }
+            if(this.value2 && this.value3) {
+                this.visible = false;
+                this.visible2 = false;
+                return this.getOrdersData()
+            }
+            if(!this.value2 && !this.value3) {
+                this.visible = true;
+                this.visible2 = true;
+            }
+        },
+
+        getStatus(){
+            if(!this.value4){
+                this.getOrders();
+            }
+            else {
+                return axios.get(`${baseApiurl}/orders/status/${this.value4}`).then(res => this.orders = res.data);
+            }
+        },
+
+        getTodos() {
+            this.visible = false;
+            this.visible2 = false;
+            this.value2 = '';
+            this.value3 = '';
+            this.getOrders();
+        },
+
+        getOrdersData() {
+            return axios.get(`${baseApiurl}/orders/${this.value2}/${this.value3}`).then(res => this.orders = res.data);
+        },
 
         getOrderUsers() {
             if(!this.value) {
@@ -275,8 +347,6 @@ export default {
     margin-right: 60px;
     margin-left: 60px;
     margin-bottom: 60px;
-    
-    /* background-color: rgba(0, 0, 0, 0.25); */
 }
 
 .ico {
@@ -288,13 +358,20 @@ export default {
 .titulosheader {
     font-size: 17px;
     color: black ;
-    margin-right: 20px;
-    
+}
+
+.espacoartista {
+    margin-right: 53px;
+}
+
+.espacostatus {
+    margin-right: 60px;
 }
 
 .lin1 {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .l1c1 {
@@ -302,7 +379,17 @@ export default {
     align-items: center;
 }
 
+.l2c1 {
+    display: flex;
+    align-items: center;
+}
+
 .l1c2 {
+    display: flex;
+    align-items: center;
+}
+
+.l2c2 {
     display: flex;
     align-items: center;
 }
@@ -327,10 +414,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.ico2 {
-    margin-right: 8px;
 }
 
 .pedido {
@@ -452,6 +535,43 @@ export default {
     height: 40px;
 }
 
+.asterisco {
+    color: red;
+    margin-right: 5px;
+}
 
+.erro {
+    animation: headShake;
+    animation-duration: 1s;
+}
 
+.b1 {
+  margin-left: 10px;
+  background-color: #82D4D1;
+  color: white;
+  height: 40px;
+  width: 100px;
+}
+
+.b2 {
+  margin-left: 10px;
+  background-color: #69F690;
+  color: white;
+  height: 40px;
+  width: 100px;
+}
+
+.dat {
+    margin-right: 45px;
+}
+
+.icodata {
+    color: black;
+    font-size: 1.2rem;
+    margin-right: 22px;
+}
+
+.ped {
+    margin-right: 15px;
+}
 </style>

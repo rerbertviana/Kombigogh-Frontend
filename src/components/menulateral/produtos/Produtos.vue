@@ -7,8 +7,8 @@
                 <div class="l1c1">
                     <i class="fas fa-paint-brush fa-fw ico"></i>
                     <span class="letras">ARTISTA</span>
-                    <el-select v-model="value" filterable placeholder="Selecione">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                        <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -17,8 +17,8 @@
                 <div class="l1c1">
                     <i class="fas fa-paste fa-fw ico"></i>
                     <span class="letras">CATEGORIA</span>
-                    <el-select v-model="value" filterable placeholder="Selecione">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="value2" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                        <el-option v-for="item in options2" :key="item.id" :label="item.nome" :value="item.id">
                         </el-option>
                     </el-select>
                 </div>
@@ -34,106 +34,102 @@
             </el-col>
         </el-row>
       </div>
-      <el-row class="tabela">
-          <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
-              <el-table-column  prop="date" label="Date" width="180">
-              </el-table-column>
-              <el-table-column prop="name" label="Name" width="180">
-              </el-table-column>
-              <el-table-column prop="address" label="Address">
-              </el-table-column>
+     <el-row class="tabela">
+        <div>
+          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+            <el-table-column prop="nome" label="NOME">
+            </el-table-column>
+            <el-table-column prop="descricao" label="DESCRIÇÃO">
+            </el-table-column>
+            <el-table-column prop="preco" label="PREÇO">
+            </el-table-column>
+            <el-table-column prop="quantidade" label="QUANTIDADE">
+            </el-table-column>
           </el-table>
+        </div>
       </el-row>
     </div>
     
 </template>
 
 <script>
+
+import axios from 'axios'
+import { baseApiurl } from '@/global'
+
 export default {
 
     name: 'produtos',
     data () {
       return {
-
+        products: [],
+        options: [],
+        options2: [],
         search: '',
-
-        options: [{
-          value: 'Option1',
-          label: 'Option1'
-        }, {
-          value: 'Option2',
-          label: 'Option2'
-        }, {
-          value: 'Option3',
-          label: 'Option3'
-        }, {
-          value: 'Option4',
-          label: 'Option4'
-        }, {
-          value: 'Option5',
-          label: 'Option5'
-        }],
         value: '',
+        value2:'',
         input: '',
-        tableData: [{
-            date: '2016-05-03',
-            name: 'Bert',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          }
-          ],
         
       }
     },
+
+    watch: {
+      value() {
+        this.getFilter()
+      },
+      value2() {
+        this.getFilter()
+      }
+    },
+
+    methods: {
+
+      getFilter() {
+        if(!this.value && this.value2) {
+          return this.getProductsCategory()
+        }
+        if(!this.value2 && this.value) {
+          return this.getProductUser()
+        }
+        if(this.value && this.value2) {
+          return this.getProductUserCategory()
+        }
+        if(!this.value && !this.value2) {
+          return this.getProducts()
+        }
+      },
+
+      getProductUserCategory() {
+        return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
+      },
+
+      getProductsCategory() {
+        return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
+      },
+
+      getProductUser() {
+        return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data.product);
+      },
+
+      getProducts() {
+        return axios.get(`${baseApiurl}/products`).then(res => this.products = res.data);
+      },
+
+      getUsers() {
+        return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
+      },
+
+      getCategories() {
+        return axios.get(`${baseApiurl}/categories`).then(res => this.options2 = res.data);
+      },
+
+    },
+
+    mounted() {
+      this.getProducts();
+      this.getUsers();
+      this.getCategories();
+    }
 
 }
     
