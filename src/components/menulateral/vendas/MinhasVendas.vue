@@ -60,10 +60,8 @@
                 </div>
             </el-row>
             <div class="pedido" v-if="tab2" >
-                <div class="linhafechar" >
-                    <div class="fechar">
-                        teste
-                    </div>
+                <div class="linhafechar">
+                    <el-button @click="getClose" class="fechar">FECHAR<i class="fas fa-window-close fa-fw ico3"></i> </el-button>
                 </div>
                 <div class="linhapedido">
                     <el-col :span="24" class="idpedido"> ID PEDIDO - {{pedidos.id}} </el-col>
@@ -89,8 +87,9 @@
                 </el-row>
                 <el-row class="vendas">
                     <el-table :data="vendas" border stripe empty-text="Sem resultados">
-                        <el-table-column prop="nome" label="NOME" width="340"></el-table-column>
-                        <el-table-column prop="preco" label="PRECO"></el-table-column>
+                        <el-table-column prop="artista" label="ARTISTA"></el-table-column>
+                        <el-table-column prop="nome" label="PRODUTO" width="340"></el-table-column>
+                        <el-table-column prop="preco" label="PREÇO"></el-table-column>
                         <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
                     </el-table>
                 </el-row>
@@ -120,51 +119,51 @@ export default {
             options: [
                 {
                     value: '0',
-                    label: 'Janeiro'
+                    label: 'JANEIRO'
                 }, 
                 {
                     value: '1',
-                    label: 'Fevereiro'
+                    label: 'FEVEREIRO'
                 }, 
                 {
                     value: '2',
-                    label: 'Março'
+                    label: 'MARÇO'
                 }, 
                 {
                     value: '3',
-                    label: 'Abril'
+                    label: 'ABRIL'
                 }, 
                 {
                     value: '4',
-                    label: 'Maio'
+                    label: 'MAIO'
                 },
                 {
                     value: '5',
-                    label: 'Junho'
+                    label: 'JUNHO'
                 },
                 {
                     value: '6',
-                    label: 'Julho'
+                    label: 'JULHO'
                 },
                 {
                     value: '7',
-                    label: 'Agosto'
+                    label: 'AGOSTO'
                 },
                 {
                     value: '8',
-                    label: 'Setembro'
+                    label: 'SETEMBRO'
                 },
                 {
                     value: '9',
-                    label: 'Outubro'
+                    label: 'OUTUBRO'
                 },
                 {
                     value: '10',
-                    label: 'Novembro'
+                    label: 'NOVEMBRO'
                 },
                 {
                     value: '11',
-                    label: 'Dezembro'
+                    label: 'DEZEMBRO'
                 }
             ],
             options2: [
@@ -244,6 +243,11 @@ export default {
             axios.get(`${baseApiurl}/orders/${row.pedido}`).then(res => this.pedidos = res.data[0]);
             axios.get(`${baseApiurl}/orders/${row.pedido}`).then(res => this.vendas = res.data[1].produtos);
         },
+
+        getClose() {
+            this.tab1 = true;
+            this.tab2 = false;
+        }
     },  
 
     mounted() {
@@ -470,11 +474,6 @@ export default {
     height: 40px;
 }
 
-.fechar {
-    display: flex;
-    justify-content: flex-end;
-}
-
 .linhapedido {
     display: flex;
     align-items: center;
@@ -491,11 +490,14 @@ export default {
 }
 
 .fechar {
+    padding-left: 27px;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    width: 90px;
+    font-size: 0.9rem;
+    height: 35px;
+    width: 103px;
     background-color: #F4CB68;
     border-radius: 5px 5px 0px 0px;
     color: white;

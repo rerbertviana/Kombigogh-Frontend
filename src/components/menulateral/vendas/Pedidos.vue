@@ -5,9 +5,9 @@
                 <el-col :span="7">
                     <div class="l1c1">
                         <i class="fas fa-paint-brush fa-fw ico"></i>
-                        <span class="titulos"> ARTISTA </span>
-                        <el-select v-model="value" filterable placeholder="Selecione">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        <span class="titulosheader"> ARTISTA </span>
+                        <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                            <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
                             </el-option>
                         </el-select>
                     </div>
@@ -15,13 +15,13 @@
                 <el-col :span="10">
                     <div class="l1c2">
                         <i class="far fa-calendar-alt fa-fw ico"></i>
-                        <span class="titulos"> DATA </span>
-                        <el-select v-model="value" filterable placeholder="Mês" class="espaco">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        <span class="titulosheader"> DATA </span>
+                        <el-select v-model="value2" filterable placeholder="Mês" class="espaco">
+                            <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
-                        <el-select v-model="value" filterable placeholder="Ano">
-                            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        <el-select v-model="value2" filterable placeholder="Ano">
+                            <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
@@ -29,8 +29,8 @@
                 <el-col :span="7">
                     <div class="l1c1">
                         <i class="fas fa-check fa-fw ico"></i>
-                        <span class="titulos"> STATUS </span>
-                        <el-select v-model="value" filterable placeholder="Selecione">
+                        <span class="titulosheader"> STATUS </span>
+                        <el-select v-model="value3" filterable placeholder="Selecione">
                             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -38,68 +38,220 @@
                 </el-col>
             </el-row>
         </div>
-        <el-row class="lin2">
+        <el-row class="lin2" v-if="tab1">
             <div>
-                <el-table  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%">
-                    <el-table-column  prop="date" label="Date" width="180">
+                <el-table  :data="orders.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()) || data.address.toLowerCase().includes(search.toLowerCase()) )" stripe border style="width: 100%" empty-text="Sem resultados">
+                    <el-table-column prop="cliente" label="CLIENTE" width="230">
                     </el-table-column>
-                    <el-table-column prop="name" label="Name" width="180">
+                    <el-table-column prop="mes" label="MES">
                     </el-table-column>
-                    <el-table-column prop="address" label="Address">
+                    <el-table-column prop="ano" label="ANO">
                     </el-table-column>
+                    <el-table-column prop="total" label="TOTAL">
+                    </el-table-column>
+                    <el-table-column prop="status" label="STATUS" width="130">
+                    </el-table-column>
+                    <el-table-column label="AÇÕES" width="220">
+                            <template slot-scope="scope">
+                                <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+                            </template>
+                    </el-table-column> 
                 </el-table>
             </div>
         </el-row>
+         <div class="pedido" v-if="tab2" >
+                <div class="linhafechar">
+                    <el-button @click="getClose" class="fechar">FECHAR<i class="fas fa-window-close fa-fw ico3"></i> </el-button>
+                </div>
+                <div class="linhapedido">
+                    <el-col :span="24" class="idpedido"> ID PEDIDO - {{pedidos.id}} </el-col>
+                </div>
+                <el-row :gutter="10">
+                    <div class="titulos">
+                        <el-col class="l3 l3c1">CLIENTE</el-col>
+                        <el-col class="l3">VENDEDOR</el-col>
+                        <el-col class="l3 l3c4">STATUS</el-col>
+                    </div>
+                </el-row>
+                <el-row :gutter="10">
+                    <div class="conteudo">
+                        <el-col class="l4">{{pedidos.cliente}}</el-col>
+                        <el-col class="l4">{{pedidos.vendedor}}</el-col>
+                        <el-col class="l4">{{pedidos.status}}</el-col>
+                    </div>
+                </el-row>
+                <el-row >
+                    <div class="produtos">
+                        <el-col :span="24" class="l5"> <i class="fas fa-dollar-sign ico2"></i>PRODUTOS VENDIDOS </el-col>
+                    </div>
+                </el-row>
+                <el-row class="vendas">
+                    <el-table :data="vendas" border stripe empty-text="Sem resultados">
+                        <el-table-column prop="artista" label="ARTISTA"></el-table-column>
+                        <el-table-column prop="nome" label="PRODUTO" width="340"></el-table-column>
+                        <el-table-column prop="preco" label="PREÇO"></el-table-column>
+                        <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+                    </el-table>
+                </el-row>
+                <el-row>
+                    <el-col :span="5" class="total">
+                        TOTAL = R$ {{pedidos.total}}
+                    </el-col>
+                </el-row>          
+            </div>
     </div>
     
 </template>
 
 <script>
+
+import axios from 'axios'
+import { baseApiurl } from '@/global'
+
 export default {
     name: 'Minhasvendas',
     data () {
         return {
             search: '',
             value: '',
+            value2: '',
+            value3: '',
             input: '',
-        tableData: [{
-            date: '2016-05-03',
-            name: 'Bert',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-          }, 
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'Paraná'
-          },
-          ],
-        options: [{
-            value: 'Option1',
-            label: 'Option1'
-            }, {
-            value: 'Option2',
-            label: 'Option2'
-            }, {
-            value: 'Option3',
-            label: 'Option3'
-            }, {
-            value: 'Option4',
-            label: 'Option4'
-            }, {
-            value: 'Option5',
-            label: 'Option5'
-            }],
+            orders: '',
+            vendas:[],
+            pedidos:[],
+            options: [],
+            tab1: true,
+            tab2: false,
+            options2: [
+                {
+                    value: '0',
+                    label: 'JANEIRO'
+                }, 
+                {
+                    value: '1',
+                    label: 'FEVEREIRO'
+                }, 
+                {
+                    value: '2',
+                    label: 'MARÇO'
+                }, 
+                {
+                    value: '3',
+                    label: 'ABRIL'
+                }, 
+                {
+                    value: '4',
+                    label: 'MAIO'
+                },
+                {
+                    value: '5',
+                    label: 'JUNHO'
+                },
+                {
+                    value: '6',
+                    label: 'JULHO'
+                },
+                {
+                    value: '7',
+                    label: 'AGOSTO'
+                },
+                {
+                    value: '8',
+                    label: 'SETEMBRO'
+                },
+                {
+                    value: '9',
+                    label: 'OUTUBRO'
+                },
+                {
+                    value: '10',
+                    label: 'NOVEMBRO'
+                },
+                {
+                    value: '11',
+                    label: 'DEZEMBRO'
+                }
+            ],
+            options3: [
+                {
+                    value: '2020',
+                    label: '2020'
+                }, 
+                {
+                    value: '2021',
+                    label: '2021'
+                }, 
+                {
+                    value: '2022',
+                    label: '2022'
+                }, 
+                {
+                    value: '2023',
+                    label: '2023'
+                }, 
+            ],
         }
+    },
+
+    watch: {
+      value() {
+        this.getOrderUsers()
+      },
+    },
+
+    methods: {
+
+    //     getFilter() {
+    //         if(!this.value && this.value2) {
+    //             return this.getProductsCategory()
+    //         }
+    //         if(!this.value2 && this.value) {
+    //             return this.getProductUser()
+    //         }
+    //         if(this.value && this.value2) {
+    //             return this.getProductUserCategory()
+    //         }
+    //         if(!this.value && !this.value2) {
+    //             return this.getProducts()
+    //         }
+    //   },
+
+        getOrderUsers() {
+            if(!this.value) {
+                this.getOrders();
+            }
+            else {
+                return axios.get(`${baseApiurl}/orders/user/${this.value}`).then(res => this.orders = res.data);
+            }
+        },
+
+        getOrders() {
+            return axios.get(`${baseApiurl}/orders`).then(res => this.orders = res.data);
+        },
+
+        getOrder(row) {
+            this.tab1 = false;
+            this.tab2 = true;
+            axios.get(`${baseApiurl}/orders/${row.id}`).then(res => this.pedidos = res.data[0]);
+            axios.get(`${baseApiurl}/orders/${row.id}`).then(res => this.vendas = res.data[1].produtos);
+        },
+
+        getClose() {
+            this.tab1 = true;
+            this.tab2 = false;
+        },
+
+        getUsers() {
+            return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
+        },
+
+
+    },
+
+    mounted() {
+        this.getOrders();
+        this.getUsers();
     }
     
 }
@@ -133,7 +285,7 @@ export default {
     font-size: 1.2rem;
 }
 
-.titulos {
+.titulosheader {
     font-size: 17px;
     color: black ;
     margin-right: 20px;
@@ -162,6 +314,144 @@ export default {
 .espaco {
     margin-right: 10px;
 }
+
+.b3 {
+    margin-left: 10px;
+    background-color: #82D4D1;
+    color: white;
+    height: 50px;
+    width: 180px;
+}
+
+.acao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ico2 {
+    margin-right: 8px;
+}
+
+.pedido {
+    padding: 20px;
+    margin-top: 25px;
+    box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.linhafechar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.fechar {
+    padding-left: 27px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    height: 35px;
+    width: 103px;
+    background-color: #F4CB68;
+    border-radius: 5px 5px 0px 0px;
+    color: white;
+}
+
+.ico3 {
+    margin-left: 8px;
+}
+
+.linhapedido {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px 0px 5px 5px;
+    background-color: #F4CB68;
+    color: white;
+}
+
+.idpedido {
+    display: flex;
+    justify-content: center;
+}
+
+.titulos {
+    display: flex;
+    color: white;
+}
+
+
+.l3 {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+
+    background-color: #F4CB68;
+}
+
+.l3c1 {
+    margin-left: 5px;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.l3c4 {
+    margin-right: 5px;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.conteudo {
+    display: flex;
+    margin-top: 5px;
+    color: gray;
+}
+
+.l4 {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.produtos {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.l5 {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #F4CB68 ;
+    border-radius: 5px;
+}
+
+.ico2 {
+    margin-right: 8px;
+}
+
+.vendas {
+    margin-top: 10px;
+}
+
+
+.total {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    border-radius: 3px;
+    color: white;
+    background-color: #F4CB68 ;
+    height: 40px;
+}
+
 
 
 </style>
