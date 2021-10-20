@@ -58,66 +58,64 @@
             </el-row>
         </div>
         <el-row class="lin2" v-if="tab1">
-            <div>
-                <el-table  :data="orders.filter(data => !search || data.cliente.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
-                    <el-table-column prop="cliente" label="CLIENTE" width="230">
-                    </el-table-column>
-                    <el-table-column prop="mes" label="MES">
-                    </el-table-column>
-                    <el-table-column prop="ano" label="ANO">
-                    </el-table-column>
-                    <el-table-column prop="total" label="TOTAL">
-                    </el-table-column>
-                    <el-table-column prop="status" label="STATUS" width="130">
-                    </el-table-column>
-                    <el-table-column label="AÇÕES" width="220">
-                            <template slot-scope="scope">
-                                <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
-                            </template>
-                    </el-table-column> 
-                </el-table>
-            </div>
+            <el-table  :data="orders.filter(data => !search || data.cliente.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
+                <el-table-column prop="cliente" label="CLIENTE" width="230">
+                </el-table-column>
+                <el-table-column prop="mes" label="MES">
+                </el-table-column>
+                <el-table-column prop="ano" label="ANO">
+                </el-table-column>
+                <el-table-column prop="total" label="TOTAL">
+                </el-table-column>
+                <el-table-column prop="status" label="STATUS" width="130">
+                </el-table-column>
+                <el-table-column label="AÇÕES" width="220">
+                        <template slot-scope="scope">
+                            <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+                        </template>
+                </el-table-column> 
+            </el-table>
         </el-row>
-         <div class="pedido" v-if="tab2" >
-                <div class="linhafechar">
-                    <el-button @click="getClose" class="fechar">FECHAR<i class="fas fa-window-close fa-fw ico3"></i> </el-button>
-                </div>
-                <div class="linhapedido">
-                    <el-col :span="24" class="idpedido"> ID PEDIDO - {{pedidos.id}} </el-col>
-                </div>
-                <el-row :gutter="10">
-                    <div class="titulos">
-                        <el-col class="l3 l3c1">CLIENTE</el-col>
-                        <el-col class="l3">VENDEDOR</el-col>
-                        <el-col class="l3 l3c4">STATUS</el-col>
-                    </div>
-                </el-row>
-                <el-row :gutter="10">
-                    <div class="conteudo">
-                        <el-col class="l4">{{pedidos.cliente}}</el-col>
-                        <el-col class="l4">{{pedidos.vendedor}}</el-col>
-                        <el-col class="l4">{{pedidos.status}}</el-col>
-                    </div>
-                </el-row>
-                <el-row >
-                    <div class="produtos">
-                        <el-col :span="24" class="l5"> <i class="fas fa-dollar-sign ico2"></i>PRODUTOS VENDIDOS </el-col>
-                    </div>
-                </el-row>
-                <el-row class="vendas">
-                    <el-table :data="vendas" border stripe empty-text="Sem resultados">
-                        <el-table-column prop="artista" label="ARTISTA"></el-table-column>
-                        <el-table-column prop="nome" label="PRODUTO" width="340"></el-table-column>
-                        <el-table-column prop="preco" label="PREÇO"></el-table-column>
-                        <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
-                    </el-table>
-                </el-row>
-                <el-row>
-                    <el-col :span="5" class="total">
-                        TOTAL = R$ {{pedidos.total}}
-                    </el-col>
-                </el-row>          
+        <div class="pedido" v-if="tab2" >
+            <div class="linhafechar">
+                <el-button @click="getClose" class="fechar">FECHAR<i class="fas fa-window-close fa-fw ico3"></i> </el-button>
             </div>
+            <div class="linhapedido">
+                <el-col :span="24" class="idpedido"> ID PEDIDO - {{pedidos.id}} </el-col>
+            </div>
+            <el-row :gutter="10">
+                <div class="titulos">
+                    <el-col class="l3 l3c1">CLIENTE</el-col>
+                    <el-col class="l3">VENDEDOR</el-col>
+                    <el-col class="l3 l3c4">STATUS</el-col>
+                </div>
+            </el-row>
+            <el-row :gutter="10">
+                <div class="conteudo">
+                    <el-col class="l4">{{pedidos.cliente}}</el-col>
+                    <el-col class="l4">{{pedidos.vendedor}}</el-col>
+                    <el-col class="l4">{{pedidos.status}}</el-col>
+                </div>
+            </el-row>
+            <el-row >
+                <div class="produtos">
+                    <el-col :span="24" class="l5"> <i class="fas fa-dollar-sign ico2"></i>PRODUTOS VENDIDOS </el-col>
+                </div>
+            </el-row>
+            <el-row class="vendas">
+                <el-table :data="vendas" border stripe empty-text="Sem resultados">
+                    <el-table-column prop="artista" label="ARTISTA"></el-table-column>
+                    <el-table-column prop="nome" label="PRODUTO" width="340"></el-table-column>
+                    <el-table-column prop="preco" label="PREÇO"></el-table-column>
+                    <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+                </el-table>
+            </el-row>
+            <el-row>
+                <el-col :span="5" class="total">
+                    TOTAL = R$ {{pedidos.total}}
+                </el-col>
+            </el-row>          
+        </div>
     </div>
     
 </template>
@@ -137,7 +135,7 @@ export default {
             value3: '',
             value4: '',
             input: '',
-            orders: '',
+            orders: [],
             vendas:[],
             pedidos:[],
             options: [],
@@ -318,6 +316,30 @@ export default {
             return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
         },
 
+        // getController() {
+        //     if(this.value && !this.value2 && !this.value3 && !this.value4) {
+        //         this.getOrderUsers();
+        //     }
+        //     if(this.value && this.value2 && this.value3 && this.value4) {
+        //         this.getOrderUsersDataStatus();
+        //     }
+        //     if(this.value && !this.value2 && !this.value3 && this.value4) {
+        //         this.getOrderUsersStatus();
+        //     }
+        //     if(this.value && !this.value2 && this.value3 && this.value4) {
+        //         this.getOrderUsersStatus();
+        //     }
+        //     if(this.value && this.value2 && !this.value3 && this.value4) {
+        //         this.getOrderUsersStatus();
+        //     }
+        //     if(this.value && !this.value2 && this.value3 && !this.value4) {
+        //         this.getOrderUsers();
+        //     }
+        //     if(this.value && this.value2 && !this.value3 && !this.value4) {
+        //         this.getOrderUsers();
+        //     }
+        // }
+
 
     },
 
@@ -336,13 +358,11 @@ export default {
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
-
   border-radius: 10px;
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
 .mv {
-
     margin-top: 50px;
     margin-right: 60px;
     margin-left: 60px;
