@@ -318,25 +318,31 @@ export default {
 
         // getController() {
         //     if(this.value && !this.value2 && !this.value3 && !this.value4) {
-        //         this.getOrderUsers();
+        //         this.getOrderUser();
         //     }
         //     if(this.value && this.value2 && this.value3 && this.value4) {
-        //         this.getOrderUsersDataStatus();
-        //     }
-        //     if(this.value && !this.value2 && !this.value3 && this.value4) {
-        //         this.getOrderUsersStatus();
+        //         this.getOrderUserDataStatus();
         //     }
         //     if(this.value && !this.value2 && this.value3 && this.value4) {
-        //         this.getOrderUsersStatus();
+        //         this.getOderUserStatus();
         //     }
         //     if(this.value && this.value2 && !this.value3 && this.value4) {
-        //         this.getOrderUsersStatus();
+        //         this.getOderUserStatus();
         //     }
         //     if(this.value && !this.value2 && this.value3 && !this.value4) {
-        //         this.getOrderUsers();
+        //         this.getOrderUser();
         //     }
         //     if(this.value && this.value2 && !this.value3 && !this.value4) {
-        //         this.getOrderUsers();
+        //         this.getOrderUser();
+        //     }
+        //     if(!this.value && !this.value2 && !this.value3 && !this.value4) {
+        //         this.getOrders();
+        //     }
+        //     if(!this.value && this.value2 && this.value3 && this.value4) {
+        //         this.getOrdersDataStatus();
+        //     }
+        //     if(!this.value && !this.value2 && this.value3 && this.value4) {
+        //         this.getOrdersStatus();
         //     }
         // }
 
