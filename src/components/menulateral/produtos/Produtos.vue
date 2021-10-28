@@ -1,147 +1,199 @@
 <template>
-
-    <div class="produtos">
-      <div class="form">
-        <el-row class="lin1" :gutter="20">
-            <el-col :span="8">
-                <div class="l1c1">
-                    <i class="fas fa-paint-brush fa-fw ico"></i>
-                    <span class="letras">ARTISTA</span>
-                    <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                        <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="l1c1">
-                    <i class="fas fa-paste fa-fw ico"></i>
-                    <span class="letras">CATEGORIA</span>
-                    <el-select v-model="value2" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                        <el-option v-for="item in options2" :key="item.id" :label="item.nome" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </div>
-            </el-col>
-            <el-col :span="8">
-                <div class="l1c1">
-                    <i class="fas fa-box-open fa-fw ico"></i>
-                    <span class="letras2">PRODUTOS</span>
-                    <el-input placeholder="Produto" v-model="search" size="large">
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                </div>
-            </el-col>
-        </el-row>
-      </div>
-     <el-row class="tabela">
-        <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column prop="nome" label="NOME">
-            </el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO">
-            </el-table-column>
-            <el-table-column prop="preco" label="PREÇO">
-            </el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE">
-            </el-table-column>
-          </el-table>
-        </div>
+  <div class="produtos">
+    <div class="form">
+      <el-row class="lin1" :gutter="20">
+        <el-col :span="13">
+          <div class="l1c1">
+            <i class="fas fa-paint-brush fa-fw ico"></i>
+            <span class="letras">ARTISTA</span>
+            <el-select
+              v-model="value"
+              filterable
+              placeholder="Selecione"
+              clearable
+              no-match-text="Não encontrado"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.nome"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+            <i class="fas fa-paste fa-fw ico ico2"></i>
+            <span class="letras">CATEGORIA</span>
+            <el-select
+              v-model="value2"
+              filterable
+              placeholder="Selecione"
+              clearable
+              no-match-text="Não encontrado"
+            >
+              <el-option
+                v-for="item in options2"
+                :key="item.id"
+                :label="item.nome"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </el-col>
+        <el-col :span="11">
+          <div class="l1c2">
+            <i class="fas fa-box-open fa-fw ico"></i>
+            <span class="letras2">PRODUTOS</span>
+            <el-input placeholder="Nome do produto" v-model="search" size="large">
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+            <el-button @click="getTodos" class="b2">TODOS</el-button>
+          </div>
+        </el-col>
       </el-row>
     </div>
-    
+    <el-row class="tabela">
+      <div>
+        <el-table
+          :data="
+            products.filter(
+              (data) =>
+                !search ||
+                data.nome.toLowerCase().includes(search.toLowerCase()) ||
+                data.descricao.toLowerCase().includes(search.toLowerCase())
+            )
+          "
+          border
+          stripe
+          empty-text="Sem resultados"
+        >
+          <el-table-column width="95">
+              <template slot-scope="scope">
+                <v-avatar size="70" rounded>
+                  <v-img :src= "getImagem(scope.row)"/>
+                </v-avatar>
+              </template>
+          </el-table-column>
+          <el-table-column prop="nome" label="NOME"> </el-table-column>
+          <el-table-column prop="descricao" label="DESCRIÇÃO">
+          </el-table-column>
+          <el-table-column prop="preco" label="PREÇO"> </el-table-column>
+          <el-table-column prop="quantidade" label="QUANTIDADE">
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-row>
+  </div>
 </template>
 
 <script>
-
-import axios from 'axios'
-import { baseApiurl } from '@/global'
+import axios from "axios";
+import { baseApiurl } from "@/global";
 
 export default {
+  name: "produtos",
+  data() {
+    return {
+      products: [],
+      options: [],
+      options2: [],
+      search: "",
+      value: "",
+      value2: "",
+      input: "",
+    };
+  },
 
-    name: 'produtos',
-    data () {
-      return {
-        products: [],
-        options: [],
-        options2: [],
-        search: '',
-        value: '',
-        value2:'',
-        input: '',
-        
+  watch: {
+    value() {
+      this.getFilter();
+    },
+    value2() {
+      this.getFilter();
+    },
+  },
+
+  methods: {
+    getFilter() {
+      if (!this.value && this.value2) {
+        return this.getProductsCategory();
+      }
+      if (this.value && !this.value2) {
+        return this.getProductUser();
+      }
+      if (this.value && this.value2) {
+        return this.getProductUserCategory();
+      }
+      if (!this.value && !this.value2) {
+        return this.getProducts();
       }
     },
 
-    watch: {
-      value() {
-        this.getFilter()
-      },
-      value2() {
-        this.getFilter()
-      }
+    getProductUserCategory() {
+      return axios
+        .get(`${baseApiurl}/products/${this.value}/${this.value2}`)
+        .then((res) => (this.products = res.data));
     },
 
-    methods: {
-
-      getFilter() {
-        if(!this.value && this.value2) {
-          return this.getProductsCategory()
-        }
-        if(!this.value2 && this.value) {
-          return this.getProductUser()
-        }
-        if(this.value && this.value2) {
-          return this.getProductUserCategory()
-        }
-        if(!this.value && !this.value2) {
-          return this.getProducts()
-        }
-      },
-
-      getProductUserCategory() {
-        return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
-      },
-
-      getProductsCategory() {
-        return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
-      },
-
-      getProductUser() {
-        return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data.product);
-      },
-
-      getProducts() {
-        return axios.get(`${baseApiurl}/products`).then(res => this.products = res.data);
-      },
-
-      getUsers() {
-        return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
-      },
-
-      getCategories() {
-        return axios.get(`${baseApiurl}/categories`).then(res => this.options2 = res.data);
-      },
-
+    getProductsCategory() {
+      return axios
+        .get(`${baseApiurl}/categoriesproducts/${this.value2}`)
+        .then((res) => (this.products = res.data.product));
     },
 
-    mounted() {
+    getProductUser() {
+      return axios
+        .get(`${baseApiurl}/products/${this.value}`)
+        .then((res) => (this.products = res.data.product));
+    },
+
+    getProducts() {
+      return axios
+        .get(`${baseApiurl}/products`)
+        .then((res) => (this.products = res.data));
+    },
+
+    getUsers() {
+      return axios
+        .get(`${baseApiurl}/users`)
+        .then((res) => (this.options = res.data));
+    },
+
+    getCategories() {
+      return axios
+        .get(`${baseApiurl}/categories`)
+        .then((res) => (this.options2 = res.data));
+    },
+
+    getTodos() {
+      this.value = '';
+      this.value2 = '';
+
       this.getProducts();
-      this.getUsers();
-      this.getCategories();
-    }
+    },
 
-}
-    
+    getImagem(row) {
+      if(!row.imagem) {
+        return `http://localhost:3333/files/default.jpg`
+      }
+      return `http://localhost:3333/files/${row.imagem}`
+    }, 
+  },
+
+  mounted() {
+    this.getProducts();
+    this.getUsers();
+    this.getCategories();
+  },
+};
 </script>
 
 <style scoped>
-
 .produtos {
-    margin-top: 50px;
-    margin-right: 60px;
-    margin-left: 60px;
-    margin-bottom: 60px;
+  margin-top: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  margin-bottom: 60px;
 }
 
 .form {
@@ -155,10 +207,15 @@ export default {
 }
 
 .lin1 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .l1c1 {
+  display: flex;
+  align-items: center;
+}
+
+.l1c2 {
   display: flex;
   align-items: center;
 }
@@ -169,20 +226,31 @@ export default {
   font-size: 1.2rem;
 }
 
+.ico2 {
+  margin-left: 15px;
+}
+
 .letras {
   margin-right: 15px;
   font-size: 17px;
-  color: black ;
+  color: black;
 }
 
 .letras2 {
-  margin-right: 20px;
+  margin-right: 15px;
   font-size: 17px;
-  color: black ;
+  color: black;
 }
 
 .tabela {
   margin-top: 30px;
 }
 
+.b2 {
+  margin-left: 10px;
+  background-color: #69f690;
+  color: white;
+  height: 40px;
+  width: 100px;
+}
 </style>

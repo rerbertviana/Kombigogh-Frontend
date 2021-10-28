@@ -50,14 +50,17 @@
       <el-row class="tabela">
         <div>
           <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column prop="nome" label="NOME">
+            <el-table-column label="PRODUTO" width="110">
+              <template slot-scope="scope">
+                <v-avatar size="70" rounded>
+                  <v-img :src= "getImagem(scope.row)"/>
+                </v-avatar>
+              </template>
             </el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO">
-            </el-table-column>
-            <el-table-column prop="preco" label="PREÇO">
-            </el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE">
-            </el-table-column>
+            <el-table-column prop="nome" label="NOME"></el-table-column>
+            <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+            <el-table-column prop="preco" label="PREÇO"></el-table-column>
+            <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
           </el-table>
         </div>
       </el-row>
@@ -141,8 +144,12 @@ export default {
         return axios.get(`${baseApiurl}/users`).then(res => this.options2 = res.data);
       },
 
-    
-
+      getImagem(row) {
+        if(!row.imagem) {
+          return `http://localhost:3333/files/default.jpg`
+        }
+        return `http://localhost:3333/files/${row.imagem}`
+      }    
       
     },
     mounted() {

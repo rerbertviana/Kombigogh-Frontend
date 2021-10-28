@@ -4,8 +4,8 @@
             <el-row class="lin1" :gutter="20" >
                 <el-col :span="10">
                     <div class="l1c1">
-                        <i class="fas fa-paint-brush fa-fw ico"></i>
-                        <span class="titulosheader espacoartista"> ARTISTA </span>
+                        <i class="fas fa-comment-dollar fa-fw ico"></i>
+                        <span class="titulosheader espacoartista"> VENDEDOR </span>
                         <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                             <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
                             </el-option>
@@ -15,7 +15,7 @@
                 <el-col :span="14">
                     <div class="l1c2">
                         <i class="far fa-calendar-alt fa-fw icodata"></i>
-                        <span class="titulosheader dat"> DATA </span>
+                        <span class="titulosheader dat"> PERÍODO </span>
                         <div class="erro" v-if="visible">
                             <span class="asterisco">*</span>
                         </div>
@@ -30,8 +30,6 @@
                             <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
-                        <!-- <el-button @click="getFilter" class="b1">FILTRAR</el-button> -->
-                        <!-- <el-button @click="getTodos" class="b2">TODOS</el-button> -->
                     </div>
                 </el-col>
             </el-row>
@@ -334,19 +332,10 @@ export default {
             if(this.value && !this.value2 && !this.value3 && !this.value4) {
                 this.getOrdersUsers();
             }
-            if(this.value && !this.value2 && this.value3 && this.value4) {
-                this.getOrdersUsersStatus();
-            }
-            if(this.value && this.value2 && !this.value3 && this.value4) {
-                this.getOrdersUsersStatus();
-            }
             if(this.value && this.value2 && this.value3 && !this.value4) {
                 this.getOrdersUsersData();
             }
             if(this.value && !this.value2 && this.value3 && !this.value4) {
-                this.getOrdersUsers();
-            }
-            if(this.value && this.value2 && !this.value3 && !this.value4) {
                 this.getOrdersUsers();
             }
             if(!this.value && this.value2 && this.value3 && this.value4) {
@@ -355,30 +344,16 @@ export default {
             if(!this.value && !this.value2 && !this.value3 && !this.value4) {
                 this.getOrders();
             }
-            if(!this.value && !this.value2 && this.value3 && this.value4) {
-                this.getOrdersStatus();
-            }
-            if(!this.value && this.value2 && !this.value3 && this.value4) {
-                this.getOrdersStatus();
-            }
             if(!this.value && !this.value2 && !this.value3 && this.value4) {
                 this.getOrdersStatus();
             }
             if(!this.value && this.value2 && this.value3 && !this.value4) {
                 this.getOrdersData();
             }
-            if(!this.value && !this.value2 && this.value3 && !this.value4) {
-                this.getOrders();
-            }
-            if(!this.value && this.value2 && !this.value3 && !this.value4) {
-                this.getOrders();
-            }
             if(this.value && !this.value2 && !this.value3 && this.value4) {
                 this.getOrdersUsersStatus();
             } 
         }
-
-
     },
 
     mounted() {
@@ -419,7 +394,7 @@ export default {
 }
 
 .espacoartista {
-    margin-right: 53px;
+    margin-right: 23px;
 }
 
 .espacostatus {
@@ -620,17 +595,17 @@ export default {
 }
 
 .dat {
-    margin-right: 40px;
+    margin-right: 16px;
 }
 
 .icodata {
     color: black;
     font-size: 1.2rem;
-    margin-right: 22px;
+    margin-right: 19px;
 }
 
 .ped {
-    margin-right: 15px;
+    margin-right: 23px;
 }
 
 .btodos {
