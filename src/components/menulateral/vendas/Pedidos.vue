@@ -30,8 +30,8 @@
                             <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
-                        <el-button @click="getFilter" class="b1">FILTRAR</el-button>
-                        <el-button @click="getTodos" class="b2">TODOS</el-button>
+                        <!-- <el-button @click="getFilter" class="b1">FILTRAR</el-button> -->
+                        <!-- <el-button @click="getTodos" class="b2">TODOS</el-button> -->
                     </div>
                 </el-col>
             </el-row>
@@ -53,6 +53,7 @@
                         <el-input placeholder="Nome do cliente" v-model="search" size="large">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                         </el-input>
+                        <el-button @click="getTodos" class="b2">TODOS</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -227,19 +228,19 @@ export default {
     watch: {
 
         value() {
-            this.getOrderUsers();
+            this.getController();
         },
 
         value2() {
-            this.visible = false;
+            this.getFilter();
         },
 
         value3() {
-            this.visible2 = false;
+            this.getFilter();
         },
 
         value4() {
-            this.getStatus();
+            this.getController();
         }
      
     },
@@ -258,28 +259,26 @@ export default {
             if(this.value2 && this.value3) {
                 this.visible = false;
                 this.visible2 = false;
-                return this.getOrdersData()
+                return this.getController();
             }
             if(!this.value2 && !this.value3) {
-                this.visible = true;
-                this.visible2 = true;
+                this.visible = false;
+                this.visible2 = false;
+                return this.getController();
             }
         },
 
-        getStatus(){
-            if(!this.value4){
-                this.getOrders();
-            }
-            else {
-                return axios.get(`${baseApiurl}/orders/status/${this.value4}`).then(res => this.orders = res.data);
-            }
+        getOrdersStatus(){
+            return axios.get(`${baseApiurl}/orders/status/${this.value4}`).then(res => this.orders = res.data);
         },
 
         getTodos() {
             this.visible = false;
             this.visible2 = false;
+            this.value = '';
             this.value2 = '';
             this.value3 = '';
+            this.value4 = '';
             this.getOrders();
         },
 
@@ -287,13 +286,8 @@ export default {
             return axios.get(`${baseApiurl}/orders/${this.value2}/${this.value3}`).then(res => this.orders = res.data);
         },
 
-        getOrderUsers() {
-            if(!this.value) {
-                this.getOrders();
-            }
-            else {
-                return axios.get(`${baseApiurl}/orders/user/${this.value}`).then(res => this.orders = res.data);
-            }
+        getOrdersUsers() {
+            return axios.get(`${baseApiurl}/orders/user/${this.value}`).then(res => this.orders = res.data);
         },
 
         getOrders() {
@@ -316,35 +310,73 @@ export default {
             return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
         },
 
-        // getController() {
-        //     if(this.value && !this.value2 && !this.value3 && !this.value4) {
-        //         this.getOrderUser();
-        //     }
-        //     if(this.value && this.value2 && this.value3 && this.value4) {
-        //         this.getOrderUserDataStatus();
-        //     }
-        //     if(this.value && !this.value2 && this.value3 && this.value4) {
-        //         this.getOderUserStatus();
-        //     }
-        //     if(this.value && this.value2 && !this.value3 && this.value4) {
-        //         this.getOderUserStatus();
-        //     }
-        //     if(this.value && !this.value2 && this.value3 && !this.value4) {
-        //         this.getOrderUser();
-        //     }
-        //     if(this.value && this.value2 && !this.value3 && !this.value4) {
-        //         this.getOrderUser();
-        //     }
-        //     if(!this.value && !this.value2 && !this.value3 && !this.value4) {
-        //         this.getOrders();
-        //     }
-        //     if(!this.value && this.value2 && this.value3 && this.value4) {
-        //         this.getOrdersDataStatus();
-        //     }
-        //     if(!this.value && !this.value2 && this.value3 && this.value4) {
-        //         this.getOrdersStatus();
-        //     }
-        // }
+        getOrdersUsersStatus() {
+            return axios.get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value4}`).then(res => this.orders = res.data);
+        },
+
+        getOrdersUsersData() {
+            return axios.get(`${baseApiurl}/orders/user/${this.value}/${this.value2}/${this.value3}`).then(res => this.orders = res.data);
+        },
+
+        getOrdersUsersDataStatus(){
+            return axios.get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value2}/${this.value3}/${this.value4}`).then(res => this.orders = res.data);
+        },
+
+        getOrdersDataStatus(){
+            return axios.get(`${baseApiurl}/ordersdatastatus/${this.value2}/${this.value3}/${this.value4}`).then(res => this.orders = res.data);
+        },
+
+        getController() {
+
+            if(this.value && this.value2 && this.value3 && this.value4) {
+                this.getOrdersUsersDataStatus();
+            }
+            if(this.value && !this.value2 && !this.value3 && !this.value4) {
+                this.getOrdersUsers();
+            }
+            if(this.value && !this.value2 && this.value3 && this.value4) {
+                this.getOrdersUsersStatus();
+            }
+            if(this.value && this.value2 && !this.value3 && this.value4) {
+                this.getOrdersUsersStatus();
+            }
+            if(this.value && this.value2 && this.value3 && !this.value4) {
+                this.getOrdersUsersData();
+            }
+            if(this.value && !this.value2 && this.value3 && !this.value4) {
+                this.getOrdersUsers();
+            }
+            if(this.value && this.value2 && !this.value3 && !this.value4) {
+                this.getOrdersUsers();
+            }
+            if(!this.value && this.value2 && this.value3 && this.value4) {
+                this.getOrdersDataStatus();
+            }
+            if(!this.value && !this.value2 && !this.value3 && !this.value4) {
+                this.getOrders();
+            }
+            if(!this.value && !this.value2 && this.value3 && this.value4) {
+                this.getOrdersStatus();
+            }
+            if(!this.value && this.value2 && !this.value3 && this.value4) {
+                this.getOrdersStatus();
+            }
+            if(!this.value && !this.value2 && !this.value3 && this.value4) {
+                this.getOrdersStatus();
+            }
+            if(!this.value && this.value2 && this.value3 && !this.value4) {
+                this.getOrdersData();
+            }
+            if(!this.value && !this.value2 && this.value3 && !this.value4) {
+                this.getOrders();
+            }
+            if(!this.value && this.value2 && !this.value3 && !this.value4) {
+                this.getOrders();
+            }
+            if(this.value && !this.value2 && !this.value3 && this.value4) {
+                this.getOrdersUsersStatus();
+            } 
+        }
 
 
     },
@@ -588,7 +620,7 @@ export default {
 }
 
 .dat {
-    margin-right: 45px;
+    margin-right: 40px;
 }
 
 .icodata {
@@ -599,5 +631,9 @@ export default {
 
 .ped {
     margin-right: 15px;
+}
+
+.btodos {
+    background-color: red;
 }
 </style>
