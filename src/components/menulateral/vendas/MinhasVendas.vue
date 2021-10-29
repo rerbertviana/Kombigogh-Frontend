@@ -63,19 +63,7 @@
     </div>
     <el-row class="lin2" v-if="tab1">
       <div>
-        <el-table
-          :data="
-            orders.filter(
-              (data) =>
-                !search ||
-                data.nome.toLowerCase().includes(search.toLowerCase())
-            )
-          "
-          stripe
-          border
-          style="width: 100%"
-          empty-text="Sem resultados"
-        >
+        <el-table :data="orders.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
          <el-table-column width="95">
             <template slot-scope="scope">
               <v-avatar size="70" rounded>
@@ -88,7 +76,7 @@
           </el-table-column>
           <el-table-column prop="mes" label="MÊS"> </el-table-column>
           <el-table-column prop="ano" label="ANO"> </el-table-column>
-          <el-table-column label="AÇÕES">
+          <el-table-column label="AÇÕES" width="220">
             <template slot-scope="scope">
               <el-button @click="getOrder(scope.row)" class="b3 acao">
                 <i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>

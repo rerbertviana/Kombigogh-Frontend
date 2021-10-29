@@ -31,7 +31,7 @@
 
 <script>
 import Produtos from "./Produtos.vue";
-import Cadastrar from "./Cadastrar.vue";
+import Cadastrar from "./Meusprodutos.vue";
 
 
 export default {

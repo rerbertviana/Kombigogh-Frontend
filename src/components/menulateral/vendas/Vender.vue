@@ -50,7 +50,7 @@
       <el-row class="tabela">
         <div>
           <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column label="PRODUTO" width="110">
+            <el-table-column width="95">
               <template slot-scope="scope">
                 <v-avatar size="70" rounded>
                   <v-img :src= "getImagem(scope.row)"/>
@@ -137,7 +137,6 @@ export default {
 
       getCategories() {
         return axios.get(`${baseApiurl}/categories`).then(res => this.options = res.data);
-        // console.log(this.value);
       },
 
       getUsers() {
@@ -178,7 +177,6 @@ export default {
   margin-right: 60px;
   margin-left: 60px;
   margin-bottom: 60px;
-    /* background-color: rgba(0, 0, 0, 0.25); */
 }
 
 .lin1 {
