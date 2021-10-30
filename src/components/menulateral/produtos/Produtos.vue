@@ -154,6 +154,7 @@ export default {
     getTodos() {
       this.value = '';
       this.value2 = '';
+      this.search = '';
 
       this.getProducts();
     },
@@ -176,7 +177,7 @@ export default {
 
 <style scoped>
 .produtos {
-  margin-top: 50px;
+  margin-top: 40px;
   margin-right: 60px;
   margin-left: 60px;
   margin-bottom: 60px;
@@ -193,7 +194,7 @@ export default {
 }
 
 .lin1 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .l1c1 {
@@ -238,5 +239,6 @@ export default {
   color: white;
   height: 40px;
   width: 100px;
+  border: none;
 }
 </style>

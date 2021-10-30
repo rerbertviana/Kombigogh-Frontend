@@ -255,6 +255,7 @@ export default {
         (this.value2 = ""),
         (this.visible = false);
       this.visible2 = false;
+      this.search = '';
     },
 
     getFilter() {

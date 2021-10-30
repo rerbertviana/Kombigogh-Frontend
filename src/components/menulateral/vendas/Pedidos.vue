@@ -69,9 +69,9 @@
                 <el-table-column prop="status" label="STATUS" width="130">
                 </el-table-column>
                 <el-table-column label="AÇÕES" width="220">
-                        <template slot-scope="scope">
-                            <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
-                        </template>
+                    <template slot-scope="scope">
+                        <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+                    </template>
                 </el-table-column> 
             </el-table>
         </el-row>
@@ -277,6 +277,7 @@ export default {
             this.value2 = '';
             this.value3 = '';
             this.value4 = '';
+            this.search = '';
             this.getOrders();
         },
 
