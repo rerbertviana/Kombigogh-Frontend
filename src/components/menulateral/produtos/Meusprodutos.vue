@@ -97,15 +97,16 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-upload  class="upload-demo espaco" :action="sfoto" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
+              <el-upload  class="upload-demo espaco" action="https://jsonplaceholder.typicode.com/posts/" :auto-upload="false" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
                 <el-button class="bavatar"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">upload to server</el-button>
               </el-upload>
             </div>
           </el-col>
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button  @click="salvaredit" class="botao b2">SALVAR</el-button>
+            <el-button  @click="salvarEditar" class="botao b2">SALVAR</el-button>
             <el-button  @click="getPesquisar" class="botao b2">CANCELAR</el-button>
           </div>
         </el-row>
@@ -150,9 +151,9 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-upload  class="upload-demo espaco" :action="sfoto" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
+              <!-- <el-upload  class="upload-demo espaco" :action="sfoto" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
                 <el-button class="bavatar b3"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
-              </el-upload>
+              </el-upload> -->
             </div>
           </el-col>
         </el-row>
@@ -162,6 +163,7 @@
             <el-button  @click="getPesquisar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
+       
       </div>
     </div>
     <el-row class="tabela">
@@ -249,6 +251,7 @@ export default {
 
     getEditar(row) {
       this.product = {
+        id: row.id,
         nome: row.nome,
         preco: row.preco,
         quantidade: row.quantidade,
@@ -259,6 +262,7 @@ export default {
       this.pesquisar = false;
       this.cadastrar = false;
       this.excluir = false;
+
     },
 
     getCategories() {
@@ -292,24 +296,103 @@ export default {
       this.product = {};
       this.value = '';
     },
+    
+    naonumero() {
+      this.$message({
+        showClose: true,
+        message:'Oops, "preço" precisa ser um valor numérico.  ',
+        type: 'error',
+      });
+    },
+
+    naointeiro() {
+      this.$message({
+        showClose: true,
+        message:'Oops, "QTD" precisa ser um valor inteiro.  ',
+        type: 'error',
+      });
+    },
+
+    campovazio() {
+      this.$message({
+        showClose: true,
+        message:'Oops, existem campos vazios.  ',
+        type: 'error',
+      });
+    },
+    
+    nomerepetido() {
+      this.$message({
+        showClose: true,
+        message:'Oops, já existe produto com esse nome.  ',
+        type: 'error',
+      });
+    },
+
+    sucesso() {
+      this.$message({
+        showClose: true,
+        message:'Salvo com sucesso!  ',
+        type: 'success',
+      });
+    },
 
     verificar() {
       //backend na hora de vender verificar se o produto está em off ou não
-      
+      if(!this.product.nome || !this.product.preco || !this.product.quantidade || !this.product.descricao || !this.value) {
+        this.campovazio();
+        return false;
+      }
+      if(!Number.isInteger(this.product.quantidade)) {
+        this.naointeiro();
+        return false;
+      }
+      if(Number.isNaN(this.product.preco)){
+        this.naonumero();
+        return false;
+      }
+      return true;
     },
 
     salvar() {
-      this.verificar();
-      axios.post(`${baseApiurl}/products/${this.value}`, this.product)
-      .then(() => {
-        this.getMyproducts()
-        this.limpar()
-        this.vercadastro()
-      })
+      if (this.verificar()) {
+        axios.post(`${baseApiurl}/products/${this.value}`, this.product)
+        .then(() => {
+          this.getMyproducts()
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+      }
     },
 
-    sfoto() {
-      return ``
+    salvarEditar() {
+       this.product2 = {
+        nome: this.product.nome,
+        descricao: this.product.descricao,
+        preco: this.product.preco,
+        quantidade: this.product.quantidade
+      }
+      if (this.verificar()) {
+        axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.product2)
+        .then(() => {
+          this.getMyproducts()
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+        .catch(() => {
+          this.nomerepetido();
+        })
+      }
+    },
+
+    submitUpload() {
+      axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`)
+    },
+
+    addfoto(){
+      return axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`)
     }
   },
 
