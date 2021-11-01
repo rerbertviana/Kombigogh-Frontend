@@ -293,7 +293,13 @@ export default {
       this.value = '';
     },
 
+    verificar() {
+      //backend na hora de vender verificar se o produto está em off ou não
+      
+    },
+
     salvar() {
+      this.verificar();
       axios.post(`${baseApiurl}/products/${this.value}`, this.product)
       .then(() => {
         this.getMyproducts()
