@@ -97,10 +97,8 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-upload  class="upload-demo espaco" action="https://jsonplaceholder.typicode.com/posts/" :auto-upload="false" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
-                <el-button class="bavatar"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">upload to server</el-button>
-              </el-upload>
+              <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
+              <el-button @click="$refs.fileInput.click()">Upload</el-button>
             </div>
           </el-col>
         </el-row>
@@ -214,7 +212,8 @@ export default {
       cadastrar: false,
       pesquisar: true,
       editar: false,
-      excluir: false
+      excluir: false,
+      selectedFile: null,
 
     };
   },
@@ -284,13 +283,13 @@ export default {
       return `http://localhost:3333/files/${row.imagem}`
     }, 
 
-    handleExceed(files) {
-        this.$message.warning(`O limite é de um arquivo, você selecionou ${files.length}`);
-    },
+    // handleExceed(files) {
+    //     this.$message.warning(`O limite é de um arquivo, você selecionou ${files.length}`);
+    // },
 
-    handlePreview(file) {
-        console.log(file);
-    },
+    // handlePreview(file) {
+    //     console.log(file);
+    // },
 
     limpar() {
       this.product = {};
@@ -379,6 +378,7 @@ export default {
           this.getMyproducts()
           this.limpar()
           this.getPesquisar()
+          this.onUpload()
           this.sucesso()
         })
         .catch(() => {
@@ -388,11 +388,22 @@ export default {
     },
 
     submitUpload() {
-      axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`)
+      this.$refs.upload.submit();
     },
 
-    addfoto(){
-      return axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`)
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
+    },
+
+    onUpload() {
+      const fd = new FormData();
+      fd.append('imagem', this.selectedFile)
+      axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`, 
+      fd, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     }
   },
 
