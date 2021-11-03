@@ -51,10 +51,16 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-button @click="salvar" class="botao">SALVAR</el-button>
-              <el-button  @click="getPesquisar" class="botao">CANCELAR</el-button>
+              <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
+              <el-button class="bavatar b4" @click="$refs.fileInput.click()"><i class="fas fa-image fa-fw"></i> FOTO</el-button>
             </div>
           </el-col>
+        </el-row>
+        <el-row >
+          <div class="botoesedit">
+            <el-button  @click="salvar" class="botao b4">SALVAR</el-button>
+            <el-button  @click="getPesquisar" class="botao b4">CANCELAR</el-button>
+          </div>
         </el-row>
       </div>
       <div v-if="editar" >
@@ -155,7 +161,7 @@
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button  @click="salvaredit" class="botao b3">EXCLUIR</el-button>
+            <el-button  class="botao b3">EXCLUIR</el-button>
             <el-button  @click="getPesquisar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
@@ -326,12 +332,13 @@ export default {
       });
     },
 
-    sucesso() {
+    async sucesso() {
       this.$message({
         showClose: true,
         message:'Salvo com sucesso!  ',
         type: 'success',
       });
+      await this.getMyproducts()
     },
 
     verificar() {
@@ -354,11 +361,15 @@ export default {
     salvar() {
       if (this.verificar()) {
         axios.post(`${baseApiurl}/products/${this.value}`, this.product)
-        .then(() => {
-          this.getMyproducts()
+        .then((res) => {
+          this.product = res.data
+          this.onUpload()
           this.limpar()
           this.getPesquisar()
           this.sucesso()
+        })
+        .catch(() => {
+          this.nomerepetido();
         })
       }
     },
@@ -376,7 +387,6 @@ export default {
         .then(() => {
           this.limpar()
           this.getPesquisar()
-          this.getMyproducts()
           this.sucesso()
         })
         .catch(() => {
@@ -393,7 +403,7 @@ export default {
       this.selectedFile = event.target.files[0]
     },
 
-    async onUpload() {
+    onUpload() {
       if (this.selectedFile) {
         const fd = new FormData();
         fd.append('imagem', this.selectedFile)
@@ -509,6 +519,10 @@ export default {
 
 .b3 {
   background-color: #FFA882;
+}
+
+.b4 {
+  background-color: #82D4D1;
 }
 
 .cat {
