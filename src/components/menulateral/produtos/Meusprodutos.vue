@@ -98,7 +98,7 @@
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
               <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
-              <el-button @click="$refs.fileInput.click()">Upload</el-button>
+              <el-button class="bavatar b2" @click="$refs.fileInput.click()"><i class="fas fa-image fa-fw"></i> FOTO</el-button>
             </div>
           </el-col>
         </el-row>
@@ -149,9 +149,7 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <!-- <el-upload  class="upload-demo espaco" :action="sfoto" :limit="1"  :on-exceed="handleExceed" :file-list="fileList"  :on-preview="handlePreview">
-                <el-button class="bavatar b3"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
-              </el-upload> -->
+              <el-button class="bavatar b3"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
             </div>
           </el-col>
         </el-row>
@@ -373,12 +371,12 @@ export default {
         quantidade: this.product.quantidade
       }
       if (this.verificar()) {
+        this.onUpload();
         axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.product2)
         .then(() => {
-          this.getMyproducts()
           this.limpar()
           this.getPesquisar()
-          this.onUpload()
+          this.getMyproducts()
           this.sucesso()
         })
         .catch(() => {
@@ -395,15 +393,18 @@ export default {
       this.selectedFile = event.target.files[0]
     },
 
-    onUpload() {
-      const fd = new FormData();
-      fd.append('imagem', this.selectedFile)
-      axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`, 
-      fd, {
-        headers: {
+    async onUpload() {
+      if (this.selectedFile) {
+        const fd = new FormData();
+        fd.append('imagem', this.selectedFile)
+        axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`, 
+        fd, {
+          headers: {
           'Content-Type': 'multipart/form-data'
-        }
-      })
+          }
+        })
+      }
+     
     }
   },
 
@@ -480,6 +481,7 @@ export default {
 }
 
 .bavatar {
+  margin-left: 10px;
   background-color: #F4CB68;
   color: white;
   border: none;
