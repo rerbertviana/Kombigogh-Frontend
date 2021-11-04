@@ -3,7 +3,7 @@
     <div class="vendaspages">
         <v-tabs slider-color="#F4CB68" slider-size="3" v-model="tab" class="radiusitems" height="80">
             <div class="menutable">
-                <v-tab> <i class="fas fa-dollar-sign fa-fw espaco2"></i> <span class="letras"> Relatórios </span> </v-tab>
+                <v-tab> <i class="fas fa-file fa-fw espaco2"></i> <span class="letras"> Relatórios </span> </v-tab>
             </div>
         </v-tabs>
         <v-tabs-items class="radiusitems" v-model="tab"> 

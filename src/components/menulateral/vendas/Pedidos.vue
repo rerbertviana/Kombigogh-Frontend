@@ -3,7 +3,7 @@
         <div class="form">
             <el-row class="lin1" :gutter="20" >
                 <el-col :span="10">
-                    <div class="l1c1">
+                    <div class="alinhar">
                         <i class="fas fa-comment-dollar fa-fw ico"></i>
                         <span class="titulosheader espacoartista"> VENDEDOR </span>
                         <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
@@ -13,7 +13,7 @@
                     </div>
                 </el-col>
                 <el-col :span="14">
-                    <div class="l1c2">
+                    <div class="alinhar">
                         <i class="far fa-calendar-alt fa-fw icodata"></i>
                         <span class="titulosheader dat"> PERÍODO </span>
                         <div class="erro" v-if="visible">
@@ -35,7 +35,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="10">
-                    <div class="l2c1">
+                    <div class="alinhar">
                         <i class="fas fa-check fa-fw ico"></i>
                         <span class="titulosheader espacostatus"> STATUS </span>
                         <el-select v-model="value4" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
@@ -45,7 +45,7 @@
                     </div>
                 </el-col>
                 <el-col :span="14">
-                    <div class="l2c2">
+                    <div class="alinhar">
                         <i class="fas fa-box-open fa-fw ico"></i>
                         <span class="ped"> PEDIDOS </span>
                         <el-input placeholder="Nome do cliente" v-model="search" size="large">
@@ -408,22 +408,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.l1c1 {
-    display: flex;
-    align-items: center;
-}
-
-.l2c1 {
-    display: flex;
-    align-items: center;
-}
-
-.l1c2 {
-    display: flex;
-    align-items: center;
-}
-
-.l2c2 {
+.alinhar {
     display: flex;
     align-items: center;
 }
