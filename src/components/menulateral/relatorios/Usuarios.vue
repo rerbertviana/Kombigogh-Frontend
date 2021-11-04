@@ -3,11 +3,9 @@
     <div class="form">
         <el-row class="titulo cor">USUARIOS</el-row>
         <el-row class="alinhar">
-            <el-col :span="20" class="l1c1">
+            <el-col :span="24" class="l1c1">
                 <i class="fas fa-users fa-fw ico"></i>
                 <span class="letras">LISTAR TODOS OS USUÁRIOS</span>
-                </el-col>
-            <el-col :span="4" class="l1c2">
                 <div class="blink cor"><a :href="getPDF()" target="_blank"> GERAR </a></div>
             </el-col>
         </el-row>
@@ -157,16 +155,9 @@ export default {
 }
 
 .l1c1 {
-    margin-left: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.l1c2 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .titulo {
