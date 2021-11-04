@@ -31,47 +31,6 @@
   </div>
   <div class="mv2">
     <div class="form form2">
-      <el-row class="titulo cor3 mt">VENDAS</el-row>
-      <el-row class="lin1">
-          <el-col :span="2">
-              <div class="alinhar">
-                  FILTROS:
-              </div>
-          </el-col>
-          <el-col :span="19">
-            <div class="l1c2">
-              <i class="fas fa-paint-brush fa-fw ico"></i>
-              <span class="letras">ARTISTA</span>
-              <el-select v-model="value3" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
-                </el-option>
-              </el-select>
-              <i class="far fa-calendar-alt fa-fw ico"></i>
-              <span class="letras"> PERÍODO </span>
-              <div class="erro" v-if="visible">
-              <span class="asterisco">*</span>
-              </div>
-              <el-select v-model="value4" filterable placeholder="Mês" clearable no-match-text="Não encontrado" class="espaco">
-                <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-              <div class="erro" v-if="visible2">
-                <span class="asterisco">*</span>
-              </div>
-              <el-select v-model="value5" filterable placeholder="Ano" clearable no-match-text="Não encontrado">
-                <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="blink cor3"><a :href="getPDF()" target="_blank"> GERAR </a></div>
-          </el-col>
-      </el-row>
-    </div>
-  </div>
-  <div class="mv2">
-    <div class="form form2">
       <el-row class="titulo cor2 mt">PEDIDOS</el-row>
       <el-row class="lin1">
           <el-col :span="2">
@@ -114,6 +73,88 @@
       </el-row>
       <el-row class="lin1 lin3">
         <div class="blink cor2"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+      </el-row>
+    </div>
+  </div>
+  <div class="mv2">
+    <div class="form form2">
+      <el-row class="titulo cor3 mt">VENDAS</el-row>
+      <el-row class="lin1">
+          <el-col :span="2">
+              <div class="alinhar">
+                  FILTROS:
+              </div>
+          </el-col>
+          <el-col :span="19">
+            <div class="l1c2">
+              <i class="fas fa-paint-brush fa-fw ico"></i>
+              <span class="letras">ARTISTA</span>
+              <el-select v-model="value3" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
+                </el-option>
+              </el-select>
+              <i class="far fa-calendar-alt fa-fw ico"></i>
+              <span class="letras"> PERÍODO </span>
+              <div class="erro" v-if="visible">
+              <span class="asterisco">*</span>
+              </div>
+              <el-select v-model="value4" filterable placeholder="Mês" clearable no-match-text="Não encontrado" class="espaco">
+                <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+              <div class="erro" v-if="visible2">
+                <span class="asterisco">*</span>
+              </div>
+              <el-select v-model="value5" filterable placeholder="Ano" clearable no-match-text="Não encontrado">
+                <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </el-col>
+          <el-col :span="3" class="gerarend">
+            <div class="blink cor3"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+          </el-col>
+      </el-row>
+    </div>
+  </div>
+  <div class="mv3">
+    <div class="form form2">
+      <el-row class="titulo cor4 mt">USUARIOS</el-row>
+      <el-row class="lin1">
+          <el-col :span="2">
+              <div class="alinhar">
+                  FILTROS:
+              </div>
+          </el-col>
+          <el-col :span="19">
+            <div class="l1c2">
+              <i class="fas fa-paint-brush fa-fw ico"></i>
+              <span class="letras">ARTISTA</span>
+              <el-select v-model="value3" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
+                </el-option>
+              </el-select>
+              <i class="far fa-calendar-alt fa-fw ico"></i>
+              <span class="letras"> PERÍODO </span>
+              <div class="erro" v-if="visible">
+              <span class="asterisco">*</span>
+              </div>
+              <el-select v-model="value4" filterable placeholder="Mês" clearable no-match-text="Não encontrado" class="espaco">
+                <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+              <div class="erro" v-if="visible2">
+                <span class="asterisco">*</span>
+              </div>
+              <el-select v-model="value5" filterable placeholder="Ano" clearable no-match-text="Não encontrado">
+                <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </el-col>
+          <el-col :span="3" class="gerarend">
+            <div class="blink cor4"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+          </el-col>
       </el-row>
     </div>
   </div>
@@ -278,6 +319,12 @@ export default {
   margin-bottom: 20px;
 }
 
+.mv3 {
+  margin-right: 60px;
+  margin-left: 60px;
+  margin-bottom: 70px;
+}
+
 .form2 {
   padding-top: 10px;
 }
@@ -329,6 +376,10 @@ export default {
   background-color: #F4CB68;
 }
 
+.cor4 {
+  background-color: #FFB790;
+}
+
 .ico {
     margin-left: 15px;
     margin-right: 15px;
@@ -346,7 +397,7 @@ export default {
 }
 
 .letras {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 .botao {
@@ -373,7 +424,12 @@ export default {
 }
 
 .espaco {
-  margin-right: 5px;
+  margin-right: 10px;
+}
+
+.gerarend {
+  display: flex;
+  justify-content: flex-end;
 }
 
 

@@ -3,13 +3,16 @@
     <div class="vendaspages">
         <v-tabs slider-color="#F4CB68" slider-size="3" v-model="tab" class="radiusitems" height="80">
             <div class="menutable">
-                <v-tab> <i class="fas fa-file fa-fw espaco2"></i> <span class="letras"> Relatórios </span> </v-tab>
-            </div>
+                <v-tab> <i class="fas fa-dollar-sign fa-fw espaco2"></i> <span class="letras"> Vendas </span> </v-tab>
+                <v-tab> <i class="fas fa-box-open fa-fw espaco2"></i> <span class="letras"> Pedidos </span> </v-tab>
+                <v-tab> <i class="fas fa-box fa-fw espaco2"></i> <span class="letras"> Produtos </span> </v-tab>
+                <v-tab> <i class="fas fa-user-alt fa-fw espaco2"></i> <span class="letras"> Usuarios </span> </v-tab>            </div>
         </v-tabs>
         <v-tabs-items class="radiusitems" v-model="tab"> 
-            <v-tab-item > 
-                <Relatorios/>
-            </v-tab-item>
+            <v-tab-item ><Vendas/></v-tab-item>
+            <v-tab-item ><Pedidos/></v-tab-item>
+            <v-tab-item ><Produtos/></v-tab-item>
+            <v-tab-item ><Usuarios/></v-tab-item>
         </v-tabs-items>
 
     </div>
@@ -18,13 +21,16 @@
 
 <script>
 
-import Relatorios from "./Relatorios.vue"
-
+import Vendas from "./Vendas.vue"
+import Pedidos from "./Pedidos.vue"
+import Produtos from "./Produtos.vue"
+import Usuarios from "./Usuarios.vue"
 
 export default {
+    
     name: 'Relatoriospages',
     
-    components: { Relatorios },
+    components: { Vendas, Pedidos, Produtos, Usuarios },
 
     data () {
         return {
