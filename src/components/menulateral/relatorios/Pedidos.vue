@@ -37,7 +37,7 @@
           </el-col>
       </el-row>
       <el-row class="gerarend">
-        <div class="blink cor"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+        <a :href="getPDF()" target="_blank" class="blink cor"> GERAR </a>
       </el-row>
     </div>
 </div>
@@ -58,6 +58,8 @@ export default {
       value3: '',
       value4: '',
       options: [],
+      visible: false,
+      visible2: false,
       options2: [
       {
         value: '0',
@@ -134,30 +136,65 @@ export default {
         label: 'OK'
       }]
     };
-},
+  },
 
-  
+  watch: {
+    value2() {
+      this.getFilter();
+    },
+    value3() {
+      this.getFilter();
+    },
+  },
+
   methods: {
     
     getUsers(){
       return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
     },
 
+    getFilter() {
+      if (!this.value2 && this.value3) {
+        this.visible = true;
+        this.visible2 = false;
+      }
+      if (this.value2 && !this.value3) {
+        this.visible = false;
+        this.visible2 = true;
+      }
+      if (this.value2 && this.value3) {
+        this.visible = false;
+        this.visible2 = false;
+      }
+      if (!this.value2 && !this.value3) {
+        this.visible = false;
+        this.visible2 = false;
+      }
+    },
+
     getPDF(){
       
-      if(!this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts`;
+      if(this.value && !this.value2 && !this.value3 && !this.value4) {
+        return `http://localhost:3333/pdforders/${this.value}`;
       }
-      if(this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts/user/${this.value}`;
+      if(!this.value && !this.value2 && !this.value3 && !this.value4) {
+        return `http://localhost:3333/pdforders`;
       }
-      if(!this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/category/${this.value2}`;
+      if(this.value && this.value2 && this.value3 && !this.value4) {
+        return `http://localhost:3333/pdforders/${this.value}/${this.value2}/${this.value3}`;
+      } 
+      if(!this.value && this.value2 && this.value3 && !this.value4) {
+        return `http://localhost:3333/pdforders/${this.value2}/${this.value3}`;
+      } 
+      if(!this.value && !this.value2 && !this.value3 && this.value4) {
+        return `http://localhost:3333/pdfordersstatus/${this.value4}`;
       }
-      if(this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/${this.value}/${this.value2}`;
-      }
-      
+      if(this.value && this.value2 && this.value3 && this.value4) {
+        return `http://localhost:3333/pdfordersstatus/${this.value4}/${this.value}/${this.value2}/${this.value3}`;
+      }  
+      if(this.value && !this.value2 && !this.value3 && this.value4) {
+        return `http://localhost:3333/pdfordersstatususer/${this.value4}/${this.value}`;
+      }      
     }
     
   },
@@ -215,7 +252,6 @@ export default {
 
 .cor {
   background-color: #69F690;
-  
 }
 
 .ico {
@@ -251,11 +287,7 @@ export default {
   height: 40px;
   color: white;
   border-radius: 5px;
-}
-
-.blink a{
   text-decoration: none;
-  color: white;
 }
 
 .espaco {
@@ -266,6 +298,16 @@ export default {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
+}
+
+.asterisco {
+  color: red;
+  margin-right: 5px;
+}
+
+.erro {
+  animation: headShake;
+  animation-duration: 1s;
 }
 
 </style>

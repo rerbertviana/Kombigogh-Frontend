@@ -53,7 +53,7 @@ export default {
       value3: '',
       visible: false,
       visible2: false,
-      visible3: false,
+      visible3: true,
       options: [],
       options2: [
       {
