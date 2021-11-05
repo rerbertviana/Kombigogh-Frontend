@@ -287,14 +287,6 @@ export default {
       return `http://localhost:3333/files/${row.imagem}`
     }, 
 
-    // handleExceed(files) {
-    //     this.$message.warning(`O limite é de um arquivo, você selecionou ${files.length}`);
-    // },
-
-    // handlePreview(file) {
-    //     console.log(file);
-    // },
-
     limpar() {
       this.product = {};
       this.value = '';
@@ -342,7 +334,7 @@ export default {
     },
 
     verificar() {
-      //backend na hora de vender verificar se o produto está em off ou não
+     
       if(!this.product.nome || !this.product.preco || !this.product.quantidade || !this.product.descricao || !this.value) {
         this.campovazio();
         return false;

@@ -7,6 +7,9 @@
             <div class="l1c1">
                 <i class="fas fa-paint-brush fa-fw ico"></i>
                 <span class="letras">ARTISTA</span>
+                <div class="erro" v-if="visible3">
+                  <span class="asterisco">*</span>
+                </div>
                 <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id">
                 </el-option>
@@ -14,20 +17,20 @@
                 <i class="far fa-calendar-alt fa-fw ico2"></i>
                 <span class="letras"> PERÍODO </span>
                 <div class="erro" v-if="visible">
-                <span class="asterisco">*</span>
+                  <span class="asterisco">*</span>
                 </div>
                 <el-select v-model="value2" filterable placeholder="Mês" clearable no-match-text="Não encontrado" class="espaco">
                     <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
                 </el-select>
                 <div class="erro" v-if="visible2">
-                <span class="asterisco">*</span>
+                  <span class="asterisco">*</span>
                 </div>
                 <el-select v-model="value3" filterable placeholder="Ano" clearable no-match-text="Não encontrado">
                     <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
                 </el-select>
-                <div class="blink cor"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+                <a :href="getPDF()" target="_blank" class="blink cor"> GERAR </a>
             </div>
             </el-col>
         </el-row>
@@ -48,9 +51,9 @@ export default {
       value: '',
       value2: '',
       value3: '',
-      value4: '',
-      value5: '',
-      value6: '',
+      visible: false,
+      visible2: false,
+      visible3: false,
       options: [],
       options2: [
       {
@@ -121,8 +124,47 @@ export default {
     };
 },
 
+  watch: {
+    value(){
+      this.getFilter2();
+    },
+    value2() {
+      this.getFilter();
+    },
+    value3() {
+      this.getFilter();
+    },
+  },
   
   methods: {
+
+    getFilter() {
+      if (!this.value2 && this.value3) {
+        this.visible = true;
+        this.visible2 = false;
+      }
+      if (this.value2 && !this.value3) {
+        this.visible = false;
+        this.visible2 = true;
+      }
+      if (this.value2 && this.value3) {
+        this.visible = false;
+        this.visible2 = false;
+      }
+      if (!this.value2 && !this.value3) {
+        this.visible = false;
+        this.visible2 = false;
+      }
+    },
+
+    getFilter2() {
+      if(!this.value) {
+        this.visible3 = true;
+      }
+      if(this.value) {
+        this.visible3 = false;
+      }
+    },
     
     getUsers(){
       return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
@@ -130,19 +172,12 @@ export default {
 
     getPDF(){
       
-      if(!this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts`;
+      if(this.value && this.value2 && this.value3) {
+        return `http://localhost:3333/pdfordersproducts/${this.value}/${this.value2}/${this.value3}`;
       }
-      if(this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts/user/${this.value}`;
-      }
-      if(!this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/category/${this.value2}`;
-      }
-      if(this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/${this.value}/${this.value2}`;
-      }
-      
+      if(this.value && !this.value2 && !this.value3) {
+        return `http://localhost:3333/pdfordersproducts/${this.value}`;
+      }      
     }
     
   },
@@ -230,15 +265,22 @@ export default {
   height: 40px;
   color: white;
   border-radius: 5px;
+  text-decoration: none;
 }
 
-.blink a{
-  text-decoration: none;
-  color: white;
-}
 
 .espaco {
   margin-right: 10px;
+}
+
+.asterisco {
+  color: red;
+  margin-right: 5px;
+}
+
+.erro {
+  animation: headShake;
+  animation-duration: 1s;
 }
 
 </style>
