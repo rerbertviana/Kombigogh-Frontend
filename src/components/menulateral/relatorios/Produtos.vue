@@ -20,7 +20,7 @@
                 </el-select>
             </el-col>
             <el-col :span="4" class="alinhamento">
-                <div class="blink cor"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+               <a :href="getPDF()" target="_blank" class="blink cor"> GERAR </a>
             </el-col>
         </el-row>
     </div>
@@ -39,10 +39,6 @@ export default {
     return {
       value: '',
       value2: '',
-      value3: '',
-      value4: '',
-      value5: '',
-      value6: '',
       options: [],
       options2: [
       {
@@ -231,11 +227,7 @@ export default {
   height: 40px;
   color: white;
   border-radius: 5px;
-}
-
-.blink a{
   text-decoration: none;
-  color: white;
 }
 
 .espaco {
