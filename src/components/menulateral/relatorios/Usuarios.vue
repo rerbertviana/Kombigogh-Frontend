@@ -6,7 +6,7 @@
             <el-col :span="24" class="l1c1">
                 <i class="fas fa-users fa-fw ico"></i>
                 <span class="letras">LISTAR TODOS OS USUÁRIOS</span>
-                <div class="blink cor"><a :href="getPDF()" target="_blank"> GERAR </a></div>
+                <a :href="getPDF()" target="_blank" class="blink cor"> GERAR </a>
             </el-col>
         </el-row>
     </div>
@@ -16,118 +16,24 @@
 
 <script>
 
-import axios from "axios";
-import { baseApiurl } from "@/global";
-
 export default {
   name: "Minhasvendas",
   data() {
     return {
-      value: '',
-      value2: '',
-      value3: '',
-      value4: '',
-      value5: '',
-      value6: '',
-      options: [],
-      options2: [
-      {
-        value: '0',
-        label: 'JANEIRO'
-      }, 
-      {
-        value: '1',
-        label: 'FEVEREIRO'
-      }, 
-      {
-        value: '2',
-        label: 'MARÇO'
-      }, 
-      {
-        value: '3',
-        label: 'ABRIL'
-      }, 
-      {
-        value: '4',
-        label: 'MAIO'
-      },
-      {
-        value: '5',
-        label: 'JUNHO'
-      },
-      {
-        value: '6',
-        label: 'JULHO'
-      },
-      {
-        value: '7',
-        label: 'AGOSTO'
-      },
-      {
-        value: '8',
-        label: 'SETEMBRO'
-      },
-      {
-        value: '9',
-        label: 'OUTUBRO'
-      },
-      {
-        value: '10',
-        label: 'NOVEMBRO'
-      },
-      {
-        value: '11',
-        label: 'DEZEMBRO'
-      }],
-      options3: [
-      {
-        value: '2020',
-        label: '2020'
-      }, 
-      {
-        value: '2021',
-        label: '2021'
-      }, 
-      {
-        value: '2022',
-        label: '2022'
-      }, 
-      {
-        value: '2023',
-        label: '2023'
-      }],
+      
     };
 },
 
   
   methods: {
     
-    getUsers(){
-      return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
-    },
 
     getPDF(){
-      
-      if(!this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts`;
-      }
-      if(this.value && !this.value2) {
-        return `http://localhost:3333/pdfproducts/user/${this.value}`;
-      }
-      if(!this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/category/${this.value2}`;
-      }
-      if(this.value && this.value2) {
-        return `http://localhost:3333/pdfproducts/${this.value}/${this.value2}`;
-      }
-      
+      return `http://localhost:3333/pdfusers`;
     }
     
   },
 
-  mounted() {
-    this.getUsers()
-  },
 };
 </script>
 
@@ -208,11 +114,7 @@ export default {
   height: 40px;
   color: white;
   border-radius: 5px;
-}
-
-.blink a{
   text-decoration: none;
-  color: white;
 }
 
 .espaco {
