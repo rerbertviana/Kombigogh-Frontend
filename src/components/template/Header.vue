@@ -11,20 +11,20 @@
                 </div>
             </div>
             <span class="reta"> | </span>
-            <v-avatar  size="40">
-              <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+            <v-avatar size="40">
+              <v-img :src="getImagem()"></v-img>
             </v-avatar>
-            <span class="texto"> {{texto}} </span>
+            <span class="texto"> {{user.nome}} </span>
             <a @click="teste" v-show="!visible"> 
                 <i class="fas fa-caret-down fa-fw icone"> </i>
             </a>
             <a @click="teste" v-show="visible">
-                 <i class="fas fa-caret-up fa-fw icone"> </i>
+                <i class="fas fa-caret-up fa-fw icone"> </i>
             </a>
         </div>
     </div>
     <div class="dropdowncontent" :class="{'drop':visible}" >
-        <a href class="font2"> <i class="fas fa-cogs fa-fw font"></i> Meu Perfil </a>
+        <router-link to="/meuperfil" class="font2"> <i class="fas fa-cogs fa-fw font"></i> Meu Perfil </router-link>
         <a href class="font2"> <i class="fas fa-sign-out-alt fa-fw logout"> </i> Sair </a>
     </div>
 </div>
@@ -32,6 +32,10 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+import { baseApiurl } from '@/global'
+
 export default {
     name: 'Header',
     props: {
@@ -41,15 +45,31 @@ export default {
         return {
           texto: 'Werbert Viana',
           numero: '2',
-          visible: false
+          visible: false,
+          user: {}
         }
     },
     methods: {
 
+        getUser() {
+            return axios.get(`${baseApiurl}/profile`).then(res => this.user = res.data);
+        },
+
         teste() {
             this.visible = !this.visible
-        }
+        },
+
+        getImagem() {
+            if(!this.user.avatar) {
+                return `http://localhost:3333/files/default.jpg`
+            }
+            return `http://localhost:3333/files/${this.user.avatar}`
+        } 
     },
+
+    mounted() {
+      this.getUser()
+    }
 }
 </script>
 
@@ -81,7 +101,6 @@ export default {
     }
 
     .circulo {
-        
         background-color: #82D4D1;
         margin-right: 0px;
     }

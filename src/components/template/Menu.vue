@@ -2,8 +2,9 @@
     <div class="menu">
         <div class="barra"><i class="fas fa-bars fa-fw menuicones"></i></div>
         <div class="menucontent">
-            <div class="itens"><router-link class="menuitens" to="/vendas"> <i class="fas fa-comments-dollar fa-fw menuicones"></i> <div class="vendas"> VENDAS </div> </router-link> </div>
+            <div class="itens"><router-link to="/vendas" class="menuitens"> <i class="fas fa-comments-dollar fa-fw menuicones"></i> <div class="vendas"> VENDAS </div> </router-link> </div>
             <div class="itens"><router-link to="/produtos" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
+            <div class="itens" v-if="teste"><router-link to="/relatorios" class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="usuarios"> USUÁRIOS </div> </router-link></div>
             <div class="itens"><router-link to="/relatorios" class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="relatorios"> RELATÓRIOS </div> </router-link></div>
         </div>
     </div>
@@ -12,6 +13,18 @@
 <script>
 export default {
     name: 'Menu',
+
+    data: function() {
+      return {
+        teste: false
+        }
+    },
+    
+    methods: {
+        trocaItens(){
+            return "itens2"
+        }
+    }
 }
 </script>
 
@@ -26,7 +39,6 @@ export default {
 
     .menu:hover {
         width: 200px;
-
         z-index: 2;
     }
     
@@ -35,9 +47,9 @@ export default {
         font-size: 2.5rem;
     }
 
-    .menucontent:hover {
+    /* .menucontent:hover {
         width: 180px;
-    }
+    } */
 
     .barra {
         padding-top: 20px;
@@ -68,6 +80,10 @@ export default {
         visibility: visible;
     }
 
+    .menu:hover .usuarios{
+        visibility: visible;
+    }
+
     .vendas {
         color: white;
         margin-left: 30px;
@@ -86,6 +102,12 @@ export default {
         visibility: hidden;
     }
 
+    .usuarios {
+        color: white;
+        margin-left: 11px;
+        visibility: hidden;
+    }
+
     .itens {
         height: 50px;
         display:flex;
@@ -93,7 +115,18 @@ export default {
         padding-left: 7px; 
         margin-left: 3px;
         margin-top: 120px;
-        width: 182px;
+        width: 190px;
+        border-radius: 10px;
+    }
+
+    .itens2 {
+        height: 50px;
+        display:flex;
+        align-content: center;
+        padding-left: 7px; 
+        margin-left: 3px;
+        margin-top: 80px;
+        width: 190px;
         border-radius: 10px;
     }
 
@@ -101,7 +134,6 @@ export default {
         display:flex;
         align-items: center;
         text-decoration: none;
-        /* background-color: rgba(0, 0, 0, 0.25); */
     }
     
 </style>

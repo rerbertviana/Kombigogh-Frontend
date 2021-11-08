@@ -4,7 +4,6 @@
     <Header/>
     <Content/>
     <Footer/>
-    
   </div>
 </template>
 
@@ -20,13 +19,6 @@ export default {
   name: 'App',
 
   components: { Menu, Header, Content, Footer },
-
-  data: function() {
-      return {
-        cabeca: false
-      }
-  }
-
 
 };
 </script>

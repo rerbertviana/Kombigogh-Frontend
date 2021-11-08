@@ -18,14 +18,9 @@ export default {
 <style>
    
     .content {
-
         grid-area: content;
-
         background-image: url(../../assets/Login2.jpg) ;
         background-size: cover;
-
-        /* opacity: 0.09;
-        filter: grayscale(100%);  */
     }
 
     .correcao {
