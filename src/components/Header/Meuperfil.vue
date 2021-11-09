@@ -4,7 +4,7 @@
     colocar visible meu perfil na store -->
   <div class="content">
     <div class="avatar">
-        <v-avatar rounded size="290">
+        <v-avatar rounded size="360">
           <v-img :src="getImagem()" />
         </v-avatar>
     </div>
@@ -151,7 +151,6 @@ export default {
 
     .avatar {
       grid-area: avatar;
-      padding-left: 30px;
       background-color: white;
     }
 
@@ -169,6 +168,7 @@ export default {
       box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
       background: white;
       border-radius: 5px;
+      gap: 10px;
     }
 
     .linha1 {
@@ -182,7 +182,7 @@ export default {
       display: flex;
       align-items: center;
       padding-left: 20px;
-      padding-bottom: 20px;
+      padding-bottom: 25px;
     }
 
     .ico {
@@ -222,7 +222,7 @@ export default {
       font-size: 1.2rem;
       height: 40px;
       background-color: #82D4D1;
-      border-radius: 0px 5px 0px 0px;
+      border-radius: 5px 5px 0px 0px;
     }
 
     .nome {
@@ -234,9 +234,9 @@ export default {
     }
 
     .beditar {
+      margin-top: 7px;
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 20px;
     }
 
     .b1 {
