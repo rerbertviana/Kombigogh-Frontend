@@ -12,18 +12,27 @@
       <el-row class="titulo">MEU PERFIL</el-row>
       <el-row class="linha1" >
         <i class="fas fa-user-alt fa-fw ico"></i>
-        <span class="letras">NOME</span>
+        <span class="letras nome">NOME</span>
         <el-input placeholder="Nome do artista" v-model="user.nome" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
         <i class="fas fa-envelope-open-text fa-fw ico"></i>
-        <span class="letras">EMAIL</span>
+        <span class="letras email">EMAIL</span>
         <el-input placeholder="Nome do artista" v-model="user.email" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
         <i class="fas fas fa-phone-square fa-fw ico"></i>
         <span class="letras">TELEFONE</span>
         <el-input placeholder="Nome do artista" v-model="user.telefone" :disabled="edit" clearable></el-input>
+      </el-row>
+      <el-row class="linha2" >
+        <i class="fas fas fa-phone-square fa-fw ico"></i>
+        <span class="letras">TELEFONE</span>
+        <el-input placeholder="Nome do artista" v-model="user.telefone" :disabled="edit" clearable></el-input>
+      </el-row>
+      <el-row class="beditar">
+        <el-button @click="getEditar" class="b1">EDITAR</el-button>
+        <el-button @click="getSalvar" class="b2">SALVAR</el-button>
       </el-row>
     </div>
   </div>
@@ -57,7 +66,70 @@ export default {
           return `http://localhost:3333/files/default.jpg`
       }
         return `http://localhost:3333/files/${this.user.avatar}`
-      } 
+    },
+
+    getEditar() {
+      this.edit = false
+    },
+
+    naointeiro() {
+      this.$message({
+        showClose: true,
+        message:'Oops, "QTD" precisa ser um valor inteiro.  ',
+        type: 'error',
+      });
+    },
+
+    campovazio() {
+      this.$message({
+        showClose: true,
+        message:'Oops, existem campos vazios.  ',
+        type: 'error',
+      });
+    },
+
+    verificar() {
+     
+      if(!this.user.nome || !this.user.email || !this.user.telefone) {
+        this.campovazio();
+        return false;
+      }
+      if(!Number.isInteger(this.product.quantidade)) {
+        this.naointeiro();
+        return false;
+      }
+      if(Number.isNaN(this.product.preco)){
+        this.naonumero();
+        return false;
+      }
+      return true;
+    },
+
+    salvar() {
+      this.product2 = {
+        nome: this.product.nome,
+        descricao: this.product.descricao,
+        preco: this.product.preco,
+        quantidade: this.product.quantidade
+      }
+      if (this.verificar()) {
+        this.onUpload();
+        axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.product2)
+        .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+        .catch(() => {
+          this.nomerepetido();
+        })
+      }
+    },
+
+    getSalvar() {
+      this.edit = true
+      this.salvar()
+    }
   },
 
   mounted() {
@@ -79,23 +151,23 @@ export default {
 
     .avatar {
       grid-area: avatar;
+      padding-left: 30px;
       background-color: white;
-      border-radius: 5px 0px 0px 5px;
     }
 
     .info {
       grid-area: info;
       background-color: white;
-      border-radius: 0px 0px 5px 0px;
     }
 
     .content {
+      padding: 20px;
       display: grid;
-      grid-template-columns: 300px 1fr;
-      grid-template-rows: 300px;
+      grid-template-columns: 360px 1fr;
+      grid-template-rows: 360px;
       grid-template-areas: "avatar info";
       box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-      color: white;
+      background: white;
       border-radius: 5px;
     }
 
@@ -103,13 +175,13 @@ export default {
       display: flex;
       align-items: center;
       padding: 20px;
+      padding-right: 0px;
     }
 
     .linha2 {
       display: flex;
       align-items: center;
       padding-left: 20px;
-      padding-right: 20px;
       padding-bottom: 20px;
     }
 
@@ -152,6 +224,35 @@ export default {
       background-color: #82D4D1;
       border-radius: 0px 5px 0px 0px;
     }
+
+    .nome {
+      margin-right: 53px;
+    }
+
+    .email {
+      margin-right: 52px;
+    }
+
+    .beditar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .b1 {
+      background-color: #82D4D1;
+      color: white;
+      border: 0px;
+    }
+
+    .b2 {
+      background-color: #69F690;
+      color: white;
+      border: 0px;
+    }
+
+
+
 
 
 </style>

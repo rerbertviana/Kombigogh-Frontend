@@ -11,8 +11,8 @@
                 </div>
             </div>
             <span class="reta"> | </span>
-            <v-avatar size="40">
-              <v-img :src="getImagem()"></v-img>
+            <v-avatar size="42">
+                <v-img :src="getImagem()"></v-img>
             </v-avatar>
             <span class="texto"> {{user.nome}} </span>
             <a @click="teste" v-show="!visible"> 
@@ -191,6 +191,7 @@ export default {
         visibility: visible;
         opacity: 1;
     }
+
     
 
 </style>

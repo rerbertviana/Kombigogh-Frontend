@@ -22,7 +22,7 @@ Vue.use(IconsPlugin)
 
 // TEMPORARIO!
 
-require('axios').defaults.headers.common['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzYzNzk5MzQsImV4cCI6MTYzNjQ2NjMzNCwic3ViIjoiZDBhODA3MWItNGFiMy00ZDg2LWJhZmQtZDU2YmM0ZjY2ZjA0In0.CscQ6TgouV9Sf0MYoF1zA5WJkhiUWohsT1hiplvrqrk'
+require('axios').defaults.headers.common['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzY0MTE5MTMsImV4cCI6MTYzNjQ5ODMxMywic3ViIjoiZDY1ZjkwMjYtYzY2NC00YTJiLTg1NDUtMTUwMjFiMjY3NTE1In0.L_jQ3T0KI97-rJ2LYSqhpcTP1W5Pf0GukDZqGHBjmMs'
 
 new Vue({
   store,
