@@ -63,7 +63,7 @@ export default {
 
     getImagem() {
       if(!this.user.avatar) {
-          return `http://localhost:3333/files/default.jpg`
+          return `http://localhost:3333/files/default2.png`
       }
         return `http://localhost:3333/files/${this.user.avatar}`
     },
