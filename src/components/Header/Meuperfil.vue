@@ -10,8 +10,9 @@
         </v-avatar>
       </div>
       <div class="end">
-        <el-button @click="getEditar" class="botao2 cor1 mt"><i class="fas fa-image fa-fw espaco"/>FOTO</el-button>
-        <el-button @click="getEditar" class="botao2 cor1 mt"><i class="fas fa-upload espaco"></i>UPLOAD</el-button>
+        <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
+        <el-button @click="$refs.fileInput.click()" class="botao2 cor1 mt"><i class="fas fa-image fa-fw espaco"/>FOTO</el-button>
+        <el-button @click="onUpload" class="botao2 cor1 mt"><i class="fas fa-upload espaco"></i>ATUALIZAR</el-button>
       </div>
     </div>
     <div class="info">
@@ -19,37 +20,30 @@
       <el-row class="linha1" >
         <i class="fas fa-user-alt fa-fw ico"></i>
         <span class="letras nome">NOME</span>
-        <el-input placeholder="Nome do artista" v-model="user.nome" :disabled="edit" clearable></el-input>
+        <el-input placeholder="Digite seu nome" v-model="user.nome" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
         <i class="fas fa-envelope-open-text fa-fw ico"></i>
         <span class="letras email">EMAIL</span>
-        <el-input placeholder="Nome do artista" v-model="user.email" :disabled="edit" clearable></el-input>
+        <el-input placeholder="Informe seu e-mail" v-model="user.email" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
         <i class="fas fas fa-phone-square fa-fw ico"></i>
         <span class="letras">TELEFONE</span>
-        <el-input placeholder="Nome do artista" v-model="user.telefone" :disabled="edit" clearable></el-input>
+        <el-input v-mask="'(##) #####-####'" placeholder="(  ) xxxxx-xxxx" v-model="user.telefone" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
         <i class="fas fa-key fa-fw ico"></i>
         <span class="letras senha">SENHA</span>
-        <el-input placeholder="Nova senha" v-model="user.senha" :disabled="edit" class="espaco" clearable></el-input>
-        <el-input placeholder="Confirmação da senha" v-model="user.senha2" :disabled="edit" clearable></el-input>
+        <el-input placeholder="Nova senha" v-model="user.senha" :disabled="edit" class="espaco" type="password" clearable></el-input>
+        <el-input placeholder="Confirmação da senha" v-model="user.senha2" :disabled="edit" type="password" clearable></el-input>
       </el-row>
-      <!-- <el-row class="linha2" >
-        <el-col :span ="12">
-          <i class="fas fa-camera-retro fa-fw ico"></i>
-          <span class="letras">AVATAR</span>
+      <el-row>
+        <el-col class="beditar" :span="24">
+          <el-button @click="getEditar" class="botao cor1" v-if="edit">EDITAR</el-button>
+          <el-button @click="getCancelar" class="botao cor3" v-if="!edit">CANCELAR</el-button>
+          <el-button @click="getSalvar" class="botao cor2" v-if="!edit">SALVAR</el-button>
         </el-col>
-        <el-col :span ="12" class="end">
-          <el-button @click="getEditar" class="botao cor1">FOTO</el-button>
-          <el-button @click="getSalvar" class="botao cor2">UPLOAD</el-button>
-        </el-col>
-      </el-row> -->
-      <el-row class="beditar">
-        <el-button @click="getEditar" class="botao cor1">ALTERAR</el-button>
-        <el-button @click="getSalvar" class="botao cor2" :disabled="edit">SALVAR</el-button>
       </el-row>
     </div>
   </div>
@@ -61,17 +55,19 @@
 
 import axios from 'axios'
 import { baseApiurl } from '@/global'
+import { mapState } from 'vuex'
 
 export default {
   name: "Minhasvendas",
+  computed: mapState(['perfilVisible']),
+
   data() {
     return {
       user: {},
       user2: {},
       edit: true,
     };
-},
-
+  },
   
   methods: {
 
@@ -83,11 +79,31 @@ export default {
       if(!this.user.avatar) {
           return `http://localhost:3333/files/default2.png`
       }
-        return `http://localhost:3333/files/${this.user.avatar}`
+      return `http://localhost:3333/files/${this.user.avatar}`
+    },
+
+    visible() {
+      if (this.perfilVisible == true)
+      this.$store.commit('togglePerfil')
     },
 
     getEditar() {
       this.edit = false
+    },
+
+    getTelefone(telefone) {
+      const arr = telefone.split('')
+      arr.splice(0, 0, '(')
+      arr.splice(3, 0, ')')
+      arr.join('')
+
+      this.user.telefone = arr;
+    },
+
+    getCancelar() {
+      this.edit = true;
+      this.getUser();
+      this.cancelaredit();
     },
 
     nomerepetido() {
@@ -95,6 +111,14 @@ export default {
         showClose: true,
         message:'Nome ou e-mail existente.',
         type: 'error',
+      });
+    },
+
+    cancelaredit() {
+      this.$message({
+        showClose: true,
+        message:'Operação cancelada.',
+        type: 'warning'
       });
     },
 
@@ -107,14 +131,6 @@ export default {
       this.getUser();
     },
 
-    naointeiro() {
-      this.$message({
-        showClose: true,
-        message:'"telefone" precisa ser um valor inteiro',
-        type: 'error',
-      });
-    },
-
     campovazio() {
       this.$message({
         showClose: true,
@@ -123,18 +139,10 @@ export default {
       });
     },
 
-    semconfirmacao() {
+    email() {
       this.$message({
         showClose: true,
-        message:'Por favor, digite a confirmação da senha.',
-        type: 'error',
-      });
-    },
-
-    semsenha() {
-      this.$message({
-        showClose: true,
-        message:'Por favor, digite a nova senha.',
+        message:'Oops, email incorreto.  ',
         type: 'error',
       });
     },
@@ -142,8 +150,16 @@ export default {
     naoconfere() {
       this.$message({
         showClose: true,
-        message:'As senhas não conferem.',
+        message:'As senhas não correspondem.',
         type: 'error',
+      });
+    },
+
+    avatar() {
+      this.$message({
+        showClose: true,
+        message:'Selecione uma imagem.',
+        type: 'warning',
       });
     },
 
@@ -153,8 +169,8 @@ export default {
         this.campovazio();
         return false;
       }
-      if(this.user.telefone % 1 !== 0) {
-        this.naointeiro();
+      if(this.user.email.indexOf("@") == -1) {
+        this.email()
         return false;
       }
       if(!this.user.senha && !this.user.senha2) {
@@ -165,11 +181,11 @@ export default {
         }
       }
       if(this.user.senha && !this.user.senha2) {
-        this.semconfirmacao();
+        this.naoconfere();
         return false;
       }
       if(!this.user.senha && this.user.senha2) {
-        this.semsenha();
+        this.naoconfere();
         return false;
       }
       if(this.user.senha && this.user.senha2) {
@@ -193,12 +209,12 @@ export default {
     },
 
     salvar() {
-
       if (this.verificar()) {
         axios.put(`${baseApiurl}/profile/`, this.user2)
         .then(() => {
           this.sucesso()
           this.edit = true
+          document.location.reload(true);
         })
         .catch(() => {
           this.nomerepetido();
@@ -208,11 +224,36 @@ export default {
 
     getSalvar() {
       this.salvar()
-    }
+    },
+
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
+    },
+
+    async onUpload() {
+      if (this.selectedFile) {
+        const fd = new FormData();
+        fd.append('avatar', this.selectedFile)
+        await axios.patch(`${baseApiurl}/users/avatar`, 
+        fd, {
+          headers: {
+          'Content-Type': 'multipart/form-data'
+          }
+        })
+        this.sucesso()
+        document.location.reload(true);
+      }
+      else {
+        this.avatar()
+      }
+    },
+
+    
   },
 
   mounted() {
     this.getUser();
+    this.visible();
   },
 
 };
@@ -315,7 +356,7 @@ export default {
       align-items: center;
       color: white;
       height: 40px;
-      width: 100px;
+      width: 120px;
       border: 0px;
     }
 
@@ -337,16 +378,16 @@ export default {
       background-color: #69F690;
     }
 
+    .cor3 {
+      background-color: #FFA882;
+    }
+
     .espaco {
       margin-right: 10px;
     }
-    
 
     .mt {
       margin-top: 10px;
     }
-
-
-
 
 </style>

@@ -1,7 +1,7 @@
 <template>
 
     <footer class="footer">
-        <span class="textofooter">Copyright Bert </span>
+        <span class="textofooter">®Copyright Bert </span>
     </footer>
     
 </template>

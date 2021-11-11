@@ -384,7 +384,7 @@ export default {
   align-items: center;
   height: 50px;
 
-  background-color: #f4cb68;
+  background-color: #82D4D1;
 }
 
 .l3c1 {
@@ -409,7 +409,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 50px;
-  background-color: #f4cb68;
+  background-color: #82D4D1;
   border-radius: 5px;
 }
 
@@ -432,6 +432,7 @@ export default {
   color: white;
   height: 40px;
   width: 100px;
+  border: none;
 }
 
 .b2 {
@@ -440,6 +441,7 @@ export default {
   color: white;
   height: 40px;
   width: 100px;
+  border: none;
 }
 
 .b3 {
@@ -448,6 +450,7 @@ export default {
   color: white;
   height: 50px;
   width: 180px;
+  border: none;
 }
 
 .l2c1 {
@@ -502,7 +505,7 @@ export default {
   margin-top: 10px;
   border-radius: 3px;
   color: white;
-  background-color: #f4cb68;
+  background-color: #82D4D1;
   height: 40px;
 }
 
@@ -512,7 +515,7 @@ export default {
   height: 50px;
   width: 100%;
   border-radius: 5px 0px 5px 5px;
-  background-color: #f4cb68;
+  background-color: #82D4D1;
   color: white;
 }
 
@@ -530,7 +533,7 @@ export default {
   font-size: 0.9rem;
   height: 35px;
   width: 103px;
-  background-color: #f4cb68;
+  background-color: #82D4D1;
   border-radius: 5px 5px 0px 0px;
   color: white;
 }

@@ -3,38 +3,27 @@
     <div class="vendaspages">
         <v-tabs slider-color="#F4CB68" slider-size="3" v-model="tab" class="radiusitems" height="80">
             <div class="menutable">
-                <v-tab> <i class="fas fa-dollar-sign fa-fw espaco2"></i> <span class="letras"> Vender </span> </v-tab>
-                <v-tab> <i class="fas fa-hand-holding-usd fa-fw espaco"></i> <span class="letras"> Minhas Vendas </span> </v-tab>
-                <v-tab> <i class="fas fa-box-open fa-fw espaco"></i> <span class="letras"> Pedidos </span> </v-tab>
+                <v-tab> <i class="fas fa-users fa-fw espaco2"></i> <span class="letras"> Artistas </span> </v-tab>
             </div>
         </v-tabs>
         <v-tabs-items class="radiusitems" v-model="tab"> 
             <v-tab-item > 
-                <Vender/>
-            </v-tab-item>
-            <v-tab-item > 
-                <MinhasVendas/>
-            </v-tab-item>
-            <v-tab-item > 
-                <Pedidos/>
+                <Artistas/>
             </v-tab-item>
         </v-tabs-items>
-
     </div>
-    
+
 </template>
 
 <script>
 
-import Vender from "./Vender.vue"
-import MinhasVendas from "./MinhasVendas.vue"
-import Pedidos from "./Pedidos.vue"
+import Artistas from "./Artistas.vue"
 import { mapState } from 'vuex'
 
 
 export default {
     name: 'Vendaspages',
-    components: { Vender, MinhasVendas, Pedidos },
+    components: { Artistas },
     computed: mapState(['perfilVisible']),
 
     data () {
@@ -72,10 +61,6 @@ export default {
     .espaco2 {
         margin-right: 5px;
     }
-    .espaco {
-        margin-right: 7px;
-    }
-
     .menutable {
         display: flex;
         align-items: center;

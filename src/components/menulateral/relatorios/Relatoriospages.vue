@@ -25,18 +25,30 @@ import Vendas from "./Vendas.vue"
 import Pedidos from "./Pedidos.vue"
 import Produtos from "./Produtos.vue"
 import Usuarios from "./Usuarios.vue"
+import { mapState } from 'vuex'
 
 export default {
     
     name: 'Relatoriospages',
-    
     components: { Vendas, Pedidos, Produtos, Usuarios },
+    computed: mapState(['perfilVisible']),
 
     data () {
         return {
             tab: null,
         }
     },
+
+    methods: {
+        visible() {
+            if (this.perfilVisible == true)
+            this.$store.commit('togglePerfil')
+        },
+    },
+
+    mounted() {
+        this.visible();
+    }
   
 }
 </script>

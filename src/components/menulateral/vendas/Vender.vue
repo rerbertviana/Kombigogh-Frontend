@@ -245,6 +245,7 @@ export default {
   background-color: #82D4D1;
   width: 115px;
   height: 40px;
+  border: none;
 }
 
 .b2 {
@@ -252,6 +253,7 @@ export default {
   height: 40px;
   background-color: #69F690;
   color: white;
+  border: none;
 }
 
 .b3 {
@@ -259,6 +261,7 @@ export default {
   height: 40px;
   background-color: #82D4D1;
   color: white;
+  border: none;
 }
 
 

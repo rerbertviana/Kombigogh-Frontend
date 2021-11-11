@@ -427,6 +427,7 @@ export default {
     color: white;
     height: 50px;
     width: 180px;
+    border: none;
 }
 
 .acao {
@@ -456,7 +457,7 @@ export default {
     font-size: 0.9rem;
     height: 35px;
     width: 103px;
-    background-color: #F4CB68;
+    background-color: #82D4D1;
     border-radius: 5px 5px 0px 0px;
     color: white;
 }
@@ -471,7 +472,7 @@ export default {
     height: 50px;
     width: 100%;
     border-radius: 5px 0px 5px 5px;
-    background-color: #F4CB68;
+    background-color: #82D4D1;
     color: white;
 }
 
@@ -493,7 +494,7 @@ export default {
     align-items: center;
     height: 50px;
 
-    background-color: #F4CB68;
+    background-color: #82D4D1;
 }
 
 .l3c1 {
@@ -530,7 +531,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 50px;
-    background-color: #F4CB68 ;
+    background-color: #82D4D1 ;
     border-radius: 5px;
 }
 
@@ -550,7 +551,7 @@ export default {
     margin-top: 10px;
     border-radius: 3px;
     color: white;
-    background-color: #F4CB68 ;
+    background-color: #82D4D1 ;
     height: 40px;
 }
 
@@ -570,6 +571,7 @@ export default {
   color: white;
   height: 40px;
   width: 100px;
+  border: none;
 }
 
 .b2 {
@@ -578,6 +580,7 @@ export default {
   color: white;
   height: 40px;
   width: 100px;
+  border: none;
 }
 
 .dat {
@@ -594,7 +597,4 @@ export default {
     margin-right: 23px;
 }
 
-.btodos {
-    background-color: red;
-}
 </style>

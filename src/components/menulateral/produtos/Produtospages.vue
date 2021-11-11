@@ -32,18 +32,30 @@
 <script>
 import Produtos from "./Produtos.vue";
 import Cadastrar from "./Meusprodutos.vue";
-
+import { mapState } from 'vuex'
 
 export default {
   name: "Produtospages",
-
   components: { Produtos, Cadastrar },
+  computed: mapState(['perfilVisible']),
 
   data() {
     return {
       tab: null,
     };
   },
+
+  methods: {
+    visible() {
+      if (this.perfilVisible == true)
+      this.$store.commit('togglePerfil')
+    },
+  },
+
+  mounted() {
+    this.visible();
+  }
+
 };
 </script>
 

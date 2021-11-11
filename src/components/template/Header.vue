@@ -14,16 +14,16 @@
             <v-avatar size="42">
                 <v-img :src="getImagem()"></v-img>
             </v-avatar>
-            <span class="texto"> {{user.nome}} </span>
-            <a @click="teste" v-show="!visible"> 
+            <span class="texto">Olá, {{user.nome}} </span>
+            <a @click="visible" v-show="!perfilVisible"> 
                 <i class="fas fa-caret-down fa-fw icone"> </i>
             </a>
-            <a @click="teste" v-show="visible">
+            <a @click="visible" v-show="perfilVisible">
                 <i class="fas fa-caret-up fa-fw icone"> </i>
             </a>
         </div>
     </div>
-    <div class="dropdowncontent" :class="{'drop':visible}" >
+    <div class="dropdowncontent" :class="{'drop':perfilVisible}" >
         <router-link to="/meuperfil" class="font2"> <i class="fas fa-cogs fa-fw font"></i> Meu Perfil </router-link>
         <a href class="font2"> <i class="fas fa-sign-out-alt fa-fw logout"> </i> Sair </a>
     </div>
@@ -35,18 +35,16 @@
 
 import axios from 'axios'
 import { baseApiurl } from '@/global'
+import { mapState } from 'vuex'
 
 export default {
     name: 'Header',
-    props: {
-        title: String,
-    },
-     data: function() {
+    computed: mapState(['perfilVisible']),
+    data: function() {
         return {
           texto: 'Werbert Viana',
           numero: '2',
-          visible: false,
-          user: {}
+          user: {},
         }
     },
     methods: {
@@ -55,8 +53,8 @@ export default {
             return axios.get(`${baseApiurl}/profile`).then(res => this.user = res.data);
         },
 
-        teste() {
-            this.visible = !this.visible
+        visible() {
+            this.$store.commit('togglePerfil')
         },
 
         getImagem() {

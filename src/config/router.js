@@ -5,6 +5,7 @@ import Vendaspages from "../components/menulateral/vendas/Vendaspages.vue"
 import Produtospages from "../components/menulateral/produtos/Produtospages.vue"
 import Relatoriospages from "../components/menulateral/relatorios/Relatoriospages.vue"
 import Meuperfil from "../components/Header/Meuperfil.vue"
+import Artistaspages from "../components/menulateral/usuarios/Artistaspages.vue"
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
         name: 'meuperfil',
         path: '/meuperfil',
         component: Meuperfil
+    },
+    {
+        name: 'artistaspages',
+        path: '/artistas',
+        component: Artistaspages
     }
 ]
 

@@ -3,8 +3,8 @@
         <div class="barra"><i class="fas fa-bars fa-fw menuicones"></i></div>
         <div class="menucontent">
             <div class="itens"><router-link to="/vendas" class="menuitens"> <i class="fas fa-comments-dollar fa-fw menuicones"></i> <div class="vendas"> VENDAS </div> </router-link> </div>
+            <div class="itens"><router-link to="/artistas" class="menuitens"> <i class="fas fa-paint-brush fa-fw menuicones"></i> <div class="artistas"> ARTISTAS </div> </router-link></div>
             <div class="itens"><router-link to="/produtos" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
-            <div class="itens" v-if="teste"><router-link to="/relatorios" class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="usuarios"> USUÁRIOS </div> </router-link></div>
             <div class="itens"><router-link to="/relatorios" class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="relatorios"> RELATÓRIOS </div> </router-link></div>
         </div>
     </div>
@@ -44,12 +44,8 @@ export default {
     
     .menuicones {
         color: white;
-        font-size: 2.5rem;
+        font-size: 2.3rem;
     }
-
-    /* .menucontent:hover {
-        width: 180px;
-    } */
 
     .barra {
         padding-top: 20px;
@@ -58,8 +54,6 @@ export default {
         align-content: center;
         justify-content: center;
         align-items: center;
-        /* background-color: rgba(0, 0, 0, 0.25); */
-        /* margin-top: 50px; */
     }
 
     .itens:hover {
@@ -80,7 +74,7 @@ export default {
         visibility: visible;
     }
 
-    .menu:hover .usuarios{
+    .menu:hover .artistas{
         visibility: visible;
     }
 
@@ -102,9 +96,9 @@ export default {
         visibility: hidden;
     }
 
-    .usuarios {
+    .artistas {
         color: white;
-        margin-left: 11px;
+        margin-left: 23px;
         visibility: hidden;
     }
 
@@ -114,7 +108,7 @@ export default {
         align-content: center;
         padding-left: 7px; 
         margin-left: 3px;
-        margin-top: 120px;
+        margin-top: 85px;
         width: 190px;
         border-radius: 10px;
     }

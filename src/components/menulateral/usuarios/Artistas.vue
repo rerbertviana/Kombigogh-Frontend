@@ -3,8 +3,8 @@
     <div class="form">
         <el-row v-if="pesquisar"> 
           <el-col :span="24" class="pesquisar">
-            <i class="fas fa-box fa-fw ico"></i>
-            <span class="letras"> PRODUTOS </span>
+            <i class="fas fa-paint-brush fa-fw ico"></i>
+            <span class="letras"> ARTISTAS </span>
             <el-input placeholder="Nome ou descrição produto" v-model="search" size="large">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
@@ -14,34 +14,32 @@
       <div v-if="cadastrar">
         <el-row>
           <el-col :span="24" class="titulo">
-            <span class="letras2">CADASTRAR PRODUTOS</span>
+            <span class="letras2">CADASTRAR ARTISTA</span>
           </el-col>
         </el-row>
         <el-row class="lin1" :gutter="15">
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-box fa-fw ico"></i>
+              <i class="fas fa-user-alt fa-fw ico"></i>
               <span class="letras nome">NOME</span>
               <el-input placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-hand-holding-usd fa-fw ico"></i>
-              <span class="letras preco">PREÇO</span>
-              <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
-              <i class="fas fa-th-large fa-fw ico qtd"></i>
-              <span class="letras">QTD</span>  
-              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
+              <i class="fas fa-envelope-open-text fa-fw ico"></i>
+              <span class="letras email">EMAIL</span>
+              <el-input placeholder="Informe seu e-mail" clearable></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row class="lin2" :gutter="15" >
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-pen-alt fa-fw ico"></i>
-              <span class="letras">DESCRIÇÃO</span>
-              <el-input placeholder="Descrição do produto" v-model="product.descricao" clearable></el-input>
+              <i class="fas fa-key fa-fw ico"></i>
+              <span class="letras">SENHA</span>
+              <el-input placeholder="Senha" class="espaco" clearable></el-input>
+              <el-input placeholder="Confirmação" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
@@ -169,7 +167,7 @@
     </div>
     <el-row class="tabela">
        <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+          <el-table :data="users.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
             <el-table-column width="95">
               <template slot-scope="scope">
                 <v-avatar size="70" rounded>
@@ -178,9 +176,8 @@
               </template>
             </el-table-column>
             <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
-            <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+            <el-table-column prop="email" label="EMAIL" ></el-table-column>
+            <el-table-column prop="telefone" label="TELEFONE"></el-table-column>
             <el-table-column label="AÇÕES" width="245">
               <template slot-scope="scope">
                 <div class="acoes">
@@ -204,7 +201,7 @@ export default {
   data() {
     return {
       fileList: [],
-      products: [],
+      users: [],
       product:{},
       options: [],
       options2: [],
@@ -273,17 +270,15 @@ export default {
         .then((res) => (this.options = res.data));
     },
 
-    getMyproducts() {
-      return axios
-        .get(`${baseApiurl}/usersproducts`)
-        .then((res) => (this.products = res.data.product));
+    getUsers() {
+        return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
     },
 
     getImagem(row) {
-      if(!row.imagem) {
-        return `http://localhost:3333/files/default.jpg`
+      if(!row.avatar) {
+        return `http://localhost:3333/files/default2.png`
       }
-      return `http://localhost:3333/files/${row.imagem}`
+      return `http://localhost:3333/files/${row.avatar}`
     }, 
 
     limpar() {
@@ -414,8 +409,7 @@ export default {
   },
 
   mounted() {
-    this.getMyproducts();
-    this.getCategories();
+   this.getUsers();
   },
 };
 </script>
@@ -478,11 +472,11 @@ export default {
 
 
 .nome {
-  margin-right: 65px;
+  margin-right: 22px;
 }
 
 .espaco {
-  margin-left: 8px;
+  margin-right: 10px;
 }
 
 .bavatar {
@@ -528,8 +522,8 @@ export default {
   margin-left: 20px;
 }
 
-.preco {
-  margin-right: 51px;
+.email {
+  margin-right: 20px;
 }
 
 .preco2 {
