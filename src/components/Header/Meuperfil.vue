@@ -4,9 +4,15 @@
     colocar visible meu perfil na store -->
   <div class="content">
     <div class="avatar">
-        <v-avatar rounded size="360">
+      <div class="end">
+        <v-avatar rounded size="310">
           <v-img :src="getImagem()" />
         </v-avatar>
+      </div>
+      <div class="end">
+        <el-button @click="getEditar" class="botao2 cor1 mt"><i class="fas fa-image fa-fw espaco"/>FOTO</el-button>
+        <el-button @click="getEditar" class="botao2 cor1 mt"><i class="fas fa-upload espaco"></i>UPLOAD</el-button>
+      </div>
     </div>
     <div class="info">
       <el-row class="titulo">MEU PERFIL</el-row>
@@ -26,13 +32,24 @@
         <el-input placeholder="Nome do artista" v-model="user.telefone" :disabled="edit" clearable></el-input>
       </el-row>
       <el-row class="linha2" >
-        <i class="fas fas fa-phone-square fa-fw ico"></i>
-        <span class="letras">TELEFONE</span>
-        <el-input placeholder="Nome do artista" v-model="user.telefone" :disabled="edit" clearable></el-input>
+        <i class="fas fa-key fa-fw ico"></i>
+        <span class="letras senha">SENHA</span>
+        <el-input placeholder="Nova senha" v-model="user.senha" :disabled="edit" class="espaco" clearable></el-input>
+        <el-input placeholder="Confirmação da senha" v-model="user.senha2" :disabled="edit" clearable></el-input>
       </el-row>
+      <!-- <el-row class="linha2" >
+        <el-col :span ="12">
+          <i class="fas fa-camera-retro fa-fw ico"></i>
+          <span class="letras">AVATAR</span>
+        </el-col>
+        <el-col :span ="12" class="end">
+          <el-button @click="getEditar" class="botao cor1">FOTO</el-button>
+          <el-button @click="getSalvar" class="botao cor2">UPLOAD</el-button>
+        </el-col>
+      </el-row> -->
       <el-row class="beditar">
-        <el-button @click="getEditar" class="b1">EDITAR</el-button>
-        <el-button @click="getSalvar" class="b2">SALVAR</el-button>
+        <el-button @click="getEditar" class="botao cor1">ALTERAR</el-button>
+        <el-button @click="getSalvar" class="botao cor2" :disabled="edit">SALVAR</el-button>
       </el-row>
     </div>
   </div>
@@ -50,6 +67,7 @@ export default {
   data() {
     return {
       user: {},
+      user2: {},
       edit: true,
     };
 },
@@ -72,10 +90,27 @@ export default {
       this.edit = false
     },
 
+    nomerepetido() {
+      this.$message({
+        showClose: true,
+        message:'Nome ou e-mail existente.',
+        type: 'error',
+      });
+    },
+
+    sucesso() {
+      this.$message({
+        showClose: true,
+        message:'Salvo com sucesso!  ',
+        type: 'success',
+      });
+      this.getUser();
+    },
+
     naointeiro() {
       this.$message({
         showClose: true,
-        message:'Oops, "QTD" precisa ser um valor inteiro.  ',
+        message:'"telefone" precisa ser um valor inteiro',
         type: 'error',
       });
     },
@@ -88,37 +123,82 @@ export default {
       });
     },
 
+    semconfirmacao() {
+      this.$message({
+        showClose: true,
+        message:'Por favor, digite a confirmação da senha.',
+        type: 'error',
+      });
+    },
+
+    semsenha() {
+      this.$message({
+        showClose: true,
+        message:'Por favor, digite a nova senha.',
+        type: 'error',
+      });
+    },
+
+    naoconfere() {
+      this.$message({
+        showClose: true,
+        message:'As senhas não conferem.',
+        type: 'error',
+      });
+    },
+
     verificar() {
      
       if(!this.user.nome || !this.user.email || !this.user.telefone) {
         this.campovazio();
         return false;
       }
-      if(!Number.isInteger(this.product.quantidade)) {
+      if(this.user.telefone % 1 !== 0) {
         this.naointeiro();
         return false;
       }
-      if(Number.isNaN(this.product.preco)){
-        this.naonumero();
+      if(!this.user.senha && !this.user.senha2) {
+        this.user2 = {
+          nome: this.user.nome,
+          email: this.user.email,
+          telefone: this.user.telefone
+        }
+      }
+      if(this.user.senha && !this.user.senha2) {
+        this.semconfirmacao();
         return false;
+      }
+      if(!this.user.senha && this.user.senha2) {
+        this.semsenha();
+        return false;
+      }
+      if(this.user.senha && this.user.senha2) {
+
+        if(this.user.senha !== this.user.senha2) {
+          this.naoconfere();
+          return false;
+        }
+        else {
+          this.user2 = {
+            nome: this.user.nome,
+            email: this.user.email,
+            telefone: this.user.telefone,
+            senha: this.user.senha,
+            confirmacao_senha: this.user.senha2
+          }
+        }
+        
       }
       return true;
     },
 
     salvar() {
-      this.product2 = {
-        nome: this.product.nome,
-        descricao: this.product.descricao,
-        preco: this.product.preco,
-        quantidade: this.product.quantidade
-      }
+
       if (this.verificar()) {
-        this.onUpload();
-        axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.product2)
+        axios.put(`${baseApiurl}/profile/`, this.user2)
         .then(() => {
-          this.limpar()
-          this.getPesquisar()
           this.sucesso()
+          this.edit = true
         })
         .catch(() => {
           this.nomerepetido();
@@ -127,7 +207,6 @@ export default {
     },
 
     getSalvar() {
-      this.edit = true
       this.salvar()
     }
   },
@@ -162,7 +241,7 @@ export default {
     .content {
       padding: 20px;
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 310px 1fr;
       grid-template-rows: 360px;
       grid-template-areas: "avatar info";
       box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
@@ -202,18 +281,6 @@ export default {
       justify-content: flex-end;
     }
 
-    .end2{
-      display: flex;
-      padding-right: 39px;
-      justify-content: flex-end;
-    }
-
-    .end3 {
-      padding-right: 37px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
     .titulo {
       display: flex;
       justify-content: center;
@@ -233,24 +300,51 @@ export default {
       margin-right: 52px;
     }
 
+    .senha {
+      margin-right: 45px;
+    }
+
     .beditar {
-      margin-top: 7px;
       display: flex;
       justify-content: flex-end;
     }
 
-    .b1 {
+    .botao {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      height: 40px;
+      width: 100px;
+      border: 0px;
+    }
+
+    .botao2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      height: 40px;
+      width: 200px;
+      border: 0px;
+    }
+
+    .cor1 {
       background-color: #82D4D1;
-      color: white;
-      border: 0px;
     }
 
-    .b2 {
+    .cor2 {
       background-color: #69F690;
-      color: white;
-      border: 0px;
     }
 
+    .espaco {
+      margin-right: 10px;
+    }
+    
+
+    .mt {
+      margin-top: 10px;
+    }
 
 
 
