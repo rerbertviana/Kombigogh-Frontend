@@ -525,7 +525,7 @@ export default {
 }
 
 .preco {
-  margin-right: 51px;
+  margin-right: 57px;
 }
 
 .preco2 {

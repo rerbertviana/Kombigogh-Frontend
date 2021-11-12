@@ -66,37 +66,33 @@
         <el-row class="lin1" :gutter="15">
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-box fa-fw ico"></i>
+              <i class="fas fa-user-alt fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do artista" v-model="product.nome" clearable></el-input>
+              <el-input placeholder="Nome do artista" v-model="user.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-hand-holding-usd fa-fw ico"></i>
-              <span class="letras preco2">PREÇO</span>
-              <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
-              <i class="fas fa-th-large fa-fw ico qtd"></i>
-              <span class="letras">QTD</span>  
-              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
+              <i class="fas fa-envelope-open-text fa-fw ico"></i>
+              <span class="letras email">EMAIL</span>
+              <el-input placeholder="Informe seu e-mail" v-model="user.email" clearable></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row class="lin2" :gutter="15" >
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-pen-alt fa-fw ico"></i>
-              <span class="letras">DESCRIÇÃO</span>
-              <el-input placeholder="Descrição do produto" v-model="product.descricao" clearable></el-input>
+              <i class="fas fa-key fa-fw ico"></i>
+              <span class="letras">SENHA</span>
+              <el-input type="password" placeholder="Senha" class="espaco" v-model="user.senha" clearable></el-input>
+              <el-input type="password" placeholder="Confirmação" v-model="user.senha2" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-paste fa-fw ico ico2"></i>
-              <span class="letras cat">CATEGORIA</span>
-              <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
-              </el-select>
+              <i class="fas fa-phone-square fa-fw ico"></i>
+              <span class="letras">TELEFONE</span>
+              <el-input v-mask="'(##) #####-####'" v-model="user.telefone" placeholder="(  ) xxxxx-xxxx" clearable></el-input>
             </div>
           </el-col>
         </el-row>
@@ -245,19 +241,16 @@ export default {
     
 
     getEditar(row) {
-      this.product = {
+      this.user = {
         id: row.id,
         nome: row.nome,
-        preco: row.preco,
-        quantidade: row.quantidade,
-        descricao: row.descricao,
+        email: row.email,
+        avatar: row.avatar,
       }
-      this.value = row.category_id;
       this.editar = true;
       this.pesquisar = false;
       this.cadastrar = false;
       this.excluir = false;
-
     },
 
 
@@ -311,7 +304,7 @@ export default {
     telefone() {
       this.$message({
         showClose: true,
-        message:'Oops, telefone incorreto.',
+        message:'Oops, telefone incompleto.',
         type: 'error',
       });
     },
@@ -335,12 +328,9 @@ export default {
         this.email()
         return false;
       }
-      if(this.user.telefone) {
-        const t = this.user.telefone
-        if (t.lenght < 5) {
-          this.telefone()
-          return false
-        }
+      if(this.user.telefone.length != 15) {
+        this.telefone()
+        return false
       }
       if(this.user.senha && this.user.senha2) {
 
@@ -355,14 +345,9 @@ export default {
             telefone: this.user.telefone,
             senha: this.user.senha
           }
-        }
-        
+        }  
       }
       return true;
-    },
-
-    reload() {
-      document.location.reload(true);
     },
 
     salvar() {
@@ -378,26 +363,26 @@ export default {
       }
     },
 
-    salvarEditar() {
-       this.product2 = {
-        nome: this.product.nome,
-        descricao: this.product.descricao,
-        preco: this.product.preco,
-        quantidade: this.product.quantidade
-      }
-      if (this.verificar()) {
-        this.onUpload();
-        axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.product2)
-        .then(() => {
-          this.limpar()
-          this.getPesquisar()
-          this.sucesso()
-        })
-        .catch(() => {
-          this.nomerepetido();
-        })
-      }
-    },
+    // criar rotina backend para att dados de usuários
+    // salvarEditar() {
+    //   this.user2 = {
+    //   nome: this.user.nome,
+    //   email: this.user.email,
+    //   senha: this.user.senha,
+    //   telefone: this.user.telefone
+    // }
+    //   if (this.verificar()) {
+    //     axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.user2)
+    //     .then(() => {
+    //       this.limpar()
+    //       this.getPesquisar()
+    //       this.sucesso()
+    //     })
+    //     .catch(() => {
+    //       this.nomerepetido();
+    //     })
+    //   }
+    // },
 
   },
 

@@ -62,10 +62,10 @@
                 </v-avatar>
               </template>
             </el-table-column>
-            <el-table-column prop="nome" label="NOME"></el-table-column>
+            <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
             <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-            <el-table-column prop="preco" label="PREÇO"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+            <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+            <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
           </el-table>
         </div>
     </el-row>
