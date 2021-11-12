@@ -22,14 +22,14 @@
             <div class="linhaflex">
               <i class="fas fa-user-alt fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
+              <el-input placeholder="Nome do artista" v-model="user.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-envelope-open-text fa-fw ico"></i>
               <span class="letras email">EMAIL</span>
-              <el-input placeholder="Informe seu e-mail" clearable></el-input>
+              <el-input placeholder="Informe seu e-mail" v-model="user.email" clearable></el-input>
             </div>
           </el-col>
         </el-row>
@@ -38,19 +38,15 @@
             <div class="linhaflex">
               <i class="fas fa-key fa-fw ico"></i>
               <span class="letras">SENHA</span>
-              <el-input placeholder="Senha" class="espaco" clearable></el-input>
-              <el-input placeholder="Confirmação" clearable></el-input>
+              <el-input type="password" placeholder="Senha" class="espaco" v-model="user.senha" clearable></el-input>
+              <el-input type="password" placeholder="Confirmação" v-model="user.senha2" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-paste fa-fw ico ico2"></i>
-              <span class="letras cat">CATEGORIA</span>
-              <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
-              </el-select>
-              <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
-              <el-button class="bavatar b4" @click="$refs.fileInput.click()"><i class="fas fa-image fa-fw"></i> FOTO</el-button>
+              <i class="fas fa-phone-square fa-fw ico"></i>
+              <span class="letras">TELEFONE</span>
+              <el-input v-mask="'(##) #####-####'" v-model="user.telefone" placeholder="(  ) xxxxx-xxxx" clearable></el-input>
             </div>
           </el-col>
         </el-row>
@@ -72,7 +68,7 @@
             <div class="linhaflex">
               <i class="fas fa-box fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
+              <el-input placeholder="Nome do artista" v-model="product.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
@@ -101,8 +97,6 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <input style="display:none" type="file" @change="onFileSelected" ref="fileInput"/>
-              <el-button class="bavatar b2" @click="$refs.fileInput.click()"><i class="fas fa-image fa-fw"></i> FOTO</el-button>
             </div>
           </el-col>
         </el-row>
@@ -153,7 +147,6 @@
               <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-button class="bavatar b3"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
             </div>
           </el-col>
         </el-row>
@@ -202,6 +195,8 @@ export default {
     return {
       fileList: [],
       users: [],
+      user: {},
+      user2: {},
       product:{},
       options: [],
       options2: [],
@@ -247,6 +242,7 @@ export default {
       this.editar = false;
       this.excluir = false;
     },
+    
 
     getEditar(row) {
       this.product = {
@@ -264,11 +260,6 @@ export default {
 
     },
 
-    getCategories() {
-      return axios
-        .get(`${baseApiurl}/categories`)
-        .then((res) => (this.options = res.data));
-    },
 
     getUsers() {
         return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
@@ -282,22 +273,13 @@ export default {
     }, 
 
     limpar() {
-      this.product = {};
-      this.value = '';
-    },
-    
-    naonumero() {
-      this.$message({
-        showClose: true,
-        message:'Oops, "preço" precisa ser um valor numérico.  ',
-        type: 'error',
-      });
+      this.user = {};
     },
 
-    naointeiro() {
+    email() {
       this.$message({
         showClose: true,
-        message:'Oops, "QTD" precisa ser um valor inteiro.  ',
+        message:'Oops, email incorreto.  ',
         type: 'error',
       });
     },
@@ -309,11 +291,27 @@ export default {
         type: 'error',
       });
     },
-    
+
+    naoconfere() {
+      this.$message({
+        showClose: true,
+        message:'As senhas não correspondem.',
+        type: 'error',
+      });
+    },
+
     nomerepetido() {
       this.$message({
         showClose: true,
-        message:'Oops, já existe produto com esse nome.  ',
+        message:'Nome ou e-mail existente.',
+        type: 'error',
+      });
+    },
+
+    telefone() {
+      this.$message({
+        showClose: true,
+        message:'Oops, telefone incorreto.',
         type: 'error',
       });
     },
@@ -324,22 +322,41 @@ export default {
         message:'Salvo com sucesso!  ',
         type: 'success',
       });
-      this.getMyproducts()
+      this.getUsers();
     },
 
     verificar() {
      
-      if(!this.product.nome || !this.product.preco || !this.product.quantidade || !this.product.descricao || !this.value) {
+      if(!this.user.nome || !this.user.email || !this.user.telefone || !this.user.senha || !this.user.senha2) {
         this.campovazio();
         return false;
       }
-      if(!Number.isInteger(this.product.quantidade)) {
-        this.naointeiro();
+      if(this.user.email.indexOf("@") == -1) {
+        this.email()
         return false;
       }
-      if(Number.isNaN(this.product.preco)){
-        this.naonumero();
-        return false;
+      if(this.user.telefone) {
+        const t = this.user.telefone
+        if (t.lenght < 5) {
+          this.telefone()
+          return false
+        }
+      }
+      if(this.user.senha && this.user.senha2) {
+
+        if(this.user.senha !== this.user.senha2) {
+          this.naoconfere();
+          return false;
+        }
+        else {
+          this.user2 = {
+            nome: this.user.nome,
+            email: this.user.email,
+            telefone: this.user.telefone,
+            senha: this.user.senha
+          }
+        }
+        
       }
       return true;
     },
@@ -350,14 +367,10 @@ export default {
 
     salvar() {
       if (this.verificar()) {
-        axios.post(`${baseApiurl}/products/${this.value}`, this.product)
-        .then((res) => {
-          this.product = res.data
-          this.onUpload()
+        axios.post(`${baseApiurl}/users`, this.user2)
+        .then(() => {
           this.limpar()
-          this.getPesquisar()
           this.sucesso()
-          //this.reload()
         })
         .catch(() => {
           this.nomerepetido();
@@ -386,26 +399,6 @@ export default {
       }
     },
 
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-
-    onFileSelected(event) {
-      this.selectedFile = event.target.files[0]
-    },
-
-    async onUpload() {
-      if (this.selectedFile) {
-        const fd = new FormData();
-        fd.append('imagem', this.selectedFile)
-        await axios.patch(`${baseApiurl}/products/avatar/${this.product.id}`, 
-        fd, {
-          headers: {
-          'Content-Type': 'multipart/form-data'
-          }
-        })
-      }
-    }
   },
 
   mounted() {
@@ -415,6 +408,7 @@ export default {
 </script>
 
 <style scoped>
+
 .meusprodutos {
   margin-top: 40px;
   margin-right: 60px;
@@ -514,16 +508,12 @@ export default {
   background-color: #82D4D1;
 }
 
-.cat {
-  margin-right: 15px;
-}
-
 .qtd {
   margin-left: 20px;
 }
 
 .email {
-  margin-right: 20px;
+  margin-right: 50px;
 }
 
 .preco2 {
@@ -554,11 +544,6 @@ export default {
   align-items: center;
   margin-bottom: 20px;
 }
-
-.ico3 {
-  margin-left: 8px;
-}
-
 
 .acoes {
   display: flex;

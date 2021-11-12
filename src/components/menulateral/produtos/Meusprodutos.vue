@@ -391,10 +391,6 @@ export default {
       }
     },
 
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-
     onFileSelected(event) {
       this.selectedFile = event.target.files[0]
     },
