@@ -118,7 +118,7 @@ export default {
       this.$message({
         showClose: true,
         message:'Operação cancelada.',
-        type: 'warning'
+        type: 'info'
       });
     },
 

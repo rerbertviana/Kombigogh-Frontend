@@ -60,7 +60,7 @@
       <div v-if="editar" >
         <el-row>
            <el-col :span="24" class="titulo titulo2">
-            <span class="letras2">EDITAR PRODUTOS</span>
+            <span class="letras2">EDITAR ARTISTA</span>
           </el-col>
         </el-row>
         <el-row class="lin1" :gutter="15">
@@ -106,49 +106,46 @@
       <div v-if="excluir" >
         <el-row>
            <el-col :span="24" class="titulo titulo3">
-            <span class="letras2">EXCLUIR PRODUTOS</span>
+            <span class="letras2">EXCLUIR ARTISTA</span>
           </el-col>
         </el-row>
         <el-row class="lin1" :gutter="15">
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-box fa-fw ico"></i>
+              <i class="fas fa-user-alt fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
+              <el-input placeholder="Nome do artista" v-model="user.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-hand-holding-usd fa-fw ico"></i>
-              <span class="letras preco2">PREÇO</span>
-              <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
-              <i class="fas fa-th-large fa-fw ico qtd"></i>
-              <span class="letras">QTD</span>  
-              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
+              <i class="fas fa-envelope-open-text fa-fw ico"></i>
+              <span class="letras email">EMAIL</span>
+              <el-input placeholder="Informe seu e-mail" v-model="user.email" clearable></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row class="lin2" :gutter="15" >
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-pen-alt fa-fw ico"></i>
-              <span class="letras">DESCRIÇÃO</span>
-              <el-input placeholder="Descrição do produto" v-model="product.descricao" clearable></el-input>
+              <i class="fas fa-key fa-fw ico"></i>
+              <span class="letras">SENHA</span>
+              <el-input type="password" placeholder="Senha" class="espaco" v-model="user.senha" clearable></el-input>
+              <el-input type="password" placeholder="Confirmação" v-model="user.senha2" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
-              <i class="fas fa-paste fa-fw ico ico2"></i>
-              <span class="letras cat">CATEGORIA</span>
-              <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-                <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
-              </el-select>
+              <i class="fas fa-phone-square fa-fw ico"></i>
+              <span class="letras">TELEFONE</span>
+              <el-input v-model="user.telefone" placeholder="(  ) xxxxx-xxxx" clearable></el-input>
             </div>
           </el-col>
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button  class="botao b3">EXCLUIR</el-button>
+            <el-button  type="text" @click="open" class="botao b3">EXCLUIR</el-button>
+            <el-button  class="botao b3">DESATIVAR</el-button>
             <el-button  @click="getPesquisar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
@@ -213,13 +210,13 @@ export default {
   methods: {
 
     getExcluir(row) {
-      this.product = {
+      this.user = {
+        id: row.id,
         nome: row.nome,
-        preco: row.preco,
-        quantidade: row.quantidade,
-        descricao: row.descricao,
+        email: row.email,
+        telefone: row.telefone,
+        avatar: row.avatar,
       }
-      this.value = row.category_id;
       this.cadastrar = false;
       this.pesquisar = false;
       this.excluir = true;
@@ -255,7 +252,7 @@ export default {
 
 
     getUsers() {
-        return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
+      return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
     },
 
     getImagem(row) {
@@ -309,6 +306,15 @@ export default {
       });
     },
 
+    excluirSucesso() {
+      this.$message({
+        showClose: true,
+        message:'Excluido com sucesso!  ',
+        type: 'success',
+      });
+      this.getUsers();
+    },
+
     sucesso() {
       this.$message({
         showClose: true,
@@ -355,6 +361,7 @@ export default {
         axios.post(`${baseApiurl}/users`, this.user2)
         .then(() => {
           this.limpar()
+          this.getPesquisar()
           this.sucesso()
         })
         .catch(() => {
@@ -363,26 +370,47 @@ export default {
       }
     },
 
-    // criar rotina backend para att dados de usuários
-    // salvarEditar() {
-    //   this.user2 = {
-    //   nome: this.user.nome,
-    //   email: this.user.email,
-    //   senha: this.user.senha,
-    //   telefone: this.user.telefone
-    // }
-    //   if (this.verificar()) {
-    //     axios.put(`${baseApiurl}/productsprofile/${this.product.id}/${this.value}`, this.user2)
-    //     .then(() => {
-    //       this.limpar()
-    //       this.getPesquisar()
-    //       this.sucesso()
-    //     })
-    //     .catch(() => {
-    //       this.nomerepetido();
-    //     })
-    //   }
-    // },
+    deletarArtista() {
+      axios.delete(`${baseApiurl}/users/${this.user.id}`)
+    },
+
+    salvarEditar() {
+      if (this.verificar()) {
+        this.user2 = {
+          nome: this.user.nome,
+          email: this.user.email,
+          senha: this.user.senha,
+          confirmacao_senha: this.user.senha2,
+          telefone: this.user.telefone,
+        }
+        axios.put(`${baseApiurl}/users/${this.user.id}`, this.user2)
+        .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+        .catch(() => {
+          this.nomerepetido();
+        })
+      }
+    },
+
+    open() {
+      this.$confirm('Tem certeza que deseja excluir esse artista?', 'ATENÇÃO!', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'CANCELAR',
+        type: 'warning'
+      }).then(() => {
+        this.deletarArtista()
+        this.getPesquisar()
+        this.excluirSucesso()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        });          
+      });
+    }
 
   },
 
