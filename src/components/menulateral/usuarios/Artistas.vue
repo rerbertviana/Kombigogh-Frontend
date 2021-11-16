@@ -214,7 +214,6 @@ export default {
         id: row.id,
         nome: row.nome,
         email: row.email,
-        telefone: row.telefone,
         avatar: row.avatar,
       }
       this.cadastrar = false;
@@ -405,7 +404,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: 'Delete canceled'
+          message: 'Operação cancelada.'
         });          
       });
     }
