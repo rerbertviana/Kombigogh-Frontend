@@ -114,14 +114,14 @@
             <div class="linhaflex">
               <i class="fas fa-user-alt fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do artista" v-model="user.nome" clearable></el-input>
+              <el-input placeholder="Nome do artista" disabled v-model="user.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-envelope-open-text fa-fw ico"></i>
               <span class="letras email">EMAIL</span>
-              <el-input placeholder="Informe seu e-mail" v-model="user.email" clearable></el-input>
+              <el-input placeholder="Informe seu e-mail" disabled v-model="user.email" clearable></el-input>
             </div>
           </el-col>
         </el-row>
@@ -130,15 +130,15 @@
             <div class="linhaflex">
               <i class="fas fa-key fa-fw ico"></i>
               <span class="letras">SENHA</span>
-              <el-input type="password" placeholder="Senha" class="espaco" v-model="user.senha" clearable></el-input>
-              <el-input type="password" placeholder="Confirmação" v-model="user.senha2" clearable></el-input>
+              <el-input type="password" disabled placeholder="Senha" class="espaco" v-model="user.senha" clearable></el-input>
+              <el-input type="password" disabled placeholder="Confirmação" v-model="user.senha2" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-phone-square fa-fw ico"></i>
               <span class="letras">TELEFONE</span>
-              <el-input v-model="user.telefone" placeholder="(  ) xxxxx-xxxx" clearable></el-input>
+              <el-input v-model="user.telefone" disabled placeholder="(  ) xxxxx-xxxx" clearable></el-input>
             </div>
           </el-col>
         </el-row>
@@ -312,7 +312,6 @@ export default {
         message:'Excluido com sucesso!  ',
         type: 'success',
       });
-      this.getUsers();
     },
 
     sucesso() {
@@ -321,7 +320,6 @@ export default {
         message:'Salvo com sucesso!  ',
         type: 'success',
       });
-      this.getUsers();
     },
 
     verificar() {
@@ -417,6 +415,10 @@ export default {
   mounted() {
    this.getUsers();
   },
+
+  updated() {
+    this.getUsers();
+  }
 };
 </script>
 
