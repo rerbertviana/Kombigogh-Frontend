@@ -329,7 +329,6 @@ export default {
         message:'Salvo com sucesso!  ',
         type: 'success',
       });
-      this.getMyproducts()
     },
 
     verificar() {
@@ -362,7 +361,6 @@ export default {
           this.limpar()
           this.getPesquisar()
           this.sucesso()
-          //this.reload()
         })
         .catch(() => {
           this.nomerepetido();
@@ -412,6 +410,10 @@ export default {
   mounted() {
     this.getMyproducts();
     this.getCategories();
+  },
+
+  updated() {
+    this.getMyproducts()
   },
 };
 </script>

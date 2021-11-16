@@ -242,6 +242,7 @@ export default {
         nome: row.nome,
         email: row.email,
         avatar: row.avatar,
+        telefone: row.telefone
       }
       this.editar = true;
       this.pesquisar = false;
