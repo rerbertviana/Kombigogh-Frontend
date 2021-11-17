@@ -244,11 +244,21 @@ export default {
       this.limpar();
     },
 
+    cancelar() {
+      this.$message({
+        showClose: true,
+        message:'Operação cancelada.',
+        type: 'info'
+      });
+    },
+
     getPesquisar(){
       this.cadastrar = false;
       this.pesquisar = true;
       this.editar = false;
       this.excluir = false;
+
+      this.cancelar()
     },
 
     getEditar(row) {

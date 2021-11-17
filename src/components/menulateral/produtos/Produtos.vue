@@ -66,6 +66,11 @@
             <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
             <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
             <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+            <el-table-column label="STATUS" width="110">
+              <template slot-scope="scope">
+                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
     </el-row>

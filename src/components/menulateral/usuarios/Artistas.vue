@@ -98,6 +98,7 @@
         </el-row>
         <el-row >
           <div class="botoesedit">
+            <el-button v-if="!user.ativo" @click="ativarUser" class="botao b2">ATIVAR</el-button>
             <el-button  @click="salvarEditar" class="botao b2">SALVAR</el-button>
             <el-button  @click="getPesquisar" class="botao b2">CANCELAR</el-button>
           </div>
@@ -144,9 +145,9 @@
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button  type="text" @click="open" class="botao b3">EXCLUIR</el-button>
-            <el-button  class="botao b3">DESATIVAR</el-button>
-            <el-button  @click="getPesquisar" class="botao b3">CANCELAR</el-button>
+            <el-button type="text" @click="open" class="botao b3">EXCLUIR</el-button>
+            <el-button v-if="user.ativo" @click="desativarUser" class="botao b3">DESATIVAR</el-button>
+            <el-button @click="getPesquisar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -164,6 +165,11 @@
             <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
             <el-table-column prop="email" label="EMAIL" ></el-table-column>
             <el-table-column prop="telefone" label="TELEFONE"></el-table-column>
+            <el-table-column label="STATUS" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="AÇÕES" width="245">
               <template slot-scope="scope">
                 <div class="acoes">
@@ -215,6 +221,7 @@ export default {
         nome: row.nome,
         email: row.email,
         avatar: row.avatar,
+        ativo: row.ativo,
       }
       this.cadastrar = false;
       this.pesquisar = false;
@@ -228,11 +235,21 @@ export default {
       this.limpar();
     },
 
+    cancelar() {
+      this.$message({
+        showClose: true,
+        message:'Operação cancelada.',
+        type: 'info'
+      });
+    },
+
     getPesquisar(){
       this.cadastrar = false;
       this.pesquisar = true;
       this.editar = false;
       this.excluir = false;
+
+      this.cancelar();
     },
     
 
@@ -242,7 +259,8 @@ export default {
         nome: row.nome,
         email: row.email,
         avatar: row.avatar,
-        telefone: row.telefone
+        telefone: row.telefone,
+        ativo: row.ativo
       }
       this.editar = true;
       this.pesquisar = false;
@@ -250,6 +268,23 @@ export default {
       this.excluir = false;
     },
 
+    ativarUser() {
+      return axios.post(`${baseApiurl}/users/active/${this.user.id}`)
+      .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+    },
+
+    desativarUser() {
+      return axios.post(`${baseApiurl}/users/disable/${this.user.id}`)
+      .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+    },
 
     getUsers() {
       return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
