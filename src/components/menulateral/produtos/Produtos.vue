@@ -5,11 +5,10 @@
         <el-col :span="13">
           <div class="l1c1">
             <i class="fas fa-paint-brush fa-fw ico"></i>
-            <span class="letras">ARTISTA</span>
             <el-select
               v-model="value"
               filterable
-              placeholder="Selecione"
+              placeholder="ARTISTAS"
               clearable
               no-match-text="Não encontrado"
             >
@@ -22,11 +21,10 @@
               </el-option>
             </el-select>
             <i class="fas fa-paste fa-fw ico ico2"></i>
-            <span class="letras">CATEGORIA</span>
             <el-select
               v-model="value2"
               filterable
-              placeholder="Selecione"
+              placeholder="CATEGORIA"
               clearable
               no-match-text="Não encontrado"
             >

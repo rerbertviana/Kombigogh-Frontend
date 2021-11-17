@@ -59,7 +59,7 @@
         <el-row >
           <div class="botoesedit">
             <el-button  @click="salvar" class="botao b4">SALVAR</el-button>
-            <el-button  @click="getPesquisar" class="botao b4">CANCELAR</el-button>
+            <el-button  @click="cancelar" class="botao b4">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -80,7 +80,7 @@
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-hand-holding-usd fa-fw ico"></i>
-              <span class="letras preco2">PREÇO</span>
+              <span class="letras preco">PREÇO</span>
               <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
               <i class="fas fa-th-large fa-fw ico qtd"></i>
               <span class="letras">QTD</span>  
@@ -110,8 +110,9 @@
         </el-row>
         <el-row >
           <div class="botoesedit">
+            <el-button  @click="ativarProduto" v-if="!product.ativo" class="botao b2">ATIVAR</el-button>
             <el-button  @click="salvarEditar" class="botao b2">SALVAR</el-button>
-            <el-button  @click="getPesquisar" class="botao b2">CANCELAR</el-button>
+            <el-button  @click="cancelar" class="botao b2">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -126,17 +127,17 @@
             <div class="linhaflex">
               <i class="fas fa-box fa-fw ico"></i>
               <span class="letras nome">NOME</span>
-              <el-input placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
+              <el-input disabled placeholder="Nome do produto" v-model="product.nome" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-hand-holding-usd fa-fw ico"></i>
-              <span class="letras preco2">PREÇO</span>
-              <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
+              <span class="letras preco">PREÇO</span>
+              <el-input-number disabled size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
               <i class="fas fa-th-large fa-fw ico qtd"></i>
               <span class="letras">QTD</span>  
-              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
+              <el-input-number disabled size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
             </div>
           </el-col>
         </el-row>
@@ -145,24 +146,25 @@
             <div class="linhaflex">
               <i class="fas fa-pen-alt fa-fw ico"></i>
               <span class="letras">DESCRIÇÃO</span>
-              <el-input placeholder="Descrição do produto" v-model="product.descricao" clearable></el-input>
+              <el-input disabled placeholder="Descrição do produto" v-model="product.descricao" clearable></el-input>
             </div>
           </el-col>
           <el-col :span="12">
             <div class="linhaflex">
               <i class="fas fa-paste fa-fw ico ico2"></i>
               <span class="letras cat">CATEGORIA</span>
-              <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+              <el-select disabled v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
                 <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
               </el-select>
-              <el-button class="bavatar b3"> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
+              <el-button class="bavatar b3" disabled> <i class="fas fa-image fa-fw"></i> FOTO</el-button> 
             </div>
           </el-col>
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button  class="botao b3">EXCLUIR</el-button>
-            <el-button  @click="getPesquisar" class="botao b3">CANCELAR</el-button>
+            <el-button @click="open" class="botao b3">EXCLUIR</el-button>
+            <el-button @click="desativarProduto" class="botao b3">DESATIVAR</el-button>
+            <el-button @click="cancelar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -181,6 +183,11 @@
             <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
             <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
             <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+            <el-table-column label="STATUS" width="100">
+              <template slot-scope="scope">
+                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="AÇÕES" width="245">
               <template slot-scope="scope">
                 <div class="acoes">
@@ -226,10 +233,12 @@ export default {
 
     getExcluir(row) {
       this.product = {
+        id: row.id,
         nome: row.nome,
         preco: row.preco,
         quantidade: row.quantidade,
         descricao: row.descricao,
+        ativo: row.ativo
       }
       this.value = row.category_id;
       this.cadastrar = false;
@@ -245,6 +254,11 @@ export default {
     },
 
     cancelar() {
+      this.cadastrar = false;
+      this.pesquisar = true;
+      this.editar = false;
+      this.excluir = false;
+
       this.$message({
         showClose: true,
         message:'Operação cancelada.',
@@ -257,8 +271,6 @@ export default {
       this.pesquisar = true;
       this.editar = false;
       this.excluir = false;
-
-      this.cancelar()
     },
 
     getEditar(row) {
@@ -268,6 +280,7 @@ export default {
         preco: row.preco,
         quantidade: row.quantidade,
         descricao: row.descricao,
+        ativo: row.ativo
       }
       this.value = row.category_id;
       this.editar = true;
@@ -414,6 +427,53 @@ export default {
           }
         })
       }
+    },
+
+    excluirSucesso() {
+      this.$message({
+        showClose: true,
+        message:'Excluido com sucesso!  ',
+        type: 'success',
+      });
+    },
+
+    excluirProduto() {
+      axios.delete(`${baseApiurl}/products/${this.product.id}`)
+    },
+
+    desativarProduto() {
+      return axios.post(`${baseApiurl}/products/disable/${this.product.id}`)
+      .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+    },
+
+    ativarProduto() {
+      return axios.post(`${baseApiurl}/products/active/${this.product.id}`)
+      .then(() => {
+          this.limpar()
+          this.getPesquisar()
+          this.sucesso()
+        })
+    },
+
+    open() {
+      this.$confirm('Tem certeza que deseja excluir esse produto?', 'ATENÇÃO!', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'CANCELAR',
+        type: 'warning'
+      }).then(() => {
+        this.excluirProduto()
+        this.getPesquisar()
+        this.excluirSucesso()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Operação cancelada.'
+        });          
+      });
     }
   },
 
@@ -538,10 +598,6 @@ export default {
 
 .preco {
   margin-right: 57px;
-}
-
-.preco2 {
-  margin-right: 58px;
 }
 
 .titulo {

@@ -132,7 +132,7 @@ export default {
       },
 
       getProducts() {
-        return axios.get(`${baseApiurl}/products`).then(res => this.products = res.data);
+        return axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
       },
 
       getCategories() {

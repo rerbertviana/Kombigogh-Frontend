@@ -53,7 +53,7 @@
         <el-row >
           <div class="botoesedit">
             <el-button  @click="salvar" class="botao b4">SALVAR</el-button>
-            <el-button  @click="getPesquisar" class="botao b4">CANCELAR</el-button>
+            <el-button  @click="cancelar" class="botao b4">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -100,7 +100,7 @@
           <div class="botoesedit">
             <el-button v-if="!user.ativo" @click="ativarUser" class="botao b2">ATIVAR</el-button>
             <el-button  @click="salvarEditar" class="botao b2">SALVAR</el-button>
-            <el-button  @click="getPesquisar" class="botao b2">CANCELAR</el-button>
+            <el-button  @click="cancelar" class="botao b2">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -147,7 +147,7 @@
           <div class="botoesedit">
             <el-button type="text" @click="open" class="botao b3">EXCLUIR</el-button>
             <el-button v-if="user.ativo" @click="desativarUser" class="botao b3">DESATIVAR</el-button>
-            <el-button @click="getPesquisar" class="botao b3">CANCELAR</el-button>
+            <el-button @click="cancelar" class="botao b3">CANCELAR</el-button>
           </div>
         </el-row>
       </div>
@@ -164,7 +164,7 @@
             </el-table-column>
             <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
             <el-table-column prop="email" label="EMAIL" ></el-table-column>
-            <el-table-column prop="telefone" label="TELEFONE"></el-table-column>
+            <el-table-column prop="telefone" label="TELEFONE" width="145"></el-table-column>
             <el-table-column label="STATUS" width="100">
               <template slot-scope="scope">
                 <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
@@ -236,6 +236,11 @@ export default {
     },
 
     cancelar() {
+      this.cadastrar = false;
+      this.pesquisar = true;
+      this.editar = false;
+      this.excluir = false;
+
       this.$message({
         showClose: true,
         message:'Operação cancelada.',
@@ -248,8 +253,6 @@ export default {
       this.pesquisar = true;
       this.editar = false;
       this.excluir = false;
-
-      this.cancelar();
     },
     
 
