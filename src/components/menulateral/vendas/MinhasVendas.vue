@@ -100,6 +100,7 @@
         <div class="titulos">
           <el-col class="l3 l3c1">CLIENTE</el-col>
           <el-col class="l3">VENDEDOR</el-col>
+          <el-col class="l3">PAGAMENTO</el-col>
           <el-col class="l3 l3c4">STATUS</el-col>
         </div>
       </el-row>
@@ -107,6 +108,7 @@
         <div class="conteudo">
           <el-col class="l4">{{ pedidos.cliente }}</el-col>
           <el-col class="l4">{{ pedidos.vendedor }}</el-col>
+          <el-col class="l4">{{ pedidos.pagamento }}</el-col>
           <el-col class="l4">{{ pedidos.status }}</el-col>
         </div>
       </el-row>
