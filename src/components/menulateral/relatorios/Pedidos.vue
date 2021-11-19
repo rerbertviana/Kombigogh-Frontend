@@ -28,8 +28,7 @@
                   </el-option>
                 </el-select>
                 <i class="fas fa-check fa-fw ico2"></i>
-                <span class="letras"> STATUS </span>
-                <el-select v-model="value4" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
+                <el-select v-model="value4" filterable placeholder="STATUS" clearable no-match-text="Não encontrado">
                   <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -150,7 +149,7 @@ export default {
   methods: {
     
     getUsers(){
-      return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
+      return axios.get(`${baseApiurl}/users/adm`).then(res => this.options = res.data);
     },
 
     getFilter() {

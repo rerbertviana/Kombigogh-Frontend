@@ -140,7 +140,7 @@ export default {
       },
 
       getUsers() {
-        return axios.get(`${baseApiurl}/users`).then(res => this.options2 = res.data);
+        return axios.get(`${baseApiurl}/users/adm`).then(res => this.options2 = res.data);
       },
 
       getImagem(row) {

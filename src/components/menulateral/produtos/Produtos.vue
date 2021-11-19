@@ -144,7 +144,7 @@ export default {
 
     getUsers() {
       return axios
-        .get(`${baseApiurl}/users`)
+        .get(`${baseApiurl}/users/adm`)
         .then((res) => (this.options = res.data));
     },
 

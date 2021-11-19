@@ -162,7 +162,6 @@
         </el-row>
         <el-row >
           <div class="botoesedit">
-            <el-button @click="open" class="botao b3">EXCLUIR</el-button>
             <el-button @click="desativarProduto" class="botao b3">DESATIVAR</el-button>
             <el-button @click="cancelar" class="botao b3">CANCELAR</el-button>
           </div>
@@ -311,7 +310,7 @@ export default {
 
     limpar() {
       this.product = {};
-      this.value = '';
+      this.value = '';  
     },
     
     naonumero() {
@@ -427,27 +426,29 @@ export default {
           }
         })
       }
+      this.selectedFile = null;
     },
 
-    excluirSucesso() {
+    isDisable() {
       this.$message({
         showClose: true,
-        message:'Excluido com sucesso!  ',
-        type: 'success',
+        message:'Produto já está inativo.',
+        type: 'info',
       });
     },
 
-    excluirProduto() {
-      axios.delete(`${baseApiurl}/products/${this.product.id}`)
-    },
-
     desativarProduto() {
-      return axios.post(`${baseApiurl}/products/disable/${this.product.id}`)
-      .then(() => {
+      if(this.product.ativo === false) {
+        this.isDisable()
+      }
+      else {
+        return axios.post(`${baseApiurl}/products/disable/${this.product.id}`)
+        .then(() => {
           this.limpar()
           this.getPesquisar()
           this.sucesso()
         })
+      }
     },
 
     ativarProduto() {
@@ -459,22 +460,6 @@ export default {
         })
     },
 
-    open() {
-      this.$confirm('Tem certeza que deseja excluir esse produto?', 'ATENÇÃO!', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'CANCELAR',
-        type: 'warning'
-      }).then(() => {
-        this.excluirProduto()
-        this.getPesquisar()
-        this.excluirSucesso()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: 'Operação cancelada.'
-        });          
-      });
-    }
   },
 
   mounted() {
@@ -489,6 +474,7 @@ export default {
 </script>
 
 <style scoped>
+
 .meusprodutos {
   margin-top: 40px;
   margin-right: 60px;
@@ -505,6 +491,7 @@ export default {
   border-radius: 10px;
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
+
 .tabela {
   margin-top: 30px;
 }

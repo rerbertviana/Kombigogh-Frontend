@@ -128,7 +128,6 @@ export default {
         message:'Salvo com sucesso!  ',
         type: 'success',
       });
-      this.getUser();
     },
 
     campovazio() {

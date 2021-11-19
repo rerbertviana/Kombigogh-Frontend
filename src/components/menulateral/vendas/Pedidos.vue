@@ -308,7 +308,7 @@ export default {
         },
 
         getUsers() {
-            return axios.get(`${baseApiurl}/users`).then(res => this.options = res.data);
+            return axios.get(`${baseApiurl}/users/adm`).then(res => this.options = res.data);
         },
 
         getOrdersUsersStatus() {
