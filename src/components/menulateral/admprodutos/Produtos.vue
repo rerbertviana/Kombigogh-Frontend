@@ -33,7 +33,7 @@
       <el-row>
         <el-col :span="24" class="titulo cor2">
         <span class="letras2">EDITAR PRODUTOS</span>
-      </el-col>
+        </el-col>
       </el-row>
       <el-row class="linha" :gutter="15">
       <el-col :span="12">
@@ -375,6 +375,14 @@ export default {
       this.$message({
         showClose: true,
         message:'Oops, existem campos vazios.  ',
+        type: 'error',
+      });
+    },
+
+    nomerepetido() {
+      this.$message({
+        showClose: true,
+        message:'Oops, já existe produto com esse nome.  ',
         type: 'error',
       });
     },

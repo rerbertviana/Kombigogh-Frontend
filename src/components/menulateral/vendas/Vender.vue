@@ -1,48 +1,26 @@
 <template>
-
   <div class="vendervue">
     <div class="form">
-      <el-row class="lin1" :gutter="10" >
-        <el-col :span="9" >
+      <el-row class="lin1" :gutter="10">
+        <el-col :span="13">
           <div class="l1c1">
             <i class="fas fa-paint-brush fa-fw ico"></i>
-            <span class="artista">ARTISTA</span>
-            <el-select v-model="value" filterable placeholder="Selecione" clearable no-match-text="Não encontrado">
-              <el-option v-for="option in options2" :key="option.id" :label="option.nome" :value="option.id">
-              </el-option>
+            <el-select v-model="value" filterable placeholder="ARTISTAS" clearable no-match-text="Não encontrado">
+              <el-option v-for="item in options2" :key="item.id" :label="item.nome" :value="item.id"></el-option>
+            </el-select>
+            <i class="fas fa-paste fa-fw ico3"></i>
+            <el-select v-model="value2" filterable placeholder="CATEGORIA" clearable no-match-text="Não encontrado">
+              <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
             </el-select>
           </div>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="11">
           <div class="l1c2">
-            <i class="fas fa-paste fa-fw ico2"></i>
-            <span class="categoria">CATEGORIA</span>
-            <el-select v-model="value2" filterable placeholder="Selecione" clearable class="espaco" no-match-text="Não encontrado" select="getFilter">
-              <el-option v-for="option in options" :key="option.id" :label="option.nome" :value="option.id">
-              </el-option>
-            </el-select>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="l1c3">
-            <el-button @click="getTodos" class="b3">TODOS</el-button>
-          </div>
-        </el-col>
-      </el-row>  
-      <el-row class="lin2" :gutter="10" >
-        <el-col :span="18">
-          <div class="l2c1">
-            <i class="fas fa-box fa-fw ico"></i>
-            <span class="produtos"> PRODUTOS </span>
-            <el-input placeholder="Nome do produto" v-model="search" size="large">
+            <i class="fas fa-box-open fa-fw ico"></i>
+            <el-input placeholder="NOME DO PRODUTO" v-model="search" size="large">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="l2c2">
-            <el-button class="b1"><i class="fas fa-shopping-bag fa-fw ico1"></i></el-button>
-            <el-button class="b2">VENDER</el-button>
+            <el-button @click="getTodos" class="b2">TODOS</el-button>
           </div>
         </el-col>
       </el-row>
@@ -61,6 +39,13 @@
             <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
             <el-table-column prop="preco" label="PREÇO"></el-table-column>
             <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+            <el-table-column label="ADICIONAR" width="150">
+              <template slot-scope="scope">
+                <div class="acoes">
+                  <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
+                </div>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </el-row>
@@ -200,43 +185,6 @@ export default {
   margin-left: 5px;
 }
 
-.l1c3 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.l2c1 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.l2c2 {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.artista {
-  margin-right: 62px;
-  font-size: 17px;
-  color: black ;
-}
-
-.categoria {
-  margin-right: 15px;
-  margin-left: 10px;
-  font-size: 17px;
-  color: black ;
-}
-
-.produtos {
-  margin-right: 35px;
-  font-size: 17px;
-  color: black;
-}
-
 
 .b1 {
   display: flex;
@@ -249,21 +197,38 @@ export default {
 }
 
 .b2 {
-  width: 115px;
-  height: 40px;
-  background-color: #69F690;
+  margin-left: 10px;
+  background-color: #82D4D1;
   color: white;
+  height: 40px;
+  width: 100px;
   border: none;
 }
 
-.b3 {
-  width: 240px;
+.produtos {
+  margin-right: 10px;
+}
+
+
+.botao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  width: 100px;
   height: 40px;
   background-color: #82D4D1;
   color: white;
   border: none;
 }
 
+.cor1 {
+  background-color: #69F690;
+}
+
+.cor2 {
+  background-color: #82D4D1;
+}
 
 .ico {
   margin-right: 15px;
@@ -271,14 +236,18 @@ export default {
   font-size: 1.2rem;
 }
 
-.ico1 {
+.ico2 {
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
-.ico2 {
-  margin-left: 10px;
+.ico3 {
+  margin-left: 15px;
+  margin-right: 15px;
+  color: black;
+  font-size: 1.2rem;
 }
+
 
 .tabela {
   margin-top: 30px;
@@ -288,5 +257,8 @@ export default {
   margin-right: 0px;
 }
 
+.acoes {
+  display: flex;
+}
 
 </style>

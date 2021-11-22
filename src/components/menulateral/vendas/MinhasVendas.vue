@@ -439,7 +439,7 @@ export default {
 
 .b2 {
   margin-left: 10px;
-  background-color: #69f690;
+  background-color: #82d4d1;
   color: white;
   height: 40px;
   width: 100px;

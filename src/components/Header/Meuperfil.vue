@@ -1,7 +1,5 @@
 <template> 
 <div class="meuperfil">
-    <!-- add forma de pagamento em vendas 
-    colocar visible meu perfil na store -->
   <div class="content">
     <div class="avatar">
       <div class="end">

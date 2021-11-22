@@ -13,7 +13,7 @@
           <span class="letras"> Produtos </span>
         </v-tab>
         <v-tab>
-          <i class="fas fa-paste fa-fw espaco"></i>
+          <i class="fas fa-book fa-fw espaco"></i>
           <span class="letras"> Categorias </span>
         </v-tab>
       </div>
@@ -23,7 +23,7 @@
         <Produtos />
       </v-tab-item>
       <v-tab-item>
-        <!-- <Cadastrar /> -->
+        <Categorias/>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -31,12 +31,13 @@
 
 <script>
 import Produtos from "./Produtos.vue";
-// import Cadastrar from "./Meusprodutos.vue";
+import Categorias from "./Categorias.vue"
+
 import { mapState } from 'vuex'
 
 export default {
   name: "Produtospages",
-  components: { Produtos },
+  components: { Produtos, Categorias },
   computed: mapState(['perfilVisible']),
 
   data() {

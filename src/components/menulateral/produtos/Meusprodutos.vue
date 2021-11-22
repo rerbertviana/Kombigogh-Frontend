@@ -249,6 +249,7 @@ export default {
     getCadastrar() {
       this.cadastrar = true;
       this.pesquisar = false;
+      this.search = '';
       this.limpar();
     },
 

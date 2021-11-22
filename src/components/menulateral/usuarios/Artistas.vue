@@ -232,6 +232,7 @@ export default {
     getCadastrar() {
       this.cadastrar = true;
       this.pesquisar = false;
+      this.search = '';
       this.limpar();
     },
 
@@ -478,6 +479,7 @@ export default {
   border-radius: 10px;
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
+
 .tabela {
   margin-top: 30px;
 }

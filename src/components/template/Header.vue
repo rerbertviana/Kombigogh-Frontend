@@ -2,14 +2,16 @@
 <div>
     <div class="header">
         <div class="divdropdown"> 
-            <div class="compra">
-                <v-avatar size="40" class="circulo" >
-                    <v-img>  <i class="fas fa-shopping-cart carro"></i> </v-img> 
-                </v-avatar>
-                <div class="compranumero">
-                    <span class="numero"> {{numero}} </span>
+            <router-link to="/carrinho">
+                <div class="compra"> 
+                    <v-avatar size="40" class="circulo" >
+                        <v-img>  <i class="fas fa-shopping-cart carro"></i> </v-img> 
+                    </v-avatar>
+                    <div class="compranumero">
+                        <span> {{numero}} </span>
+                    </div>
                 </div>
-            </div>
+            </router-link>
             <span class="reta"> | </span>
             <v-avatar size="42">
                 <v-img :src="getImagem()"></v-img>
@@ -43,7 +45,7 @@ export default {
     data: function() {
         return {
           texto: 'Werbert Viana',
-          numero: '2',
+          numero: '',
           user: {},
         }
     },
@@ -96,15 +98,12 @@ export default {
         background-color: #69F690;
         margin: -10px;
         z-index: 1;
+        color: white;
     }
 
     .circulo {
         background-color: #82D4D1;
         margin-right: 0px;
-    }
-
-    .numero {
-        color: white;
     }
 
     .divdropdown {

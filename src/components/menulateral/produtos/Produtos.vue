@@ -1,48 +1,23 @@
 <template>
   <div class="produtos">
     <div class="form">
-      <el-row class="lin1" :gutter="20">
+      <el-row class="lin1" :gutter="15">
         <el-col :span="13">
           <div class="l1c1">
             <i class="fas fa-paint-brush fa-fw ico"></i>
-            <el-select
-              v-model="value"
-              filterable
-              placeholder="ARTISTAS"
-              clearable
-              no-match-text="Não encontrado"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.id"
-                :label="item.nome"
-                :value="item.id"
-              >
-              </el-option>
+            <el-select v-model="value" filterable placeholder="ARTISTAS" clearable no-match-text="Não encontrado">
+              <el-option v-for="item in options" :key="item.id" :label="item.nome" :value="item.id"></el-option>
             </el-select>
             <i class="fas fa-paste fa-fw ico ico2"></i>
-            <el-select
-              v-model="value2"
-              filterable
-              placeholder="CATEGORIA"
-              clearable
-              no-match-text="Não encontrado"
-            >
-              <el-option
-                v-for="item in options2"
-                :key="item.id"
-                :label="item.nome"
-                :value="item.id"
-              >
-              </el-option>
+            <el-select v-model="value2" filterable placeholder="CATEGORIA" clearable no-match-text="Não encontrado">
+              <el-option v-for="item in options2" :key="item.id" :label="item.nome" :value="item.id"></el-option>
             </el-select>
           </div>
         </el-col>
         <el-col :span="11">
           <div class="l1c2">
             <i class="fas fa-box-open fa-fw ico"></i>
-            <span class="letras2">PRODUTOS</span>
-            <el-input placeholder="Nome do produto" v-model="search" size="large">
+            <el-input placeholder="NOME DO PRODUTO" v-model="search" size="large">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
             <el-button @click="getTodos" class="b2">TODOS</el-button>
@@ -211,7 +186,7 @@ export default {
 }
 
 .ico {
-  margin-right: 10px;
+  margin-right: 15px;
   color: black;
   font-size: 1.2rem;
 }
@@ -238,7 +213,7 @@ export default {
 
 .b2 {
   margin-left: 10px;
-  background-color: #69f690;
+  background-color: #82D4D1;
   color: white;
   height: 40px;
   width: 100px;

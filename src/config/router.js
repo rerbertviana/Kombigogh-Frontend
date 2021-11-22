@@ -7,6 +7,7 @@ import Relatoriospages from "../components/menulateral/relatorios/Relatoriospage
 import Artistaspages from "../components/menulateral/usuarios/Artistaspages.vue"
 import Admprodutospages from "../components/menulateral/admprodutos/Admprodutospages.vue"
 import Meuperfil from "../components/Header/Meuperfil.vue"
+import Carrinho from "../components/Header/Carrinho.vue"
 
 Vue.use(VueRouter)
 
@@ -40,7 +41,13 @@ const routes = [
         name: 'produtosadmpages',
         path: '/produtosadm',
         component: Admprodutospages
+    },
+    {
+        name: 'carrinhocompras',
+        path: '/carrinho',
+        component: Carrinho
     }
+    
 ]
 
 
