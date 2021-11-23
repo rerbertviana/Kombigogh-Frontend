@@ -7,7 +7,10 @@ export default new Vuex.Store({
     state: {
         perfilVisible: false,
         orders: [],
-        order: {}
+        order: {},
+        itens: 0,
+        botao: false,
+        mensagem: false,
     },
     mutations: {
 
@@ -32,7 +35,8 @@ export default new Vuex.Store({
                     nome: state.order.nome,
                     descricao: state.order.descricao,
                     preco: state.order.preco,
-                    quantidade: state.order.quantidade
+                    quantidade: state.order.quantidade,
+                    estoque: state.order.quantidade
                 })
             }
             else {
@@ -48,11 +52,36 @@ export default new Vuex.Store({
                         nome: state.order.nome,
                         descricao: state.order.descricao,
                         preco: state.order.preco,
-                        quantidade: state.order.quantidade
+                        quantidade: state.order.quantidade,
+                        estoque: state.order.quantidade
                     })
+
+                    state.mensagem = false;
+                }
+                else {
+                    state.mensagem = true;    
                 }
             }
-            console.log(state.orders)
+            state.itens = state.orders.length; 
+            if(state.itens.length != 0) {
+                state.botao = true
+            }
+        },
+
+        removerPedidos(state, linha) {
+            state.orders.splice(linha, 1);
+            state.itens = state.orders.length; 
+            state.mensagem = false;
+            if(state.itens == 0) {
+                state.botao = false
+            }
+        },
+
+        zerarPedidos(state) {
+            state.orders = []
+            state.itens = state.orders.length
+            state.botao = false
+            state.mensagem = false;
         }
     }
 })

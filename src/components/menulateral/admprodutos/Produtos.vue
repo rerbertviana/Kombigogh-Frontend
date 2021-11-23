@@ -366,7 +366,7 @@ export default {
     naointeiro() {
       this.$message({
         showClose: true,
-        message:'Oops, "QTD" precisa ser um valor inteiro.  ',
+        message:'Oops, "QTD" precisa ser um valor inteiro.',
         type: 'error',
       });
     },

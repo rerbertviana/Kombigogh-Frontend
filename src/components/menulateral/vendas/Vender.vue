@@ -49,6 +49,12 @@
           </el-table>
         </div>
       </el-row>
+      <el-row v-if="botao">
+        <el-col :span="24" class="end">
+          <el-button @click="getCancelar" class="botaocarro cor3">CANCELAR</el-button>
+          <router-link to="/carrinho" class="botaocarro cor2"> <span class="letras">VENDER</span> </router-link>
+        </el-col>
+      </el-row>
   </div>  
     
 </template>
@@ -63,7 +69,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order']),
+    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem']),
 
     data() {
       return {
@@ -83,10 +89,31 @@ export default {
       },
       value2() {
         this.getFilter()
+      },
+      itens() {
+        this.getItens()
       }
     },
 
     methods: {
+
+      visible() {
+        if (this.perfilVisible == true)
+        this.$store.commit('togglePerfil')
+      },
+
+      getCancelar() {
+        this.$store.commit('zerarPedidos')
+      },
+
+      getItens() {
+        if(this.itens == 0) {
+          this.cancelada()
+        }
+        else {
+          this.sucesso()
+        }
+      },
 
       getFilter() {
         if(!this.value && this.value2) {
@@ -140,8 +167,35 @@ export default {
         return `http://localhost:3333/files/${row.imagem}`
       },
 
+      sucesso() {
+        this.$message({
+          showClose: true,
+          message:'Produto adicionado.',
+          type: 'success',
+        });
+      },
+
+      cancelada() {
+        this.$message({
+          showClose: true,
+          message:'Venda cancelada.',
+          type: 'info',
+        });
+      },
+
+      adicionado() {
+        this.$message({
+          showClose: true,
+          message:'Este produto já foi adicionado.',
+          type: 'info',
+        });
+      },
+
       getCarrinho(row) {
         this.$store.commit('pedidos', row);
+        if(this.mensagem == true) {
+          this.adicionado();
+        }
       }
 
       
@@ -150,6 +204,7 @@ export default {
       this.getProducts()
       this.getCategories()
       this.getUsers()
+      this.visible()
     }
 
 }
@@ -232,12 +287,30 @@ export default {
   border: none;
 }
 
+.botaocarro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  width: 150px;
+  height: 50px;
+  color: white;
+  border: none;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+
 .cor1 {
   background-color: #69F690;
 }
 
 .cor2 {
   background-color: #82D4D1;
+}
+
+.cor3 {
+  background-color: #FFA882;
 }
 
 .ico {
@@ -264,11 +337,23 @@ export default {
 }
 
 .espaco {
-  margin-right: 0px;
+  margin-right: 10px;
 }
 
 .acoes {
   display: flex;
+}
+
+.end {
+  animation: headShake;
+  animation-duration: 1s;
+  display:flex;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.letras {
+  font-size: 14px;
 }
 
 </style>

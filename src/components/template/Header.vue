@@ -2,13 +2,13 @@
 <div>
     <div class="header">
         <div class="divdropdown"> 
-            <router-link to="/carrinho">
+            <router-link to="/carrinho" class="carrinho">
                 <div class="compra"> 
                     <v-avatar size="40" class="circulo" >
                         <v-img>  <i class="fas fa-shopping-cart carro"></i> </v-img> 
                     </v-avatar>
                     <div class="compranumero">
-                        <span> {{numero}} </span>
+                        <span> {{itens}} </span>
                     </div>
                 </div>
             </router-link>
@@ -41,11 +41,10 @@ import { mapState } from 'vuex'
 
 export default {
     name: 'Header',
-    computed: mapState(['perfilVisible']),
+    computed: mapState(['perfilVisible', 'itens']),
     data: function() {
         return {
           texto: 'Werbert Viana',
-          numero: '',
           user: {},
         }
     },
@@ -115,12 +114,10 @@ export default {
     }
 
     .texto {
-        
         margin-left: 10px;
         margin-right: 5px;
         font-size: 1rem;
         color: #82D4D1;
-        /* text-shadow: 1px 0.5px 0.5px rgba(0, 0, 0, 0.25); */
     }
 
     .icone {
@@ -189,6 +186,9 @@ export default {
         opacity: 1;
     }
 
+    .carrinho {
+        text-decoration: none;
+    }
     
 
 </style>
