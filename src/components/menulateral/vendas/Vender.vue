@@ -39,7 +39,7 @@
             <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
             <el-table-column prop="preco" label="PREÇO"></el-table-column>
             <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
-            <el-table-column label="ADICIONAR" width="150">
+            <el-table-column label="ADD CARRINHO" width="150">
               <template slot-scope="scope">
                 <div class="acoes">
                   <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
@@ -57,9 +57,14 @@
 
 import axios from 'axios'
 import { baseApiurl } from '@/global'
+import { mapState } from 'vuex'
+
 
 export default {
     name: 'Vender',
+
+    computed: mapState(['perfilVisible', 'order']),
+
     data() {
       return {
         search: '',
@@ -133,7 +138,12 @@ export default {
           return `http://localhost:3333/files/default.jpg`
         }
         return `http://localhost:3333/files/${row.imagem}`
-      }    
+      },
+
+      getCarrinho(row) {
+        this.$store.commit('pedidos', row);
+      }
+
       
     },
     mounted() {

@@ -16,45 +16,42 @@
                     </el-select>
                 </el-col>
             </el-row>
-            <el-row class="tabela">
-                <el-table :data="orders.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="CARRINHO VAZIO">
-                    <el-table-column width="95">
+        </div>
+        <el-row class="tabela">
+            <el-table :data="orders.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="CARRINHO VAZIO">
+                <el-table-column width="95">
                     <template slot-scope="scope">
                         <v-avatar size="70" rounded>
                         <v-img :src= "getImagem(scope.row)"/>
                         </v-avatar>
                     </template>
-                    </el-table-column>
-                    <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-                    <el-table-column prop="email" label="DESCRIÇÃO" ></el-table-column>
-                    <el-table-column prop="telefone" label="PREÇO" width="145"></el-table-column>
-                    <el-table-column label="QUANTIDADE  " width="245">
+                </el-table-column>
+                <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+                <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
+                <el-table-column prop="preco" label="PREÇO" width="145"></el-table-column>
+                <el-table-column label="QUANTIDADE  " width="245">
                     <template slot-scope="scope">
-                        <div class="acoes">
-                        <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
-                        <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
-                        </div>
+                        <el-input-number size="small" controls-position="right" :step="1" :min="1" :max=scope.row.quantidade></el-input-number>
                     </template>
-                    </el-table-column>
-                </el-table>  
-            </el-row>
-        </div>
+                </el-table-column>
+            </el-table>  
+        </el-row>
     </div>    
 </template>
 
 <script>
 
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: "carrinhocompras",
-  //computed: mapState(['perfilVisible']),
+  computed: mapState(['perfilVisible', 'orders']),
 
   data() {
     return {
         order: {},
         search: '',
-        orders: [],
+        products: [],
         options: [
             {
                 id: 'DINHEIRO',
@@ -70,6 +67,26 @@ export default {
             },
         ]
     };
+  },
+
+  methods: {
+
+    visible() {
+      if (this.perfilVisible == true)
+      this.$store.commit('togglePerfil')
+    },
+
+    getImagem(row) {
+      if(!row.imagem) {
+        return `http://localhost:3333/files/default.jpg`
+      }
+      return `http://localhost:3333/files/${row.imagem}`
+    }, 
+    
+  },
+
+  mounted() {
+    this.visible();
   },
 }
 
