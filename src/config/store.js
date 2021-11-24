@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -11,6 +12,8 @@ export default new Vuex.Store({
         itens: 0,
         botao: false,
         mensagem: false,
+        user: {},
+        logado: false,
     },
     mutations: {
 
@@ -82,6 +85,14 @@ export default new Vuex.Store({
             state.itens = state.orders.length
             state.botao = false
             state.mensagem = false;
+        },
+
+        login(state, session) {
+            state.user = {
+                token: session.token
+            };
+            axios.defaults.headers.common['Authorization'] = `bearer ${state.user.token}`;
+            state.logado = true;
         }
     }
 })

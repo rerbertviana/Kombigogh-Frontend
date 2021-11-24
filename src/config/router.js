@@ -46,8 +46,7 @@ const routes = [
         name: 'carrinhocompras',
         path: '/carrinho',
         component: Carrinho
-    }
-    
+    },    
 ]
 
 

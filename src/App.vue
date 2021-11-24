@@ -1,9 +1,14 @@
 <template>
   <div id="app">
-    <Menu />
-    <Header/>
-    <Content/>
-    <Footer/>
+    <div v-if="!logado">
+      <Auth/>
+    </div>
+    <div class="komb" v-if="logado">
+      <Menu/>
+      <Header/>
+      <Content/>
+      <Footer/>
+    </div>
   </div>
 </template>
 
@@ -13,11 +18,23 @@ import Menu from "./components/template/Menu.vue"
 import Header from "./components/template/Header.vue"
 import Content from "./components/template/Content.vue"
 import Footer from "./components/template/Footer.vue"
+import Auth from "./components/auth/Auth.vue"
+
+import { mapState } from 'vuex'
 
 export default {
+  
   name: 'App',
 
-  components: { Menu, Header, Content, Footer },
+  computed: mapState(['logado']),
+
+  data: function() {
+        return {
+          
+        }
+    },
+
+  components: { Menu, Header, Content, Footer, Auth },
 
 };
 </script>
@@ -32,7 +49,7 @@ export default {
     margin:0;
   }
 
-  #app {
+  .komb {
     height: 100vh;
     display: grid;
     grid-template-rows: 80px 1fr 40px;
@@ -42,12 +59,6 @@ export default {
       "menu content"
       "menu footer";
   }
-
-  
-
-
-
-
 
 
 </style>

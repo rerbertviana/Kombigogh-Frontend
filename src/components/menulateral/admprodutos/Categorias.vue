@@ -19,7 +19,6 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24" class="alinhar">
-                        <i class="fas fa-pen-square fa-fw ico2"></i>
                         <span class="letras">NOME</span>
                         <el-input placeholder="Nome do produto" v-model="category.nome" clearable></el-input>
                         <el-button  @click="salvarCategoria" class="botao cor1">SALVAR</el-button>
@@ -35,7 +34,6 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24" class="alinhar">
-                        <i class="fas fa-pen-square fa-fw ico2"></i>
                         <span class="letras">NOME</span>
                         <el-input placeholder="Nome do produto" v-model="category.nome" clearable></el-input>
                         <el-button  @click="salvarEditar" class="botao cor4">SALVAR</el-button>
@@ -51,7 +49,6 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24" class="alinhar">
-                        <i class="fas fa-pen-square fa-fw ico2"></i>
                         <span class="letras">NOME</span>
                         <el-input disabled placeholder="Nome do produto" v-model="category.nome" clearable></el-input>
                         <el-button  @click="open" class="botao cor3">EXCLUIR</el-button>
@@ -322,12 +319,6 @@ export default {
   margin-right: 10px;
   color: black;
   font-size: 1.2rem;
-}
-
-.ico2 {
-  margin-right: 10px;
-  color: black;
-  font-size: 1.7rem;
 }
 
 .letras {

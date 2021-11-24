@@ -23,11 +23,4 @@ export default {
         background-size: cover;
     }
 
-    .correcao {
-        opacity: 1;
-        filter: initial;
-    }
-
-   
-
 </style>

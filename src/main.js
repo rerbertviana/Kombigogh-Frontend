@@ -24,7 +24,7 @@ Vue.use(VueMask);
 
 // TEMPORARIO!
 
-require('axios').defaults.headers.common['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc3MDYzNTMsImV4cCI6MTYzNzc5Mjc1Mywic3ViIjoiN2U4Y2YwNTctYmFkNy00OWY0LWFmNWQtNDE2ZWM3MWNjYWVkIn0.h4Z1a3EWJgrl8yMKvDyqQRAwj21iJ-bcRdhV_6lmEuI'
+// require('axios').defaults.headers.common['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Mzc3OTQwMTQsImV4cCI6MTYzNzg4MDQxNCwic3ViIjoiOWEyYTU5OGMtNjU1MC00ZTUwLWJkZjktYTExM2ZmYzZiMTM4In0.0WkT6uiE_fniKUSHU8HQ0OBjhSPpEMT0_qWJgrA61A4'
 
 new Vue({
   store,

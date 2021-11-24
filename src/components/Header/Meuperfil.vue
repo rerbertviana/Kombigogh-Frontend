@@ -354,7 +354,7 @@ export default {
       color: white;
       height: 40px;
       width: 120px;
-      border: 0px;
+      border: none;
     }
 
     .botao2 {
