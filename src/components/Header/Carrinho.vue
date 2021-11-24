@@ -53,15 +53,15 @@
                     </el-table>  
                 </el-row>
                 <el-row>
-                    <el-col class="total">
-                        TOTAL = {{total}}
+                    <el-col :span="24" class="end">
+                        <div class="total">TOTAL = {{total}}</div>
                     </el-col>
                 </el-row>
             </div>
             <el-row>
                 <el-col :span="24" class="end">
                     <el-button @click="open" class="botao2 cor1">LIMPAR</el-button>
-                    <router-link to="/vendas" class="botaolink cor3"><span class="continuar">COMPRAR +</span></router-link>
+                    <router-link to="/vendas" class="botaolink cor3"><span class="continuar">VENDER +</span></router-link>
                      <el-button @click="soma" class="botao2 cor3"> ATUALIZAR </el-button>
                     <el-button @click="open2" class="botao2 cor3"> FINALIZAR </el-button>
                 </el-col>
@@ -189,6 +189,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.getCancelar()
+                this.limpar()
             }).catch(() => {
                 this.$message({
                 type: 'info',
@@ -392,7 +393,7 @@ export default {
 
     .total {
         display: flex;
-        margin-top: 10px;
+        margin-top: 15px;
         justify-content: center;
         align-items: center;
         color: white;
