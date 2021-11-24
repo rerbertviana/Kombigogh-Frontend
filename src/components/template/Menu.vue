@@ -3,9 +3,9 @@
         <div class="barra"><i class="fas fa-bars fa-fw menuicones"></i></div>
         <div class="menucontent">
             <div :class="trocaItens()"><router-link to="/vendas" class="menuitens"> <i class="fas fa-comments-dollar fa-fw menuicones"></i> <div class="vendas"> VENDAS </div> </router-link> </div>
-            <div v-if="visible" :class="trocaItens()"><router-link to="/artistas" class="menuitens"> <i class="fas fa-paint-brush fa-fw menuicones"></i> <div class="artistas"> ARTISTAS </div> </router-link></div>
             <div v-if="!visible" :class="trocaItens()"><router-link to="/produtos" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
-            <div v-if="visible" :class="trocaItens()"><router-link to="/produtosadm" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
+            <div v-if="visible"  :class="trocaItens()"><router-link to="/artistas" class="menuitens"> <i class="fas fa-paint-brush fa-fw menuicones"></i> <div class="artistas"> ARTISTAS </div> </router-link></div>
+            <div v-if="visible"  :class="trocaItens()"><router-link to="/produtosadm" class="menuitens" > <i class="fas fa-box fa-fw menuicones"></i> <div class="produtos"> PRODUTOS </div>  </router-link> </div>
             <div :class="trocaItens()"><router-link to="/relatorios" class="menuitens"> <i class="far fa-file-pdf fa-fw menuicones"></i> <div class="relatorios"> RELATÓRIOS </div> </router-link></div>
         </div>
     </div>

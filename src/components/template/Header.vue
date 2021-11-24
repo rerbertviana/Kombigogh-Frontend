@@ -44,7 +44,6 @@ export default {
     computed: mapState(['perfilVisible', 'itens']),
     data: function() {
         return {
-          texto: 'Werbert Viana',
           user: {},
         }
     },
@@ -110,7 +109,6 @@ export default {
         align-items: center;
         align-content: flex-end;
         margin-right: 30px;
-        /* background-color: rgba(0, 0, 0, 0.25); */
     }
 
     .texto {
