@@ -93,6 +93,12 @@ export default new Vuex.Store({
             };
             axios.defaults.headers.common['Authorization'] = `bearer ${state.user.token}`;
             state.logado = true;
-        }
+        },
+
+        logout(state) {
+            state.user = {}
+            delete axios.defaults.headers.common['Authorization']
+            state.logado = false;
+        },
     }
 })

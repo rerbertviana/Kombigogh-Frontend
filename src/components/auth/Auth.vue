@@ -6,8 +6,8 @@
                 <div v-if="visible" @click="troca" class="botao">E-MAIL</div>
                 <div v-if="visible" @click="troca" class="botao2 espaco">SENHA</div>
                 <div v-if="!visible" class="inputs">
-                    <el-input v-model="login.email" class="inputslogin" placeholder="E-MAIL" clearable></el-input>
-                    <el-input v-model="login.senha" type="password" class="inputslogin espaco" placeholder="SENHA" clearable></el-input>
+                    <el-input v-model="login.email" name="email" class="inputslogin" placeholder="E-MAIL" clearable></el-input>
+                    <el-input v-model="login.senha" name="password" type="password" class="inputslogin espaco" placeholder="SENHA" clearable></el-input>
                 </div>
                 <a class="end">Esqueceu a senha?</a>
                 <button @click="getLogar" class="entrar">ENTRAR</button>
@@ -19,11 +19,11 @@
 <script>
 
 import axios from 'axios'
-import { baseApiurl } from '@/global'
+import { baseApiurl, userKey } from '@/global'
 
 export default {
 
-    name: 'Auth',
+    name: 'auth',
 
     data() {
       return {
@@ -89,14 +89,16 @@ export default {
                 .then((res) => {
                     this.session = res.data
                     this.$store.commit('login', this.session);
+                    localStorage.setItem(userKey, JSON.stringify(this.session))
+                    this.$router.push({ path: '/vendas'})
                     this.sucesso()
                 })
                 .catch(() => {
                     this.erroAuth();
                 })
             }
-        }
-    }
+        },
+    }, 
 }
 </script>
 

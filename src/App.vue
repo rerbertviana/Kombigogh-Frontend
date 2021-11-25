@@ -21,20 +21,47 @@ import Footer from "./components/template/Footer.vue"
 import Auth from "./components/auth/Auth.vue"
 
 import { mapState } from 'vuex'
+import { userKey } from '@/global'
 
 export default {
   
   name: 'App',
 
   computed: mapState(['logado']),
+  components: { Menu, Header, Content, Footer, Auth },
 
   data: function() {
-        return {
+      return {
           
-        }
-    },
+      }
+  },
 
-  components: { Menu, Header, Content, Footer, Auth },
+  methods: {
+    manterLogado() {
+      if(localStorage._userkey) {
+
+        if(this.$route.path == '/auth' ) {
+          localStorage.removeItem(userKey);
+          this.$store.commit('logout');
+        }
+        else {
+          const json = localStorage.getItem(userKey)
+          const session = JSON.parse(json)
+          this.$store.commit('login', session);
+          this.$router.push({ path: '/vendas'})
+        }
+      }
+      else {
+        if (this.$route.path != '/auth') {
+          this.$router.push({ name: 'auth' })
+        }
+      }
+    }
+  },
+
+  mounted() {
+    this.manterLogado()
+  }
 
 };
 </script>

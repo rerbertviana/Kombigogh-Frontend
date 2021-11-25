@@ -27,7 +27,7 @@
     </div>
     <div class="dropdowncontent" :class="{'drop':perfilVisible}" >
         <router-link to="/meuperfil" class="font2"> <i class="fas fa-cogs fa-fw font"></i> Meu Perfil </router-link>
-        <a href class="font2"> <i class="fas fa-sign-out-alt fa-fw logout"> </i> Sair </a>
+        <button @click="getLogout" class="font2"> <i class="fas fa-sign-out-alt fa-fw logout"> </i> Sair </button>
     </div>
 </div>
     
@@ -36,7 +36,7 @@
 <script>
 
 import axios from 'axios'
-import { baseApiurl } from '@/global'
+import { baseApiurl, userKey } from '@/global'
 import { mapState } from 'vuex'
 
 export default {
@@ -62,7 +62,13 @@ export default {
                 return `http://localhost:3333/files/default2.png`
             }
             return `http://localhost:3333/files/${this.user.avatar}`
-        } 
+        } ,
+
+        getLogout() {
+            localStorage.removeItem(userKey)
+            this.$store.commit('logout');
+            this.$router.push({ name: 'auth' })
+        }
     },
 
     mounted() {
