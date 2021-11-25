@@ -8,6 +8,7 @@ import Artistaspages from "../components/menulateral/usuarios/Artistaspages.vue"
 import Admprodutospages from "../components/menulateral/admprodutos/Admprodutospages.vue"
 import Meuperfil from "../components/Header/Meuperfil.vue"
 import Carrinho from "../components/Header/Carrinho.vue"
+import Auth from "../components/auth/Auth.vue"
 
 Vue.use(VueRouter)
 
@@ -46,7 +47,12 @@ const routes = [
         name: 'carrinhocompras',
         path: '/carrinho',
         component: Carrinho
-    },    
+    },  
+    {
+        name: 'autenticacao',
+        path: '/auth',
+        component: Auth
+    }
 ]
 
 

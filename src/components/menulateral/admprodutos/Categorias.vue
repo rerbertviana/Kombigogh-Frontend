@@ -194,6 +194,9 @@ export default {
                     this.pesquisa()
                     this.sucesso()
                 })
+                .catch(() => {
+                    this.nomerepetido()
+                })
             }  
         },
 

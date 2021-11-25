@@ -8,7 +8,7 @@
                 <el-col class="alinhar" :span="24">
                     <i class="fas fa-user-alt  fa-fw ico"></i>
                     <span class="letras">CLIENTE</span>
-                    <el-input placeholder="Nome do cliente" v-model="order.cliente" clearable></el-input>
+                    <el-input placeholder="Nome do cliente" class="cliente" v-model="order.cliente" clearable></el-input>
                     <i class="fas fa-dollar-sign fa-fw ico2"></i>
                     <span class="letras">PAGAMENTO</span>
                     <el-select v-model="order.pagamento" filterable placeholder="SELECIONE" clearable no-match-text="Não encontrado">
@@ -62,7 +62,7 @@
                 <el-col :span="24" class="end">
                     <el-button @click="open" class="botao2 cor1">LIMPAR</el-button>
                     <router-link to="/vendas" class="botaolink cor3"><span class="continuar">VENDER +</span></router-link>
-                     <el-button @click="soma" class="botao2 cor3"> ATUALIZAR </el-button>
+                    <el-button @click="soma" class="botao2 cor3"> ATUALIZAR </el-button>
                     <el-button @click="open2" class="botao2 cor3"> FINALIZAR </el-button>
                 </el-col>
             </el-row>
@@ -405,5 +405,9 @@ export default {
 
     .tabela {
         margin-top: 20px;
+    }
+
+    .cliente {
+        width: 500px;
     }
 </style>
