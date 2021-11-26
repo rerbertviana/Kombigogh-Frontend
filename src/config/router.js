@@ -10,7 +10,7 @@ import Meuperfil from "../components/Header/Meuperfil.vue"
 import Carrinho from "../components/Header/Carrinho.vue"
 import Auth from "../components/auth/Auth.vue"
 
-// import { userKey } from '@/global'
+import { userKey } from '@/global'
 
 Vue.use(VueRouter)
 
@@ -39,7 +39,7 @@ const routes = [
         name: 'artistaspages',
         path: '/artistas',
         component: Artistaspages,
-        // meta: { requiresAdmin: true }
+        meta: { requiresAdmin: true }
     },
     {
         name: 'produtosadmpages',
@@ -58,25 +58,25 @@ const routes = [
     }
 ]
 
-
-// router.beforeEach((to, from, next) => {
-//     const json = localStorage.getItem(userKey)
-
-//     if(to.matched.some(record => record.meta.requiresAdmin)) {
-//         const session = JSON.parse(json)
-//         if (session && session.user.nome == 'ADM') {
-//             next()
-//         } else {
-//             next({ path: '/auth' })
-//         }
-//     } else {
-//         next()
-//     }
-// })
-
 const router = new VueRouter({
     mode: 'history',
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    const json = localStorage.getItem(userKey)
+
+    if(to.matched.some(record => record.meta.requiresAdmin)) {
+        const session = JSON.parse(json)
+        if (session && session.user.nome == 'ADM') {
+            next()
+        } else {
+            next({ path: '/auth' })
+        }
+    } else {
+        next()
+    }
+})
+
 
 export default router

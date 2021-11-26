@@ -45,10 +45,12 @@ export default {
           this.$store.commit('logout');
         }
         else {
+          if(this.$route.path == '/') {
+            this.$router.push({ path: '/vendas'})
+          }
           const json = localStorage.getItem(userKey)
           const session = JSON.parse(json)
           this.$store.commit('login', session);
-          this.$router.push({ path: '/vendas'})
         }
       }
       else {
