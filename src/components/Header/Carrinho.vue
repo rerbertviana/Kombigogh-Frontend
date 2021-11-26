@@ -54,7 +54,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24" class="end">
-                        <div class="total">TOTAL = {{total}}</div>
+                        <div class="total">TOTAL = R$ {{ total }}</div>
                     </el-col>
                 </el-row>
             </div>

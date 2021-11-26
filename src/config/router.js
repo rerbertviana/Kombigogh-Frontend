@@ -9,6 +9,7 @@ import Admprodutospages from "../components/menulateral/admprodutos/Admprodutosp
 import Meuperfil from "../components/Header/Meuperfil.vue"
 import Carrinho from "../components/Header/Carrinho.vue"
 import Auth from "../components/auth/Auth.vue"
+import Denied from "../components/auth/Denied.vue"
 
 import { userKey } from '@/global'
 
@@ -44,7 +45,8 @@ const routes = [
     {
         name: 'produtosadmpages',
         path: '/produtosadm',
-        component: Admprodutospages
+        component: Admprodutospages,
+        meta: { requiresAdmin: true }
     },
     {
         name: 'carrinhocompras',
@@ -55,7 +57,12 @@ const routes = [
         name: 'auth',
         path: '/auth',
         component: Auth
-    }
+    },
+    {
+        name: 'denied',
+        path: '/denied',
+        component: Denied
+    },  
 ]
 
 const router = new VueRouter({
@@ -71,7 +78,7 @@ router.beforeEach((to, from, next) => {
         if (session && session.user.nome == 'ADM') {
             next()
         } else {
-            next({ path: '/auth' })
+            next({ path: '/denied' })
         }
     } else {
         next()

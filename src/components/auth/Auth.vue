@@ -160,7 +160,6 @@ export default {
     }
 
     .inputs {
-        
         animation: flipInX;
         animation-duration: 1s;
         display: flex;

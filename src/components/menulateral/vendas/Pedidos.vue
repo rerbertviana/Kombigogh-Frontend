@@ -68,9 +68,12 @@
                 </el-table-column>
                 <el-table-column prop="status" label="STATUS" width="130">
                 </el-table-column>
-                <el-table-column label="AÇÕES" width="220">
+                <el-table-column label="AÇÕES" :width="getTamanho()">
                     <template slot-scope="scope">
-                        <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+                        <div class="botoesacao">
+                            <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+                            <el-button v-if="botao" @click="open(scope.row)" class="b3">ESTORNAR</el-button>
+                        </div>
                     </template>
                 </el-table-column> 
             </el-table>
@@ -95,7 +98,7 @@
                     <el-col class="l4">{{pedidos.cliente}}</el-col>
                     <el-col class="l4">{{pedidos.vendedor}}</el-col>
                     <el-col class="l4">{{pedidos.pagamento}}</el-col>
-                    <el-col class="l4">{{pedidos.status}}</el-col>
+                    <el-col class="l4">{{pedidos.status.toUpperCase()}}</el-col>
                 </div>
             </el-row>
             <el-row >
@@ -144,6 +147,8 @@ export default {
             tab2: false,
             visible: false,
             visible2: false,
+            user: {},
+            botao: false,
             options2: [
                 {
                     value: '0',
@@ -302,6 +307,14 @@ export default {
             axios.get(`${baseApiurl}/orders/${row.id}`).then(res => this.vendas = res.data[1].produtos);
         },
 
+        estornado() {
+            this.$message({
+                showClose: true,
+                message:'Pedido estornado.',
+                type: 'success',
+            });
+        },
+
         getClose() {
             this.tab1 = true;
             this.tab2 = false;
@@ -356,13 +369,63 @@ export default {
             if(this.value && !this.value2 && !this.value3 && this.value4) {
                 this.getOrdersUsersStatus();
             } 
+        },
+
+        getUser() {
+            return axios.get(`${baseApiurl}/profile`).then(res => this.user = res.data);
+        },
+
+        jaEstornado() {
+            this.$message({
+                showClose: true,
+                message:'Pedido já estornado.',
+                type: 'info',
+            });
+        },
+
+        getEstornar(row){
+            axios.post(`${baseApiurl}/orders/${row.id}`)
+            .then(() => {
+                this.estornado()
+                this.getOrders()
+            })
+            .catch(() => {
+                this.jaEstornado()
+            })
+        },
+
+        open(row) {
+            this.$confirm('Tem certeza que deseja estornar esse pedido?', 'ATENÇÃO!', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'CANCELAR',
+                type: 'warning'
+            }).then(() => {
+                this.getEstornar(row);
+            }).catch(() => {
+                this.$message({
+                type: 'info',
+                message: 'Operação cancelada.'
+                });          
+            });
+        },
+
+        getTamanho() {
+            if(this.user.nome == 'ADM') {
+                this.botao = true
+                return '330'
+            }
+            else {
+                return '180'
+            }     
         }
     },
 
     mounted() {
         this.getOrders();
         this.getUsers();
-    }
+        this.getUser();
+        this.getTamanho();
+    },
     
 }
 </script>
@@ -428,7 +491,7 @@ export default {
     background-color: #82D4D1;
     color: white;
     height: 50px;
-    width: 180px;
+    width: 140px;
     border: none;
 }
 
@@ -599,4 +662,7 @@ export default {
     margin-right: 23px;
 }
 
+.botoesacao {
+    display: flex;
+}
 </style>
