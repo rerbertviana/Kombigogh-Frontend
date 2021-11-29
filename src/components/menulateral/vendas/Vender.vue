@@ -27,7 +27,7 @@
     </div>
       <el-row class="tabela">
         <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+          <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
             <el-table-column width="95">
               <template slot-scope="scope">
                 <v-avatar size="70" rounded>
@@ -47,6 +47,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <v-pagination color="#82D4D1" class="paginacao" v-model="page" :length="pages"></v-pagination>
         </div>
       </el-row>
       <el-row v-if="botao">
@@ -69,7 +70,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem']),
+    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'storeproducts', 'pages', 'page']),
 
     data() {
       return {
@@ -92,7 +93,8 @@ export default {
       },
       itens() {
         this.getItens()
-      }
+      },
+     
     },
 
     methods: {
@@ -148,9 +150,10 @@ export default {
         return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data.product);
       },
 
-      getProducts() {
-        return axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
-      },
+      // async getProducts() {
+      //   await axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
+      //   this.teste()
+      // },
 
       getCategories() {
         return axios.get(`${baseApiurl}/categories`).then(res => this.options = res.data);
@@ -196,8 +199,11 @@ export default {
         if(this.mensagem == true) {
           this.adicionado();
         }
-      }
+      },
 
+      getProducts() {
+        this.$store.commit('getProducts');
+      }
       
     },
     mounted() {
@@ -354,6 +360,10 @@ export default {
 
 .letras {
   font-size: 14px;
+}
+
+.paginacao {
+  margin-top: 15px;
 }
 
 </style>

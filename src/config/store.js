@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { baseApiurl } from '@/global'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,10 @@ export default new Vuex.Store({
         mensagem: false,
         user: {},
         logado: false,
+        storeproducts: [],
+        productslist: [],
+        pages: 0,
+        page: 1,
     },
     mutations: {
 
@@ -99,6 +104,39 @@ export default new Vuex.Store({
             state.user = {}
             delete axios.defaults.headers.common['Authorization']
             state.logado = false;
+            state.storeproducts = []
+            state.productslist = []
         },
+
+        async getProducts(state){
+            await axios.get(`${baseApiurl}/products/actives`).then(res => state.storeproducts = res.data);
+            
+            state.pages = Math.ceil(state.storeproducts.length / 4)
+
+            let j = (4 * state.page) -4;
+            
+            for(let i=j; i<j+4; i++){
+                state.productslist.push(state.storeproducts[i])
+            }
+
+        },
+
+        // getProductsList(state) {
+
+        //     state.pages = Math.ceil(state.storeproducts.length / 4)
+
+        //     // let div = Math.floor(data.length/4)
+
+        //     for(let i=0; i<4; i++){
+        //         state.productslist.push(state.storeproducts[i])
+        //     }
+
+        //     // state.products.push(data[0])
+        //     // state.products.push(data[1])
+        //     // let resto = data.length % 2;
+        //     // state.products = data[0]
+               
+        //     console.log(state.productslist)
+        // }
     }
 })

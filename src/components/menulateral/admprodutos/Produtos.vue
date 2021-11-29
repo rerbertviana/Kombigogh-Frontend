@@ -517,7 +517,7 @@ export default {
 
 .botaoTodos {
   margin-left: 10px;
-  background-color: #69f690;
+  background-color: #82D4D1;
   color: white;
   height: 40px;
   width: 100px;
