@@ -176,11 +176,6 @@ export default {
         this.$store.commit('getProductList', this.pageVender);
       },
 
-      // async getProducts() {
-      //   await axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
-      //   this.teste()
-      // },
-
       getCategories() {
         return axios.get(`${baseApiurl}/categories`).then(res => this.options = res.data);
       },
