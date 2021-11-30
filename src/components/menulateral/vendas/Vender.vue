@@ -47,7 +47,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <v-pagination color="#82D4D1" class="paginacao" v-model="page" :length="pages"></v-pagination>
+          <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
         </div>
       </el-row>
       <el-row v-if="botao">
@@ -70,7 +70,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'storeproducts', 'pages', 'page']),
+    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'storeproducts', 'pages']),
 
     data() {
       return {
@@ -81,6 +81,7 @@ export default {
         input: '',
         value2: '',
         products: [],
+        pageVender: 1,
       }
     },
 
@@ -94,6 +95,9 @@ export default {
       itens() {
         this.getItens()
       },
+      pageVender() {
+        this.getFilter()
+      }
      
     },
 
@@ -116,8 +120,11 @@ export default {
           this.sucesso()
         }
       },
+      
+      // criar busca de somente ativos nesse filtro
 
       getFilter() {
+        
         if(!this.value && this.value2) {
           return this.getProductsCategory()
         }
@@ -142,12 +149,22 @@ export default {
         return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
       },
 
-      getProductsCategory() {
-        return axios.get(`${baseApiurl}/categoriesproducts/${this.value2}`).then(res => this.products = res.data.product);
+      async getProducts() {
+        await axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
+        this.$store.commit('getProducts', this.products);
+        this.$store.commit('getProductList', this.pageVender);
       },
 
-      getProductUser() {
-        return axios.get(`${baseApiurl}/products/${this.value}`).then(res => this.products = res.data.product);
+      async getProductsCategory() {
+        await axios.get(`${baseApiurl}/categoriesproducts/active/${this.value2}`).then(res => this.products = res.data);
+        this.$store.commit('getProducts', this.products);
+        this.$store.commit('getProductList', this.pageVender);
+      },
+
+      async getProductUser() {
+        await axios.get(`${baseApiurl}/productsprofile/active/${this.value}`).then(res => this.products = res.data);
+        this.$store.commit('getProducts', this.products);
+        this.$store.commit('getProductList', this.pageVender);
       },
 
       // async getProducts() {
@@ -200,10 +217,6 @@ export default {
           this.adicionado();
         }
       },
-
-      getProducts() {
-        this.$store.commit('getProducts');
-      }
       
     },
     mounted() {

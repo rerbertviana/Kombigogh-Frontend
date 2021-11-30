@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import { baseApiurl } from '@/global'
+// import { baseApiurl } from '@/global'
 
 Vue.use(Vuex)
 
@@ -18,7 +18,7 @@ export default new Vuex.Store({
         storeproducts: [],
         productslist: [],
         pages: 0,
-        page: 1,
+        page: 0,
     },
     mutations: {
 
@@ -108,35 +108,36 @@ export default new Vuex.Store({
             state.productslist = []
         },
 
-        async getProducts(state){
-            await axios.get(`${baseApiurl}/products/actives`).then(res => state.storeproducts = res.data);
+        getProducts(state, products) {
+            
+            state.storeproducts = products;
             
             state.pages = Math.ceil(state.storeproducts.length / 4)
 
-            let j = (4 * state.page) -4;
-            
-            for(let i=j; i<j+4; i++){
-                state.productslist.push(state.storeproducts[i])
-            }
-
         },
 
-        // getProductsList(state) {
+        getProductList(state, pageVender) {
+            
+            state.productslist = [];
 
-        //     state.pages = Math.ceil(state.storeproducts.length / 4)
+            if (state.pages < pageVender) {
+                state.page = 1
+            } else {
+                state.page = pageVender;
+            }
 
-        //     // let div = Math.floor(data.length/4)
+            let j = (4 * state.page) -4;
 
-        //     for(let i=0; i<4; i++){
-        //         state.productslist.push(state.storeproducts[i])
-        //     }
+            for (let i = j; i < j + 4; i++){
+                if (state.storeproducts[i]) {
+                    state.productslist.push(state.storeproducts[i])
+                } else {
+                    break;
+                }
+            }
+        },
 
-        //     // state.products.push(data[0])
-        //     // state.products.push(data[1])
-        //     // let resto = data.length % 2;
-        //     // state.products = data[0]
-               
-        //     console.log(state.productslist)
-        // }
+
+       
     }
 })

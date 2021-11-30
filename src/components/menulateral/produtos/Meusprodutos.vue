@@ -84,7 +84,7 @@
               <el-input-number size="small" v-model="product.preco" controls-position="right" :step="0.05" :min="0"></el-input-number>
               <i class="fas fa-th-large fa-fw ico qtd"></i>
               <span class="letras">QTD</span>  
-              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="1"></el-input-number>
+              <el-input-number size="small" v-model="product.quantidade" controls-position="right" :step="1" :min="0"></el-input-number>
             </div>
           </el-col>
         </el-row>
@@ -356,7 +356,7 @@ export default {
 
     verificar() {
      
-      if(!this.product.nome || !this.product.preco || !this.product.quantidade || !this.product.descricao || !this.value) {
+      if(!this.product.nome || !this.product.preco || !this.product.descricao || !this.value) {
         this.campovazio();
         return false;
       }
