@@ -119,12 +119,9 @@ export default new Vuex.Store({
         getProductList(state, pageVender) {
             
             state.productslist = [];
-
-            if (state.pages < pageVender) {
-                state.page = 1
-            } else {
-                state.page = pageVender;
-            }
+        
+            state.page = pageVender;
+            
 
             let j = (4 * state.page) -4;
 

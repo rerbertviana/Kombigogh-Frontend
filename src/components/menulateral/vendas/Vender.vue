@@ -152,18 +152,27 @@ export default {
       async getProducts() {
         await axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
         this.$store.commit('getProducts', this.products);
+        if(this.pages < this.pageVender) {
+          this.pageVender = 1
+        }
         this.$store.commit('getProductList', this.pageVender);
       },
 
       async getProductsCategory() {
         await axios.get(`${baseApiurl}/categoriesproducts/active/${this.value2}`).then(res => this.products = res.data);
         this.$store.commit('getProducts', this.products);
+        if(this.pages < this.pageVender) {
+          this.pageVender = 1
+        }
         this.$store.commit('getProductList', this.pageVender);
       },
 
       async getProductUser() {
         await axios.get(`${baseApiurl}/productsprofile/active/${this.value}`).then(res => this.products = res.data);
         this.$store.commit('getProducts', this.products);
+        if(this.pages < this.pageVender) {
+          this.pageVender = 1
+        }
         this.$store.commit('getProductList', this.pageVender);
       },
 
