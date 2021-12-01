@@ -63,7 +63,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: "produtos",
-  computed: mapState(['productslist', 'storeproducts', 'pages']),
+  computed: mapState(['productslist', 'pages']),
 
   data() {
     return {
@@ -285,10 +285,6 @@ export default {
   color: black;
 }
 
-.tabela {
-  margin-top: 30px;
-}
-
 .b2 {
   margin-left: 10px;
   background-color: #82D4D1;
@@ -303,6 +299,7 @@ export default {
 }
 
 .pag {
+  margin-bottom: 15px;
   width: 210px;
 }
 </style>

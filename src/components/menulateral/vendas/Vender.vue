@@ -27,7 +27,7 @@
     </div>
     <div class="form2">
       <el-row class="tabela">
-        <el-select class="pag" v-model="value3" filterable placeholder="ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+        <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
           <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
         <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
@@ -263,6 +263,7 @@ export default {
       this.getCategories()
       this.getUsers()
       this.visible()
+      this.setFiltro()
     }
 
 }
@@ -431,7 +432,7 @@ export default {
 
 .pag {
   margin-bottom: 15px;
-  width: 200px;
+  width: 210px;
 }
 
 </style>

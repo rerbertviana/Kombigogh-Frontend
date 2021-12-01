@@ -168,9 +168,13 @@
         </el-row>
       </div>
     </div>
-    <el-row class="tabela">
-       <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+    <div class="form2">
+      <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+          <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+      <el-row class="tabela">
+        <div>
+          <el-table :data="myproductslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
             <el-table-column width="95">
               <template slot-scope="scope">
                 <v-avatar size="70" rounded>
@@ -196,17 +200,23 @@
               </template>
             </el-table-column>
           </el-table>
+          <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
         </div>
-    </el-row>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { baseApiurl } from "@/global";
+import { mapState } from 'vuex'
+
 
 export default {
   name: "produtos",
+  computed: mapState(['pages', 'myproductslist']),
+
   data() {
     return {
       fileList: [],
@@ -216,19 +226,50 @@ export default {
       options2: [],
       search: "",
       value: "",
+      value3: '',
       input: "",
       input2: "",
+      pageVender: 1,
       cadastrar: false,
       pesquisar: true,
       editar: false,
       excluir: false,
       selectedFile: null,
+      options3: [
+          {
+            value: 5,
+            label: '05'
+          },
+          {
+            value: 10,
+            label: '10'
+          },
+          {
+            value: 15,
+            label: '15'
+          },
+      ],
 
     };
   },
 
+  watch: {
+    value3() {
+      this.setFiltro()
+    },
+  },
 
   methods: {
+
+    setFiltro() {
+      if(this.value3 == '') {
+        this.$store.commit('setFiltro', 5)
+        this.getMyproducts()
+      } else {
+        this.$store.commit('setFiltro', this.value3)
+        this.getMyproducts()
+      }
+    },
 
     getExcluir(row) {
       this.product = {
@@ -296,10 +337,16 @@ export default {
         .then((res) => (this.options = res.data));
     },
 
-    getMyproducts() {
-      return axios
+    async getMyproducts() {
+      await axios
         .get(`${baseApiurl}/usersproducts`)
         .then((res) => (this.products = res.data.product));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getMyProductList', this.pageVender);
     },
 
     getImagem(row) {
@@ -466,6 +513,7 @@ export default {
   mounted() {
     this.getMyproducts();
     this.getCategories();
+    this.setFiltro();
   },
 
   updated() {
@@ -491,10 +539,6 @@ export default {
 
   border-radius: 10px;
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-}
-
-.tabela {
-  margin-top: 30px;
 }
 
 .ico {
@@ -625,6 +669,26 @@ export default {
 .botoesedit {
   display: flex;
   justify-content: flex-end;
+}
+
+.paginacao {
+  margin-top: 15px;
+}
+
+.pag {
+  margin-bottom: 15px;
+  width: 210px;
+}
+
+.form2 {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+
+  border-radius: 10px;
+  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
 </style>
