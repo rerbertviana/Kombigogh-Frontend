@@ -25,31 +25,34 @@
         </el-col>
       </el-row>
     </div>
+    <div class="form2">
       <el-row class="tabela">
-        <div>
-          <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column width="95">
-              <template slot-scope="scope">
-                <v-avatar size="70" rounded>
-                  <v-img :src= "getImagem(scope.row)"/>
-                </v-avatar>
-              </template>
-            </el-table-column>
-            <el-table-column prop="nome" label="NOME"></el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-            <el-table-column prop="preco" label="PREÇO"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
-            <el-table-column label="ADD CARRINHO" width="150">
-              <template slot-scope="scope">
-                <div class="acoes">
-                  <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-          <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
-        </div>
+        <el-select class="pag" v-model="value3" filterable placeholder="ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+          <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+        <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+          <el-table-column width="95">
+            <template slot-scope="scope">
+              <v-avatar size="70" rounded>
+                <v-img :src= "getImagem(scope.row)"/>
+              </v-avatar>
+            </template>
+          </el-table-column>
+          <el-table-column prop="nome" label="NOME"></el-table-column>
+          <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+          <el-table-column prop="preco" label="PREÇO"></el-table-column>
+          <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+          <el-table-column label="ADD CARRINHO" width="150">
+            <template slot-scope="scope">
+              <div class="acoes">
+                <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
       </el-row>
+    </div>
       <el-row v-if="botao">
         <el-col :span="24" class="end">
           <el-button @click="getCancelar" class="botaocarro cor3">CANCELAR</el-button>
@@ -70,7 +73,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'storeproducts', 'pages']),
+    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'pages']),
 
     data() {
       return {
@@ -80,8 +83,23 @@ export default {
         value: '',
         input: '',
         value2: '',
+        value3: '',
         products: [],
         pageVender: 1,
+        options3: [
+          {
+            value: 5,
+            label: '05'
+          },
+          {
+            value: 10,
+            label: '10'
+          },
+          {
+            value: 15,
+            label: '15'
+          },
+        ],
       }
     },
 
@@ -91,6 +109,9 @@ export default {
       },
       value2() {
         this.getFilter()
+      },
+      value3() {
+        this.setFiltro()
       },
       itens() {
         this.getItens()
@@ -102,6 +123,17 @@ export default {
     },
 
     methods: {
+
+      setFiltro() {
+        if(this.value3 == '') {
+          this.$store.commit('setFiltro', 5)
+          this.getFilter()
+        } else {
+          this.$store.commit('setFiltro', this.value3)
+          this.getFilter()
+        }
+
+      },
 
       visible() {
         if (this.perfilVisible == true)
@@ -120,8 +152,6 @@ export default {
           this.sucesso()
         }
       },
-      
-      // criar busca de somente ativos nesse filtro
 
       getFilter() {
         
@@ -145,8 +175,13 @@ export default {
         this.value2 = '';
       },
      
-      getProductUserCategory() {
-        return axios.get(`${baseApiurl}/products/${this.value}/${this.value2}`).then(res => this.products = res.data);
+      async getProductUserCategory() {
+        await axios.get(`${baseApiurl}/products/active/${this.value}/${this.value2}`).then(res => this.products = res.data);
+        this.$store.commit('getProducts', this.products);
+        if(this.pages < this.pageVender) {
+          this.pageVender = 1
+        }
+        this.$store.commit('getProductList', this.pageVender);
       },
 
       async getProducts() {
@@ -240,6 +275,17 @@ export default {
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
+
+  border-radius: 10px;
+  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+.form2 {
+  padding-top: 5px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
 
   border-radius: 10px;
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
@@ -381,6 +427,11 @@ export default {
 
 .paginacao {
   margin-top: 15px;
+}
+
+.pag {
+  margin-bottom: 15px;
+  width: 200px;
 }
 
 </style>

@@ -25,37 +25,46 @@
         </el-col>
       </el-row>
     </div>
-    <el-row class="tabela">
-       <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column width="95">
-              <template slot-scope="scope">
-                <v-avatar size="70" rounded>
-                  <v-img :src= "getImagem(scope.row)"/>
-                </v-avatar>
-              </template>
-            </el-table-column>
-            <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-            <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
-            <el-table-column label="STATUS" width="110">
-              <template slot-scope="scope">
-                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-    </el-row>
+    <div class="form2">
+      <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+      <el-row class="tabela">
+        <div>
+            <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+              <el-table-column width="95">
+                <template slot-scope="scope">
+                  <v-avatar size="70" rounded>
+                    <v-img :src= "getImagem(scope.row)"/>
+                  </v-avatar>
+                </template>
+              </el-table-column>
+              <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+              <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+              <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+              <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+              <el-table-column label="STATUS" width="110">
+                <template slot-scope="scope">
+                  <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+          </div>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { baseApiurl } from "@/global";
+import { mapState } from 'vuex'
 
 export default {
   name: "produtos",
+  computed: mapState(['productslist', 'storeproducts', 'pages']),
+
   data() {
     return {
       products: [],
@@ -64,7 +73,23 @@ export default {
       search: "",
       value: "",
       value2: "",
+      value3: '',
       input: "",
+      pageVender: 1,
+      options3: [
+          {
+            value: 5,
+            label: '05'
+          },
+          {
+            value: 10,
+            label: '10'
+          },
+          {
+            value: 15,
+            label: '15'
+          },
+      ],
     };
   },
 
@@ -75,9 +100,26 @@ export default {
     value2() {
       this.getFilter();
     },
+    value3() {
+      this.setFiltro()
+    },
+    pageVender() {
+      this.getFilter()
+    }
   },
 
   methods: {
+
+    setFiltro() {
+      if(this.value3 == '') {
+        this.$store.commit('setFiltro', 5)
+        this.getFilter()
+      } else {
+        this.$store.commit('setFiltro', this.value3)
+        this.getFilter()
+      }
+    },
+
     getFilter() {
       if (!this.value && this.value2) {
         return this.getProductsCategory();
@@ -93,28 +135,53 @@ export default {
       }
     },
 
-    getProductUserCategory() {
-      return axios
+    async getProductUserCategory() {
+      await axios
         .get(`${baseApiurl}/products/${this.value}/${this.value2}`)
         .then((res) => (this.products = res.data));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
-    getProductsCategory() {
-      return axios
+    async getProductsCategory() {
+      await axios
         .get(`${baseApiurl}/categoriesproducts/${this.value2}`)
         .then((res) => (this.products = res.data.product));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
-    getProductUser() {
-      return axios
+    async getProductUser() {
+      await axios
         .get(`${baseApiurl}/products/${this.value}`)
-        .then((res) => (this.products = res.data.product));
+        .then((res) => (this.products = res.data.product))
+      
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
-    getProducts() {
-      return axios
+    async getProducts() {
+      await axios
         .get(`${baseApiurl}/products`)
         .then((res) => (this.products = res.data));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
+      
     },
 
     getUsers() {
@@ -171,6 +238,17 @@ export default {
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
+.form2 {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+
+  border-radius: 10px;
+  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
 .lin1 {
   margin-bottom: 15px;
 }
@@ -218,5 +296,13 @@ export default {
   height: 40px;
   width: 100px;
   border: none;
+}
+
+.paginacao {
+  margin-top: 15px;
+}
+
+.pag {
+  width: 210px;
 }
 </style>
