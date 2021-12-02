@@ -18,6 +18,7 @@ export default new Vuex.Store({
         storeproducts: [],
         productslist: [],
         myproductslist: [],
+        mysaleslist: [],
         pages: 0,
         page: 0,
         filtro: 5,
@@ -113,7 +114,7 @@ export default new Vuex.Store({
         getProducts(state, products) {
             state.storeproducts = []
             state.storeproducts = products;
-            state.pages = Math.ceil(state.storeproducts.length / state.filtro)
+            state.pages = Math.ceil(state.storeproducts.length / state.filtro);
         },
 
         setFiltro(state, value3) {
@@ -149,6 +150,23 @@ export default new Vuex.Store({
             for (let i = j; i < j + state.filtro; i++){
                 if (state.storeproducts[i]) {
                     state.myproductslist.push(state.storeproducts[i])
+                } else {
+                    break;
+                }
+            }
+        },
+
+        getMySalesList(state, pageVender) {
+            
+            state.mysaleslist = [];
+
+            state.page = pageVender;
+            
+            let j = (state.filtro * state.page) -state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++){
+                if (state.storeproducts[i]) {
+                    state.mysaleslist.push(state.storeproducts[i])
                 } else {
                     break;
                 }

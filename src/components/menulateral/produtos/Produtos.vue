@@ -25,34 +25,30 @@
         </el-col>
       </el-row>
     </div>
-    <div class="form2">
-      <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
-        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
-      </el-select>
-      <el-row class="tabela">
-        <div>
-            <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-              <el-table-column width="95">
-                <template slot-scope="scope">
-                  <v-avatar size="70" rounded>
-                    <v-img :src= "getImagem(scope.row)"/>
-                  </v-avatar>
-                </template>
-              </el-table-column>
-              <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-              <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-              <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
-              <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
-              <el-table-column label="STATUS" width="110">
-                <template slot-scope="scope">
-                  <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-            <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
-          </div>
-      </el-row>
-    </div>
+    <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+      <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <el-row class="tabela">
+      <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+        <el-table-column width="95">
+          <template slot-scope="scope">
+            <v-avatar size="70" rounded>
+              <v-img :src= "getImagem(scope.row)"/>
+            </v-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+        <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+        <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+        <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+        <el-table-column label="STATUS" width="110">
+          <template slot-scope="scope">
+            <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+    </el-row>
   </div>
 </template>
 
@@ -238,17 +234,6 @@ export default {
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
-.form2 {
-  padding-top: 10px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-
-  border-radius: 10px;
-  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-}
-
 .lin1 {
   margin-bottom: 15px;
 }
@@ -299,6 +284,7 @@ export default {
 }
 
 .pag {
+  margin-top: 15px;
   margin-bottom: 15px;
   width: 210px;
 }

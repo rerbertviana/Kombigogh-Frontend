@@ -9,39 +9,14 @@
             <div class="erro" v-if="visible">
               <span class="asterisco">*</span>
             </div>
-            <el-select
-              v-model="value"
-              filterable
-              clearable
-              no-match-text="..."
-              placeholder="Mês"
-              class="espaco"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
+            <el-select v-model="value" filterable clearable no-match-text="..." placeholder="Mês" class="espaco">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             <div class="erro" v-if="visible2">
               <span class="asterisco">*</span>
             </div>
-            <el-select
-              v-model="value2"
-              filterable
-              clearable
-              no-match-text="..."
-              placeholder="Ano"
-            >
-              <el-option
-                v-for="item in options2"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
+            <el-select v-model="value2" filterable clearable no-match-text="..." placeholder="Ano">
+              <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </div>
         </el-col>
@@ -49,11 +24,7 @@
           <div class="l1c2">
             <i class="fas fa-box fa-fw ico"></i>
             <span class="meusprodutos"> PRODUTOS </span>
-            <el-input
-              placeholder="Nome do produto"
-              v-model="search"
-              size="large"
-            >
+            <el-input placeholder="Nome do produto" v-model="search" size="large">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
             <el-button @click="getTodos" class="b2">TODOS</el-button>
@@ -61,40 +32,38 @@
         </el-col>
       </el-row>
     </div>
-    <el-row class="lin2" v-if="tab1">
-      <div>
-        <el-table :data="orders.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
-         <el-table-column width="95">
-            <template slot-scope="scope">
-              <v-avatar size="70" rounded>
-                <v-img :src= "getImagem(scope.row)"/>
-              </v-avatar>
-            </template>
-          </el-table-column>
-          <el-table-column prop="nome" label="NOME"> </el-table-column>
-          <el-table-column prop="quantidade" label="QUANTIDADE">
-          </el-table-column>
-          <el-table-column prop="mes" label="MÊS"> </el-table-column>
-          <el-table-column prop="ano" label="ANO"> </el-table-column>
-          <el-table-column label="AÇÕES" width="220">
-            <template slot-scope="scope">
-              <el-button @click="getOrder(scope.row)" class="b3 acao">
-                <i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+    <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+      <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <el-row v-if="tab1">
+      <el-table :data="mysaleslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
+        <el-table-column width="95">
+          <template slot-scope="scope">
+            <v-avatar size="70" rounded>
+              <v-img :src= "getImagem(scope.row)"/>
+            </v-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nome" label="NOME"> </el-table-column>
+        <el-table-column prop="quantidade" label="QUANTIDADE">
+        </el-table-column>
+        <el-table-column prop="mes" label="MÊS"> </el-table-column>
+        <el-table-column prop="ano" label="ANO"> </el-table-column>
+        <el-table-column label="AÇÕES" width="220">
+          <template slot-scope="scope">
+            <el-button @click="getOrder(scope.row)" class="b3 acao">
+              <i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
     </el-row>
     <div class="pedido" v-if="tab2">
       <div class="linhafechar">
-        <el-button @click="getClose" class="fechar"
-          >FECHAR<i class="fas fa-window-close fa-fw ico3"></i>
-        </el-button>
+        <el-button @click="getClose" class="fechar">FECHAR<i class="fas fa-window-close fa-fw ico3"></i></el-button>
       </div>
       <div class="linhapedido">
-        <el-col :span="24" class="idpedido">
-          ID PEDIDO - {{ pedidos.id }}
-        </el-col>
+        <el-col :span="24" class="idpedido">ID PEDIDO - {{ pedidos.id }}</el-col>
       </div>
       <el-row :gutter="10">
         <div class="titulos">
@@ -122,22 +91,14 @@
       <el-row class="vendas">
         <el-table :data="vendas" border stripe empty-text="Sem resultados">
           <el-table-column prop="artista" label="ARTISTA"></el-table-column>
-          <el-table-column
-            prop="nome"
-            label="PRODUTO"
-            width="340"
+          <el-table-column prop="nome" label="PRODUTO" width="340"
           ></el-table-column>
           <el-table-column prop="preco" label="PREÇO"></el-table-column>
-          <el-table-column
-            prop="quantidade"
-            label="QUANTIDADE"
-          ></el-table-column>
+          <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
         </el-table>
       </el-row>
       <el-row>
-        <el-col :span="5" class="total">
-          TOTAL = R$ {{ pedidos.total }}
-        </el-col>
+        <el-col :span="5" class="total"> TOTAL = R$ {{ pedidos.total }} </el-col>
       </el-row>
     </div>
   </div>
@@ -146,14 +107,20 @@
 <script>
 import axios from "axios";
 import { baseApiurl } from "@/global";
+import { mapState } from 'vuex'
+
 
 export default {
   name: "Minhasvendas",
+  computed: mapState([ 'mysaleslist', 'pages' ]),
+
   data() {
     return {
       search: "",
       value: "",
       value2: "",
+      value3: "",
+      pageVender: 1,
       input: "",
       options: [
         {
@@ -223,6 +190,20 @@ export default {
           label: "2023",
         },
       ],
+      options3: [
+          {
+            value: 5,
+            label: '05'
+          },
+          {
+            value: 10,
+            label: '10'
+          },
+          {
+            value: 15,
+            label: '15'
+          },
+      ],
       vendas: [],
       pedidos: [],
       orders: [],
@@ -243,12 +224,50 @@ export default {
     value2() {
       this.getFilter();
     },
+
+    pageVender() {
+      this.getFilter()
+    },
+
+    value3() {
+      this.setFiltro()
+    },
+
   },
   methods: {
-    getMinhasvendas() {
-      return axios
+
+    setFiltro() {
+      if(this.value3 == '') {
+        this.$store.commit('setFiltro', 5)
+        this.getFilter()
+      } else {
+        this.$store.commit('setFiltro', this.value3)
+        this.getFilter()
+      }
+    },
+
+    async getMinhasvendas() {
+      await axios
         .get(`${baseApiurl}/usersordersproducts`)
         .then((res) => (this.orders = res.data));
+
+      this.$store.commit('getProducts', this.orders);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getMySalesList', this.pageVender);
+    },
+
+    async getOrdersData() {
+      await axios
+        .get(`${baseApiurl}/usersordersproducts/${this.value}/${this.value2}`)
+        .then((res) => (this.orders = res.data));
+      
+      this.$store.commit('getProducts', this.orders);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getMySalesList', this.pageVender);
     },
 
     getTodos() {
@@ -279,12 +298,6 @@ export default {
         this.visible2 = false;
         return this.getOrdersData();
       }
-    },
-
-    getOrdersData() {
-      return axios
-        .get(`${baseApiurl}/usersordersproducts/${this.value}/${this.value2}`)
-        .then((res) => (this.orders = res.data));
     },
 
     getOrder(row) {
@@ -334,8 +347,6 @@ export default {
   margin-right: 60px;
   margin-left: 60px;
   margin-bottom: 60px;
-
-  /* background-color: rgba(0, 0, 0, 0.25); */
 }
 
 .ico {
@@ -418,10 +429,6 @@ export default {
 .idpedido {
   display: flex;
   justify-content: center;
-}
-
-.lin2 {
-  margin-top: 40px;
 }
 
 .espaco {
@@ -548,5 +555,15 @@ export default {
 .erro {
   animation: headShake;
   animation-duration: 1s;
+}
+
+.paginacao {
+  margin-top: 15px;
+}
+
+.pag {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 210px;
 }
 </style>

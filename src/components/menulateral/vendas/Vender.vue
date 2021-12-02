@@ -25,40 +25,38 @@
         </el-col>
       </el-row>
     </div>
-    <div class="form2">
-      <el-row class="tabela">
-        <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
-          <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-        <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-          <el-table-column width="95">
-            <template slot-scope="scope">
-              <v-avatar size="70" rounded>
-                <v-img :src= "getImagem(scope.row)"/>
-              </v-avatar>
-            </template>
-          </el-table-column>
-          <el-table-column prop="nome" label="NOME"></el-table-column>
-          <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-          <el-table-column prop="preco" label="PREÇO"></el-table-column>
-          <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
-          <el-table-column label="ADD CARRINHO" width="150">
-            <template slot-scope="scope">
-              <div class="acoes">
-                <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
-      </el-row>
-    </div>
-      <el-row v-if="botao">
-        <el-col :span="24" class="end">
-          <el-button @click="getCancelar" class="botaocarro cor3">CANCELAR</el-button>
-          <router-link to="/carrinho" class="botaocarro cor2"> <span class="letras">VENDER</span> </router-link>
-        </el-col>
-      </el-row>
+    <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+      <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <el-row>
+      <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+        <el-table-column width="95">
+          <template slot-scope="scope">
+            <v-avatar size="70" rounded>
+              <v-img :src= "getImagem(scope.row)"/>
+            </v-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nome" label="NOME"></el-table-column>
+        <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+        <el-table-column prop="preco" label="PREÇO"></el-table-column>
+        <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
+        <el-table-column label="ADD CARRINHO" width="150">
+          <template slot-scope="scope">
+            <div class="acoes">
+              <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+    </el-row>
+    <el-row v-if="botao">
+      <el-col :span="24" class="end">
+        <el-button @click="getCancelar" class="botaocarro cor3">CANCELAR</el-button>
+        <router-link to="/carrinho" class="botaocarro cor2"> <span class="letras">VENDER</span> </router-link>
+      </el-col>
+    </el-row>
   </div>  
     
 </template>
@@ -132,7 +130,6 @@ export default {
           this.$store.commit('setFiltro', this.value3)
           this.getFilter()
         }
-
       },
 
       visible() {
@@ -281,17 +278,6 @@ export default {
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
-.form2 {
-  padding-top: 5px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-
-  border-radius: 10px;
-  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-}
-
 .vendervue {
   margin-top: 50px;
   margin-right: 60px;
@@ -401,11 +387,6 @@ export default {
   font-size: 1.2rem;
 }
 
-
-.tabela {
-  margin-top: 30px;
-}
-
 .espaco {
   margin-right: 10px;
 }
@@ -431,6 +412,7 @@ export default {
 }
 
 .pag {
+  margin-top: 15px;
   margin-bottom: 15px;
   width: 210px;
 }

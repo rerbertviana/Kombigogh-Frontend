@@ -168,42 +168,38 @@
         </el-row>
       </div>
     </div>
-    <div class="form2">
-      <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
-          <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
-      </el-select>
-      <el-row class="tabela">
-        <div>
-          <el-table :data="myproductslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column width="95">
-              <template slot-scope="scope">
-                <v-avatar size="70" rounded>
-                  <v-img :src= "getImagem(scope.row)"/>
-                </v-avatar>
-              </template>
-            </el-table-column>
-            <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
-            <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
-            <el-table-column label="STATUS" width="100">
-              <template slot-scope="scope">
-                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="AÇÕES" width="245">
-              <template slot-scope="scope">
-                <div class="acoes">
-                  <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
-                  <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-          <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
-        </div>
-      </el-row>
-    </div>
+    <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <el-row class="tabela">
+      <el-table :data="myproductslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+        <el-table-column width="95">
+          <template slot-scope="scope">
+            <v-avatar size="70" rounded>
+              <v-img :src= "getImagem(scope.row)"/>
+            </v-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+        <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
+        <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+        <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+        <el-table-column label="STATUS" width="100">
+          <template slot-scope="scope">
+            <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="AÇÕES" width="245">
+          <template slot-scope="scope">
+            <div class="acoes">
+              <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
+              <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+    </el-row>
   </div>
 </template>
 
@@ -676,6 +672,7 @@ export default {
 }
 
 .pag {
+  margin-top: 15px;
   margin-bottom: 15px;
   width: 210px;
 }
