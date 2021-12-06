@@ -37,11 +37,11 @@
             </v-avatar>
           </template>
         </el-table-column>
-        <el-table-column prop="nome" label="NOME"></el-table-column>
+        <el-table-column prop="nome" label="NOME" width="200"></el-table-column>
         <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-        <el-table-column prop="preco" label="PREÇO"></el-table-column>
-        <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
-        <el-table-column label="ADD CARRINHO" width="150">
+        <el-table-column prop="preco" label="PREÇO" width="130" ></el-table-column>
+        <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+        <el-table-column label="VENDER" width="110">
           <template slot-scope="scope">
             <div class="acoes">
               <el-button @click="getCarrinho(scope.row)" class="botao cor2"><i class="fas fa-shopping-bag ico2"></i></el-button>
@@ -51,14 +51,7 @@
       </el-table>
       <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
     </el-row>
-    <el-row v-if="botao">
-      <el-col :span="24" class="end">
-        <el-button @click="getCancelar" class="botaocarro cor3">CANCELAR</el-button>
-        <router-link to="/carrinho" class="botaocarro cor2"> <span class="letras">VENDER</span> </router-link>
-      </el-col>
-    </el-row>
   </div>  
-    
 </template>
 
 <script>
@@ -71,7 +64,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'botao', 'itens', 'mensagem', 'productslist', 'pages']),
+    computed: mapState(['perfilVisible', 'order', 'itens', 'mensagem', 'productslist', 'pages']),
 
     data() {
       return {
@@ -135,10 +128,6 @@ export default {
       visible() {
         if (this.perfilVisible == true)
         this.$store.commit('togglePerfil')
-      },
-
-      getCancelar() {
-        this.$store.commit('zerarPedidos')
       },
 
       getItens() {
@@ -335,27 +324,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 8px;
-  width: 100px;
+  margin-left: 4px;
+  width: 80px;
   height: 40px;
   background-color: #82D4D1;
   color: white;
   border: none;
 }
-
-.botaocarro {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10px;
-  width: 150px;
-  height: 50px;
-  color: white;
-  border: none;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
 
 .cor1 {
   background-color: #69F690;

@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-select class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+    <el-select v-if="tab1" class="pag" v-model="value3" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
       <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select>
     <el-row v-if="tab1">
@@ -45,10 +45,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="nome" label="NOME"> </el-table-column>
-        <el-table-column prop="quantidade" label="QUANTIDADE">
+        <el-table-column prop="quantidade" label="QUANTIDADE" width="130">
         </el-table-column>
-        <el-table-column prop="mes" label="MÊS"> </el-table-column>
-        <el-table-column prop="ano" label="ANO"> </el-table-column>
+        <el-table-column prop="mes" label="MÊS" width="120"> </el-table-column>
+        <el-table-column prop="ano" label="ANO" width="100"> </el-table-column>
         <el-table-column label="AÇÕES" width="220">
           <template slot-scope="scope">
             <el-button @click="getOrder(scope.row)" class="b3 acao">
@@ -91,8 +91,7 @@
       <el-row class="vendas">
         <el-table :data="vendas" border stripe empty-text="Sem resultados">
           <el-table-column prop="artista" label="ARTISTA"></el-table-column>
-          <el-table-column prop="nome" label="PRODUTO" width="340"
-          ></el-table-column>
+          <el-table-column prop="nome" label="PRODUTO" width="340"></el-table-column>
           <el-table-column prop="preco" label="PREÇO"></el-table-column>
           <el-table-column prop="quantidade" label="QUANTIDADE"></el-table-column>
         </el-table>
