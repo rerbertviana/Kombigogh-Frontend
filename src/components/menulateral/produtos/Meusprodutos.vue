@@ -198,7 +198,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages5"></v-pagination>
     </el-row>
   </div>
 </template>
@@ -211,7 +211,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: "produtos",
-  computed: mapState(['pages', 'myproductslist']),
+  computed: mapState(['pages5', 'myproductslist']),
 
   data() {
     return {
@@ -342,7 +342,7 @@ export default {
         .then((res) => (this.products = res.data.product));
 
       this.$store.commit('getMyProducts', this.products);
-      if(this.pages < this.pageVender) {
+      if(this.pages5 < this.pageVender) {
         this.pageVender = 1
       }
       this.$store.commit('getMyProductList', this.pageVender);

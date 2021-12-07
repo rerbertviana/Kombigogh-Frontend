@@ -209,7 +209,7 @@ export default {
   },
 
   mounted() {
-    this.getProducts();
+    this.setFiltro()
     this.getUsers();
     this.getCategories();
   },

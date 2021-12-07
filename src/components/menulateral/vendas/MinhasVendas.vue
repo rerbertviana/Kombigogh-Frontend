@@ -56,7 +56,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages3"></v-pagination>
     </el-row>
     <div class="pedido" v-if="tab2">
       <div class="linhafechar">
@@ -111,7 +111,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: "Minhasvendas",
-  computed: mapState([ 'mysaleslist', 'pages' ]),
+  computed: mapState([ 'mysaleslist', 'pages3' ]),
 
   data() {
     return {
@@ -225,7 +225,7 @@ export default {
     },
 
     pageVender() {
-      this.getFilter()
+      this.$store.commit('getMySalesList', this.pageVender);
     },
 
     value3() {
@@ -250,8 +250,8 @@ export default {
         .get(`${baseApiurl}/usersordersproducts`)
         .then((res) => (this.orders = res.data));
 
-      this.$store.commit('getProducts', this.orders);
-      if(this.pages < this.pageVender) {
+      this.$store.commit('getMySales', this.orders);
+      if(this.pages3 < this.pageVender) {
         this.pageVender = 1
       }
       this.$store.commit('getMySalesList', this.pageVender);
@@ -262,8 +262,8 @@ export default {
         .get(`${baseApiurl}/usersordersproducts/${this.value}/${this.value2}`)
         .then((res) => (this.orders = res.data));
       
-      this.$store.commit('getProducts', this.orders);
-      if(this.pages < this.pageVender) {
+      this.$store.commit('getMySales', this.orders);
+      if(this.pages3 < this.pageVender) {
         this.pageVender = 1
       }
       this.$store.commit('getMySalesList', this.pageVender);

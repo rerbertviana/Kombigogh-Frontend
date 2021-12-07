@@ -49,7 +49,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages2"></v-pagination>
     </el-row>
   </div>  
 </template>
@@ -64,7 +64,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'itens', 'mensagem', 'activeproductslist', 'pages']),
+    computed: mapState(['perfilVisible', 'order', 'itens', 'mensagem', 'activeproductslist', 'pages2']),
 
     data() {
       return {
@@ -163,8 +163,8 @@ export default {
      
       async getProductUserCategory() {
         await axios.get(`${baseApiurl}/products/active/${this.value}/${this.value2}`).then(res => this.products = res.data);
-        this.$store.commit('getProducts', this.products);
-        if(this.pages < this.pageVender) {
+        this.$store.commit('getActiveProducts', this.products);
+        if(this.pages2 < this.pageVender) {
           this.pageVender = 1
         }
         this.$store.commit('getActiveProductsList', this.pageVender);
@@ -175,26 +175,32 @@ export default {
           .get(`${baseApiurl}/products/actives`)
           .then(res => this.products = res.data);
         
-        this.$store.commit('getProducts', this.products);
-        if(this.pages < this.pageVender) {
+        this.$store.commit('getActiveProducts', this.products);
+        if(this.pages2 < this.pageVender) {
           this.pageVender = 1
         }
         this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       async getProductsCategory() {
-        await axios.get(`${baseApiurl}/categoriesproducts/active/${this.value2}`).then(res => this.products = res.data);
-        this.$store.commit('getProducts', this.products);
-        if(this.pages < this.pageVender) {
+        await axios
+          .get(`${baseApiurl}/categoriesproducts/active/${this.value2}`)
+          .then(res => this.products = res.data);
+
+        this.$store.commit('getActiveProducts', this.products);
+        if(this.pages2 < this.pageVender) {
           this.pageVender = 1
         }
         this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       async getProductUser() {
-        await axios.get(`${baseApiurl}/productsprofile/active/${this.value}`).then(res => this.products = res.data);
-        this.$store.commit('getProducts', this.products);
-        if(this.pages < this.pageVender) {
+        await axios
+          .get(`${baseApiurl}/productsprofile/active/${this.value}`)
+          .then(res => this.products = res.data);
+
+        this.$store.commit('getActiveProducts', this.products);
+        if(this.pages2 < this.pageVender) {
           this.pageVender = 1
         }
         this.$store.commit('getActiveProductsList', this.pageVender);

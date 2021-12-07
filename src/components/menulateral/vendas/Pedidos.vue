@@ -56,8 +56,11 @@
                 </el-col>
             </el-row>
         </div>
-        <el-row class="lin2" v-if="tab1">
-            <el-table  :data="orders.filter(data => !search || data.cliente.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
+        <el-select v-if="tab1" class="pag" v-model="value5" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+            <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+        <el-row v-if="tab1">
+            <el-table  :data="orderslist.filter(data => !search || data.cliente.toLowerCase().includes(search.toLowerCase()))" stripe border style="width: 100%" empty-text="Sem resultados">
                 <el-table-column prop="cliente" label="CLIENTE" width="230">
                 </el-table-column>
                 <el-table-column prop="mes" label="MES">
@@ -72,11 +75,12 @@
                     <template slot-scope="scope">
                         <div class="botoesacao">
                             <el-button @click="getOrder(scope.row)" class="b3 acao"><i class="fas fa-eye fa-fw ico2"></i>VER PEDIDO</el-button>
-                            <el-button v-if="botao" @click="open(scope.row)" class="b3">ESTORNAR</el-button>
+                            <el-button v-if="botao" @click="open(scope.row)" class="b3 corestornar">ESTORNAR</el-button>
                         </div>
                     </template>
                 </el-table-column> 
             </el-table>
+            <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages4"></v-pagination>
         </el-row>
         <div class="pedido" v-if="tab2" >
             <div class="linhafechar">
@@ -128,9 +132,12 @@
 
 import axios from 'axios'
 import { baseApiurl } from '@/global'
+import { mapState } from 'vuex'
 
 export default {
     name: 'Minhasvendas',
+    computed: mapState([ 'orderslist', 'pages4' ]),
+
     data () {
         return {
             search: '',
@@ -138,11 +145,13 @@ export default {
             value2: '',
             value3: '',
             value4: '',
+            value5: '',
             input: '',
             orders: [],
             vendas:[],
             pedidos:[],
             options: [],
+            pageVender: 1,
             tab1: true,
             tab2: false,
             visible: false,
@@ -226,7 +235,21 @@ export default {
                     value: 'ok',
                     label: 'OK'
                 }, 
-            ]
+            ],
+            options5: [
+                {
+                    value: 5,
+                    label: '05'
+                },
+                {
+                    value: 10,
+                    label: '10'
+                },
+                {
+                    value: 15,
+                    label: '15'
+                },
+            ],
         }
     },
 
@@ -246,11 +269,29 @@ export default {
 
         value4() {
             this.getController();
-        }
+        },
+
+        value5() {
+            this.setFiltro()
+        },
+
+        pageVender() {
+            this.$store.commit('getOrdersList', this.pageVender);
+        },
      
     },
 
     methods: {
+
+        setFiltro() {
+            if(this.value5 == '') {
+                this.$store.commit('setFiltro', 5)
+                this.getController()
+            } else {
+                this.$store.commit('setFiltro', this.value5)
+                this.getController()
+            }
+        },
 
         getFilter() {
             if(!this.value2 && this.value3) {
@@ -273,8 +314,16 @@ export default {
             }
         },
 
-        getOrdersStatus(){
-            return axios.get(`${baseApiurl}/orders/status/${this.value4}`).then(res => this.orders = res.data);
+        async getOrdersStatus(){
+            await axios
+                .get(`${baseApiurl}/orders/status/${this.value4}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
         getTodos() {
@@ -288,16 +337,40 @@ export default {
             this.getOrders();
         },
 
-        getOrdersData() {
-            return axios.get(`${baseApiurl}/orders/${this.value2}/${this.value3}`).then(res => this.orders = res.data);
+        async getOrdersData() {
+            await axios
+                .get(`${baseApiurl}/orders/${this.value2}/${this.value3}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
-        getOrdersUsers() {
-            return axios.get(`${baseApiurl}/orders/user/${this.value}`).then(res => this.orders = res.data);
+        async getOrdersUsers() {
+            await axios
+                .get(`${baseApiurl}/orders/user/${this.value}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
-        getOrders() {
-            return axios.get(`${baseApiurl}/orders`).then(res => this.orders = res.data);
+        async getOrders() {
+            await axios
+                .get(`${baseApiurl}/orders`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
         getOrder(row) {
@@ -324,20 +397,52 @@ export default {
             return axios.get(`${baseApiurl}/users/adm`).then(res => this.options = res.data);
         },
 
-        getOrdersUsersStatus() {
-            return axios.get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value4}`).then(res => this.orders = res.data);
+        async getOrdersUsersStatus() {
+            await axios
+                .get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value4}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
-        getOrdersUsersData() {
-            return axios.get(`${baseApiurl}/orders/user/${this.value}/${this.value2}/${this.value3}`).then(res => this.orders = res.data);
+        async getOrdersUsersData() {
+            await axios
+                .get(`${baseApiurl}/orders/user/${this.value}/${this.value2}/${this.value3}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
-        getOrdersUsersDataStatus(){
-            return axios.get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value2}/${this.value3}/${this.value4}`).then(res => this.orders = res.data);
+        async getOrdersUsersDataStatus(){
+            await axios
+                .get(`${baseApiurl}/ordersuserdatastatus/${this.value}/${this.value2}/${this.value3}/${this.value4}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
-        getOrdersDataStatus(){
-            return axios.get(`${baseApiurl}/ordersdatastatus/${this.value2}/${this.value3}/${this.value4}`).then(res => this.orders = res.data);
+        async getOrdersDataStatus(){
+            await axios
+                .get(`${baseApiurl}/ordersdatastatus/${this.value2}/${this.value3}/${this.value4}`)
+                .then(res => this.orders = res.data);
+
+            this.$store.commit('getOrders', this.orders);
+            if(this.pages4 < this.pageVender) {
+                this.pageVender = 1
+            }
+            this.$store.commit('getOrdersList', this.pageVender);
         },
 
         getController() {
@@ -421,7 +526,7 @@ export default {
     },
 
     mounted() {
-        this.getOrders();
+        this.setFiltro();
         this.getUsers();
         this.getUser();
         this.getTamanho();
@@ -432,237 +537,249 @@ export default {
 
 <style scoped>
 
-.form {
-  padding-top: 30px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 10px;
-  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-}
+    .form {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+    }
 
-.mv {
-    margin-top: 50px;
-    margin-right: 60px;
-    margin-left: 60px;
-    margin-bottom: 60px;
-}
+    .mv {
+        margin-top: 50px;
+        margin-right: 60px;
+        margin-left: 60px;
+        margin-bottom: 60px;
+    }
 
-.ico {
-    margin-right: 15px;
-    color: black;
-    font-size: 1.2rem;
-}
+    .ico {
+        margin-right: 15px;
+        color: black;
+        font-size: 1.2rem;
+    }
 
-.titulosheader {
-    font-size: 17px;
-    color: black ;
-}
+    .titulosheader {
+        font-size: 17px;
+        color: black ;
+    }
 
-.espacoartista {
-    margin-right: 23px;
-}
+    .espacoartista {
+        margin-right: 23px;
+    }
 
-.espacostatus {
-    margin-right: 60px;
-}
+    .espacostatus {
+        margin-right: 60px;
+    }
 
-.lin1 {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
+    .lin1 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-.alinhar {
-    display: flex;
-    align-items: center;
-}
+    .alinhar {
+        display: flex;
+        align-items: center;
+    }
 
-.lin2 {
-    margin-top: 40px;
-}
+    .espaco {
+        margin-right: 10px;
+    }
 
-.espaco {
-    margin-right: 10px;
-}
+    .b3 {
+        margin-left: 10px;
+        background-color: #82D4D1;
+        color: white;
+        height: 50px;
+        width: 140px;
+        border: none;
+    }
 
-.b3 {
+    .corestornar{
+        background-color: #FFA882;
+    }
+
+    .acao {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pedido {
+        padding: 20px;
+        margin-top: 25px;
+        box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .linhafechar {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .fechar {
+        padding-left: 27px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        height: 35px;
+        width: 103px;
+        background-color: #82D4D1;
+        border-radius: 5px 5px 0px 0px;
+        color: white;
+    }
+
+    .ico3 {
+        margin-left: 8px;
+    }
+
+    .linhapedido {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        width: 100%;
+        border-radius: 5px 0px 5px 5px;
+        background-color: #82D4D1;
+        color: white;
+    }
+
+    .idpedido {
+        display: flex;
+        justify-content: center;
+    }
+
+    .titulos {
+        display: flex;
+        color: white;
+    }
+
+
+    .l3 {
+        margin-top: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+
+        background-color: #82D4D1;
+    }
+
+    .l3c1 {
+        margin-left: 5px;
+        border-radius: 5px 0px 0px 5px;
+    }
+
+    .l3c4 {
+        margin-right: 5px;
+        border-radius: 0px 5px 5px 0px;
+    }
+
+    .conteudo {
+        display: flex;
+        margin-top: 5px;
+        color: gray;
+    }
+
+    .l4 {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .produtos {
+        display: flex;
+        justify-content: center;
+        color: white;
+    }
+
+    .l5 {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        background-color: #82D4D1 ;
+        border-radius: 5px;
+    }
+
+    .ico2 {
+        margin-right: 8px;
+    }
+
+    .vendas {
+        margin-top: 10px;
+    }
+
+
+    .total {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        border-radius: 3px;
+        color: white;
+        background-color: #82D4D1 ;
+        height: 40px;
+    }
+
+    .asterisco {
+        color: red;
+        margin-right: 5px;
+    }
+
+    .erro {
+        animation: headShake;
+        animation-duration: 1s;
+    }
+
+    .b1 {
     margin-left: 10px;
     background-color: #82D4D1;
     color: white;
-    height: 50px;
-    width: 140px;
-    border: none;
-}
-
-.acao {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pedido {
-    padding: 20px;
-    margin-top: 25px;
-    box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.linhafechar {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.fechar {
-    padding-left: 27px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    height: 35px;
-    width: 103px;
-    background-color: #82D4D1;
-    border-radius: 5px 5px 0px 0px;
-    color: white;
-}
-
-.ico3 {
-    margin-left: 8px;
-}
-
-.linhapedido {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    width: 100%;
-    border-radius: 5px 0px 5px 5px;
-    background-color: #82D4D1;
-    color: white;
-}
-
-.idpedido {
-    display: flex;
-    justify-content: center;
-}
-
-.titulos {
-    display: flex;
-    color: white;
-}
-
-
-.l3 {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-
-    background-color: #82D4D1;
-}
-
-.l3c1 {
-    margin-left: 5px;
-    border-radius: 5px 0px 0px 5px;
-}
-
-.l3c4 {
-    margin-right: 5px;
-    border-radius: 0px 5px 5px 0px;
-}
-
-.conteudo {
-    display: flex;
-    margin-top: 5px;
-    color: gray;
-}
-
-.l4 {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.produtos {
-    display: flex;
-    justify-content: center;
-    color: white;
-}
-
-.l5 {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    background-color: #82D4D1 ;
-    border-radius: 5px;
-}
-
-.ico2 {
-    margin-right: 8px;
-}
-
-.vendas {
-    margin-top: 10px;
-}
-
-
-.total {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    border-radius: 3px;
-    color: white;
-    background-color: #82D4D1 ;
     height: 40px;
-}
+    width: 100px;
+    border: none;
+    }
 
-.asterisco {
-    color: red;
-    margin-right: 5px;
-}
+    .b2 {
+    margin-left: 10px;
+    background-color: #82d4d1;
+    color: white;
+    height: 40px;
+    width: 100px;
+    border: none;
+    }
 
-.erro {
-    animation: headShake;
-    animation-duration: 1s;
-}
+    .dat {
+        margin-right: 16px;
+    }
 
-.b1 {
-  margin-left: 10px;
-  background-color: #82D4D1;
-  color: white;
-  height: 40px;
-  width: 100px;
-  border: none;
-}
+    .icodata {
+        color: black;
+        font-size: 1.2rem;
+        margin-right: 19px;
+    }
 
-.b2 {
-  margin-left: 10px;
-  background-color: #82d4d1;
-  color: white;
-  height: 40px;
-  width: 100px;
-  border: none;
-}
+    .ped {
+        margin-right: 23px;
+    }
 
-.dat {
-    margin-right: 16px;
-}
+    .botoesacao {
+        display: flex;
+    }
 
-.icodata {
-    color: black;
-    font-size: 1.2rem;
-    margin-right: 19px;
-}
+    .paginacao {
+        margin-top: 15px;
+    }   
 
-.ped {
-    margin-right: 23px;
-}
+    .pag {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        width: 210px;
+    }
 
-.botoesacao {
-    display: flex;
-}
+
 </style>

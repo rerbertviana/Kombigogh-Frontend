@@ -16,12 +16,23 @@ export default new Vuex.Store({
         user: {},
         logado: false,
         storeproducts: [],
+        storeactiveproducts: [],
         storemyproducts: [],
+        storemysales: [],
+        storeorders: [],
+        storecategories: [],
         productslist: [],
         activeproductslist: [],
         myproductslist: [],
         mysaleslist: [],
+        orderslist: [],
+        categorieslist: [],
         pages: 0,
+        pages2: 0,
+        pages3: 0,
+        pages4: 0,
+        pages5: 0,
+        pages6: 0,
         page: 0,
         filtro: 5,
     },
@@ -113,20 +124,44 @@ export default new Vuex.Store({
             state.productslist = []
         },
 
+        setFiltro(state, value3) {
+            state.filtro = value3
+        },
+
         getProducts(state, products) {
             state.storeproducts = []
             state.storeproducts = products;
             state.pages = Math.ceil(state.storeproducts.length / state.filtro);
         },
 
+        getActiveProducts(state, products) {
+            state.storeactiveproducts = []
+            state.storeactiveproducts = products;
+            state.pages2 = Math.ceil(state.storeactiveproducts.length / state.filtro);
+        },
+
         getMyProducts(state, products) {
             state.storemyproducts = []
             state.storemyproducts = products;
-            state.pages = Math.ceil(state.storemyproducts.length / state.filtro);
+            state.pages5 = Math.ceil(state.storemyproducts.length / state.filtro);
         },
 
-        setFiltro(state, value3) {
-            state.filtro = value3
+        getMySales(state, products) {
+            state.storemysales = []
+            state.storemysales = products;
+            state.pages3 = Math.ceil(state.storemysales.length / state.filtro);
+        },
+
+        getOrders(state, orders) {
+            state.storeorders = []
+            state.storeorders = orders;
+            state.pages4 = Math.ceil(state.storeorders.length / state.filtro);
+        },
+
+        getCategories(state, orders) {
+            state.storecategories = []
+            state.storecategories = orders;
+            state.pages6 = Math.ceil(state.storecategories.length / state.filtro);
         },
 
         getProductList(state, pageVender) {
@@ -155,8 +190,8 @@ export default new Vuex.Store({
             let j = (state.filtro * state.page) -state.filtro;
 
             for (let i = j; i < j + state.filtro; i++){
-                if (state.storeproducts[i]) {
-                    state.activeproductslist.push(state.storeproducts[i])
+                if (state.storeactiveproducts[i]) {
+                    state.activeproductslist.push(state.storeactiveproducts[i])
                 } else {
                     break;
                 }
@@ -165,7 +200,7 @@ export default new Vuex.Store({
 
         getMyProductList(state, pageVender) {
             
-            state.storemyproducts = [];
+            state.myproductslist = [];
 
             state.page = pageVender;
             
@@ -189,8 +224,42 @@ export default new Vuex.Store({
             let j = (state.filtro * state.page) -state.filtro;
 
             for (let i = j; i < j + state.filtro; i++){
-                if (state.storeproducts[i]) {
-                    state.mysaleslist.push(state.storeproducts[i])
+                if (state.storemysales[i]) {
+                    state.mysaleslist.push(state.storemysales[i])
+                } else {
+                    break;
+                }
+            }
+        },
+
+        getOrdersList(state, pageVender) {
+            
+            state.orderslist = [];
+
+            state.page = pageVender;
+            
+            let j = (state.filtro * state.page) -state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++){
+                if (state.storeorders[i]) {
+                    state.orderslist.push(state.storeorders[i])
+                } else {
+                    break;
+                }
+            }
+        },
+
+        getCategoriesList(state, pageVender) {
+            
+            state.categorieslist = [];
+
+            state.page = pageVender;
+            
+            let j = (state.filtro * state.page) -state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++){
+                if (state.storecategories[i]) {
+                    state.categorieslist.push(state.storecategories[i])
                 } else {
                     break;
                 }

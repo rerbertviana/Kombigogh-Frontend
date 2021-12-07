@@ -138,36 +138,38 @@
       </el-row>
     </div>
   </div>
-  <el-row class="tabela">
-       <div>
-          <el-table :data="products.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column width="95">
-              <template slot-scope="scope">
-                <v-avatar size="70" rounded>
-                  <v-img :src= "getImagem(scope.row)"/>
-                </v-avatar>
-              </template>
-            </el-table-column>
-            <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-            <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
-            <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
-            <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
-            <el-table-column label="STATUS" width="110">
-              <template slot-scope="scope">
-                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="AÇÕES" width="245">
-              <template slot-scope="scope">
-                <div class="acoes">
-                  <el-button @click="getEditar(scope.row)" class="botao cor2">EDITAR</el-button>
-                  <el-button @click="getExcluir(scope.row)" class="botao cor3">EXCLUIR</el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-    </el-row>
+  <el-select class="pag" v-model="value4" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+    <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+  </el-select>
+  <el-row>
+    <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+      <el-table-column width="95">
+        <template slot-scope="scope">
+          <v-avatar size="70" rounded>
+            <v-img :src= "getImagem(scope.row)"/>
+          </v-avatar>
+        </template>
+      </el-table-column>
+      <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+      <el-table-column prop="descricao" label="DESCRIÇÃO"></el-table-column>
+      <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+      <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
+      <el-table-column label="STATUS" width="110">
+        <template slot-scope="scope">
+          <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="AÇÕES" width="245">
+        <template slot-scope="scope">
+          <div class="acoes">
+            <el-button @click="getEditar(scope.row)" class="botao cor2">EDITAR</el-button>
+            <el-button @click="getExcluir(scope.row)" class="botao cor3">EXCLUIR</el-button>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages"></v-pagination>
+  </el-row>
 </div>
   
 </template>
@@ -175,9 +177,12 @@
 <script>
 import axios from "axios";
 import { baseApiurl } from "@/global";
+import { mapState } from 'vuex'
 
 export default {
   name: "produtos",
+  computed: mapState(['productslist', 'pages']),
+
   data() {
     return {
       products: [],
@@ -189,10 +194,26 @@ export default {
       value: "",
       value2: "",
       value3: "",
+      value4: "",
       editar: false,
       pesquisar: true,
       selectedFile: null,
       excluir: false,
+      pageVender: 1,
+      options3: [
+          {
+            value: 5,
+            label: '05'
+          },
+          {
+            value: 10,
+            label: '10'
+          },
+          {
+            value: 15,
+            label: '15'
+          },
+      ],
     };
   },
 
@@ -203,9 +224,25 @@ export default {
     value2() {
       this.getFilter();
     },
+    value4() {
+      this.setFiltro()
+    },
+    pageVender() {
+      this.$store.commit('getProductList', this.pageVender);
+    }
   },
 
   methods: {
+
+    setFiltro() {
+      if(this.value4 == '') {
+        this.$store.commit('setFiltro', 5)
+        this.getFilter()
+      } else {
+        this.$store.commit('setFiltro', this.value4)
+        this.getFilter()
+      }
+    },
 
     cancelar() {
       this.pesquisar = true;
@@ -266,10 +303,16 @@ export default {
       }
     },
 
-    getProducts() {
-      return axios
+    async getProducts() {
+      await axios
         .get(`${baseApiurl}/products`)
         .then((res) => (this.products = res.data));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
     getUsers() {
@@ -299,22 +342,40 @@ export default {
       return `http://localhost:3333/files/${row.imagem}`
     }, 
 
-    getProductUserCategory() {
-      return axios
+    async getProductUserCategory() {
+      await axios
         .get(`${baseApiurl}/products/${this.value}/${this.value2}`)
         .then((res) => (this.products = res.data));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
-    getProductsCategory() {
-      return axios
+    async getProductsCategory() {
+      await axios
         .get(`${baseApiurl}/categoriesproducts/${this.value2}`)
         .then((res) => (this.products = res.data.product));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
-    getProductUser() {
-      return axios
+    async getProductUser() {
+      await axios
         .get(`${baseApiurl}/products/${this.value}`)
         .then((res) => (this.products = res.data.product));
+
+      this.$store.commit('getProducts', this.products);
+      if(this.pages < this.pageVender) {
+        this.pageVender = 1
+      }
+      this.$store.commit('getProductList', this.pageVender);
     },
 
     onFileSelected(event) {
@@ -468,7 +529,7 @@ export default {
   },
 
   mounted() {
-    this.getProducts()
+    this.setFiltro()
     this.getUsers()
     this.getCategories()
   },
@@ -479,142 +540,148 @@ export default {
 
 <style scoped>
 
-.produtosadm {
-  margin-top: 40px;
-  margin-right: 60px;
-  margin-left: 60px;
-  margin-bottom: 60px;
-}
+  .produtosadm {
+    margin-top: 40px;
+    margin-right: 60px;
+    margin-left: 60px;
+    margin-bottom: 60px;
+  }
 
-.form {
-  padding-top: 30px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  .form {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 
-  border-radius: 10px;
-  box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
-}
+    border-radius: 10px;
+    box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .alinhar {
+    display: flex;
+    align-items: center;
+  }
 
-.tabela {
-  margin-top: 30px;
-}
+  .ico {
+    margin-right: 10px;
+    color: black;
+    font-size: 1.2rem;
+  }
 
-.alinhar {
-  display: flex;
-  align-items: center;
-}
+  .espaco {
+    margin-right: 10px;
+  }
 
-.ico {
-  margin-right: 10px;
-  color: black;
-  font-size: 1.2rem;
-}
+  .botaoTodos {
+    margin-left: 10px;
+    background-color: #82D4D1;
+    color: white;
+    height: 40px;
+    width: 100px;
+    border: none;
+  }
 
-.espaco {
-  margin-right: 10px;
-}
+  .acoes {
+    display: flex;
+  }
 
-.botaoTodos {
-  margin-left: 10px;
-  background-color: #82D4D1;
-  color: white;
-  height: 40px;
-  width: 100px;
-  border: none;
-}
-
-.acoes {
-  display: flex;
-}
-
-.botao {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 8px;
-  width: 100px;
-  height: 40px;
-  background-color: #82D4D1;
-  color: white;
-  border: none;
-}
+  .botao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+    width: 100px;
+    height: 40px;
+    background-color: #82D4D1;
+    color: white;
+    border: none;
+  }
 
 
-.titulo {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  height: 50px;
-  align-items: center;
-  background-color: #82D4D1;
-  border-radius: 5px;
-}
+  .titulo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    height: 50px;
+    align-items: center;
+    background-color: #82D4D1;
+    border-radius: 5px;
+  }
 
-.bavatar {
-  margin-left: 10px;
-  background-color: #F4CB68;
-  color: white;
-  border: none;
-}
+  .bavatar {
+    margin-left: 10px;
+    background-color: #F4CB68;
+    color: white;
+    border: none;
+  }
 
-.cor1 {
-  background-color: #69F690;
-}
+  .cor1 {
+    background-color: #69F690;
+  }
 
-.cor2 {
-  background-color: #F4CB68;
-}
+  .cor2 {
+    background-color: #F4CB68;
+  }
 
-.cor3 {
-  background-color: #FFA882;
-}
+  .cor3 {
+    background-color: #FFA882;
+  }
 
-.cor4 {
-  background-color: #82D4D1;
-}
+  .cor4 {
+    background-color: #82D4D1;
+  }
 
-.linha {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
+  .linha {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-.lin1 {
-  margin-bottom: 15px;
-}
+  .lin1 {
+    margin-bottom: 15px;
+  }
 
-.letras {
-  margin-right: 15px;
-  font-size: 17px;
-  color: black;
-}
+  .letras {
+    margin-right: 15px;
+    font-size: 17px;
+    color: black;
+  }
 
-.letras2 {
-  margin-right: 15px;
-  font-size: 17px;
-  color: white;
-}
+  .letras2 {
+    margin-right: 15px;
+    font-size: 17px;
+    color: white;
+  }
 
-.nome {
-  margin-right: 65px;
-}
+  .nome {
+    margin-right: 65px;
+  }
 
-.cat {
-  margin-right: 15px;
-}
+  .cat {
+    margin-right: 15px;
+  }
 
-.qtd {
-  margin-left: 20px;
-}
+  .qtd {
+    margin-left: 20px;
+  }
 
-.preco {
-  margin-right: 57px;
-}
+  .preco {
+    margin-right: 57px;
+  }
 
-.botoesedit {
-  display: flex;
-  justify-content: flex-end;
-}
+  .botoesedit {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .paginacao {
+    margin-top: 15px;
+  }
+
+  .pag {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 210px;
+  }
 </style>
