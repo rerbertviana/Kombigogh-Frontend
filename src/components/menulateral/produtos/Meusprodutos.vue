@@ -253,6 +253,9 @@ export default {
     value3() {
       this.setFiltro()
     },
+    pageVender() {
+      this.$store.commit('getMyProductList', this.pageVender);
+    }
   },
 
   methods: {
@@ -338,7 +341,7 @@ export default {
         .get(`${baseApiurl}/usersproducts`)
         .then((res) => (this.products = res.data.product));
 
-      this.$store.commit('getProducts', this.products);
+      this.$store.commit('getMyProducts', this.products);
       if(this.pages < this.pageVender) {
         this.pageVender = 1
       }
@@ -507,7 +510,6 @@ export default {
   },
 
   mounted() {
-    this.getMyproducts();
     this.getCategories();
     this.setFiltro();
   },

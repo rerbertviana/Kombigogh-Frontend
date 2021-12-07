@@ -295,7 +295,7 @@ export default {
       if (!this.value && !this.value2) {
         this.visible = false;
         this.visible2 = false;
-        return this.getOrdersData();
+        return this.getMinhasvendas();
       }
     },
 
@@ -325,7 +325,7 @@ export default {
   },
 
   mounted() {
-    this.getMinhasvendas();
+    this.setFiltro();
   },
 };
 </script>

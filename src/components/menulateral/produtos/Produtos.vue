@@ -100,7 +100,7 @@ export default {
       this.setFiltro()
     },
     pageVender() {
-      this.getFilter()
+      this.$store.commit('getProductList', this.pageVender);
     }
   },
 

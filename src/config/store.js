@@ -16,7 +16,9 @@ export default new Vuex.Store({
         user: {},
         logado: false,
         storeproducts: [],
+        storemyproducts: [],
         productslist: [],
+        activeproductslist: [],
         myproductslist: [],
         mysaleslist: [],
         pages: 0,
@@ -117,20 +119,25 @@ export default new Vuex.Store({
             state.pages = Math.ceil(state.storeproducts.length / state.filtro);
         },
 
+        getMyProducts(state, products) {
+            state.storemyproducts = []
+            state.storemyproducts = products;
+            state.pages = Math.ceil(state.storemyproducts.length / state.filtro);
+        },
+
         setFiltro(state, value3) {
             state.filtro = value3
         },
 
-
         getProductList(state, pageVender) {
-            
+
             state.productslist = [];
 
             state.page = pageVender;
-            
-            let j = (state.filtro * state.page) -state.filtro;
 
-            for (let i = j; i < j + state.filtro; i++){
+            let j = (state.filtro * state.page) - state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++) {
                 if (state.storeproducts[i]) {
                     state.productslist.push(state.storeproducts[i])
                 } else {
@@ -139,9 +146,9 @@ export default new Vuex.Store({
             }
         },
 
-        getMyProductList(state, pageVender) {
+        getActiveProductsList(state, pageVender) {
             
-            state.myproductslist = [];
+            state.activeproductslist = [];
 
             state.page = pageVender;
             
@@ -149,7 +156,24 @@ export default new Vuex.Store({
 
             for (let i = j; i < j + state.filtro; i++){
                 if (state.storeproducts[i]) {
-                    state.myproductslist.push(state.storeproducts[i])
+                    state.activeproductslist.push(state.storeproducts[i])
+                } else {
+                    break;
+                }
+            }
+        },
+
+        getMyProductList(state, pageVender) {
+            
+            state.storemyproducts = [];
+
+            state.page = pageVender;
+            
+            let j = (state.filtro * state.page) -state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++){
+                if (state.storemyproducts[i]) {
+                    state.myproductslist.push(state.storemyproducts[i])
                 } else {
                     break;
                 }

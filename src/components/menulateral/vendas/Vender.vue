@@ -29,7 +29,7 @@
       <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select>
     <el-row>
-      <el-table :data="productslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+      <el-table :data="activeproductslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.descricao.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
         <el-table-column width="95">
           <template slot-scope="scope">
             <v-avatar size="70" rounded>
@@ -64,7 +64,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'Vender',
 
-    computed: mapState(['perfilVisible', 'order', 'itens', 'mensagem', 'productslist', 'pages']),
+    computed: mapState(['perfilVisible', 'order', 'itens', 'mensagem', 'activeproductslist', 'pages']),
 
     data() {
       return {
@@ -108,7 +108,7 @@ export default {
         this.getItens()
       },
       pageVender() {
-        this.getFilter()
+        this.$store.commit('getActiveProductsList', this.pageVender);
       }
      
     },
@@ -167,16 +167,19 @@ export default {
         if(this.pages < this.pageVender) {
           this.pageVender = 1
         }
-        this.$store.commit('getProductList', this.pageVender);
+        this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       async getProducts() {
-        await axios.get(`${baseApiurl}/products/actives`).then(res => this.products = res.data);
+        await axios
+          .get(`${baseApiurl}/products/actives`)
+          .then(res => this.products = res.data);
+        
         this.$store.commit('getProducts', this.products);
         if(this.pages < this.pageVender) {
           this.pageVender = 1
         }
-        this.$store.commit('getProductList', this.pageVender);
+        this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       async getProductsCategory() {
@@ -185,7 +188,7 @@ export default {
         if(this.pages < this.pageVender) {
           this.pageVender = 1
         }
-        this.$store.commit('getProductList', this.pageVender);
+        this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       async getProductUser() {
@@ -194,7 +197,7 @@ export default {
         if(this.pages < this.pageVender) {
           this.pageVender = 1
         }
-        this.$store.commit('getProductList', this.pageVender);
+        this.$store.commit('getActiveProductsList', this.pageVender);
       },
 
       getCategories() {
@@ -245,7 +248,6 @@ export default {
       
     },
     mounted() {
-      this.getProducts()
       this.getCategories()
       this.getUsers()
       this.visible()
