@@ -111,8 +111,8 @@ export default {
                 label: '15'
             },
         ],
-        };
-    },
+    };
+},
 
     watch: {
         value() {
@@ -299,7 +299,7 @@ export default {
     },
 
     mounted() {
-        this.getCategories()
+        this.setFiltro()
     },
 
     updated() {

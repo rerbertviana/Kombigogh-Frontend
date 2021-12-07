@@ -152,34 +152,36 @@
         </el-row>
       </div>
     </div>
-    <el-row class="tabela">
-       <div>
-          <el-table :data="users.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
-            <el-table-column width="95">
-              <template slot-scope="scope">
-                <v-avatar size="70" rounded>
-                  <v-img :src= "getImagem(scope.row)"/>
-                </v-avatar>
-              </template>
-            </el-table-column>
-            <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
-            <el-table-column prop="email" label="EMAIL" ></el-table-column>
-            <el-table-column prop="telefone" label="TELEFONE" width="145"></el-table-column>
-            <el-table-column label="STATUS" width="100">
-              <template slot-scope="scope">
-                <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="AÇÕES" width="245">
-              <template slot-scope="scope">
-                <div class="acoes">
-                  <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
-                  <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+    <el-select class="pag" v-model="value2" filterable placeholder="N° ITENS POR PÁGINA" clearable no-match-text="Não encontrado">
+      <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+    <el-row>
+      <el-table :data="artistaslist.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="Sem resultados">
+        <el-table-column width="95">
+          <template slot-scope="scope">
+            <v-avatar size="70" rounded>
+              <v-img :src= "getImagem(scope.row)"/>
+            </v-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+        <el-table-column prop="email" label="EMAIL" ></el-table-column>
+        <el-table-column prop="telefone" label="TELEFONE" width="145"></el-table-column>
+        <el-table-column label="STATUS" width="100">
+          <template slot-scope="scope">
+            <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="AÇÕES" width="245">
+          <template slot-scope="scope">
+            <div class="acoes">
+              <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
+              <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <v-pagination color="#82D4D1" class="paginacao" v-model="pageVender" :length="pages7"></v-pagination>
     </el-row>
   </div>
 </template>
@@ -187,9 +189,13 @@
 <script>
 import axios from "axios";
 import { baseApiurl } from "@/global";
+import { mapState } from 'vuex'
+
 
 export default {
   name: "produtos",
+  computed: mapState(['artistaslist', 'pages7']),
+
   data() {
     return {
       fileList: [],
@@ -201,19 +207,50 @@ export default {
       options2: [],
       search: "",
       value: "",
+      value2: "",
       input: "",
       input2: "",
+      pageVender: 1,
       cadastrar: false,
       pesquisar: true,
       editar: false,
       excluir: false,
       selectedFile: null,
+      options3: [
+        {
+          value: 5,
+          label: '05'
+        },
+        {
+          value: 10,
+          label: '10'
+        },
+        {
+          value: 15,
+          label: '15'
+        },
+      ],
 
     };
   },
 
+  watch: {
+    value2() {
+      this.setFiltro()
+    },
+  },
 
   methods: {
+
+    setFiltro() {
+      if(this.value2 == '') {
+          this.$store.commit('setFiltro', 5)
+          this.getUsers()
+      } else {
+          this.$store.commit('setFiltro', this.value2)
+          this.getUsers()
+      }
+    },
 
     getExcluir(row) {
       this.user = {
@@ -290,8 +327,16 @@ export default {
         })
     },
 
-    getUsers() {
-      return axios.get(`${baseApiurl}/users`).then(res => this.users = res.data);
+    async getUsers() {
+      await axios
+        .get(`${baseApiurl}/users`)
+        .then(res => this.users = res.data);
+
+      this.$store.commit('getArtistas', this.users);
+      if(this.pages6 < this.pageVender) {
+          this.pageVender = 1
+      }
+      this.$store.commit('getArtistasList', this.pageVender);
     },
 
     getImagem(row) {
@@ -480,10 +525,6 @@ export default {
   box-shadow: 2px 3px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
-.tabela {
-  margin-top: 30px;
-}
-
 .ico {
   margin-right: 10px;
   color: black;
@@ -607,6 +648,16 @@ export default {
 .botoesedit {
   display: flex;
   justify-content: flex-end;
+}
+
+.paginacao {
+  margin-top: 15px;
+}
+
+.pag {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 210px;
 }
 
 </style>

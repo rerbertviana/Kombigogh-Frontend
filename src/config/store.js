@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import { baseApiurl } from '@/global'
 
 Vue.use(Vuex)
 
@@ -21,18 +20,21 @@ export default new Vuex.Store({
         storemysales: [],
         storeorders: [],
         storecategories: [],
+        storeartistas: [],
         productslist: [],
         activeproductslist: [],
         myproductslist: [],
         mysaleslist: [],
         orderslist: [],
         categorieslist: [],
+        artistaslist: [],
         pages: 0,
         pages2: 0,
         pages3: 0,
         pages4: 0,
         pages5: 0,
         pages6: 0,
+        pages7: 0,
         page: 0,
         filtro: 5,
     },
@@ -158,10 +160,16 @@ export default new Vuex.Store({
             state.pages4 = Math.ceil(state.storeorders.length / state.filtro);
         },
 
-        getCategories(state, orders) {
+        getCategories(state, categories) {
             state.storecategories = []
-            state.storecategories = orders;
+            state.storecategories = categories;
             state.pages6 = Math.ceil(state.storecategories.length / state.filtro);
+        },
+
+        getArtistas(state, users) {
+            state.storeartistas = []
+            state.storeartistas = users;
+            state.pages7 = Math.ceil(state.storeartistas.length / state.filtro);
         },
 
         getProductList(state, pageVender) {
@@ -260,6 +268,23 @@ export default new Vuex.Store({
             for (let i = j; i < j + state.filtro; i++){
                 if (state.storecategories[i]) {
                     state.categorieslist.push(state.storecategories[i])
+                } else {
+                    break;
+                }
+            }
+        },
+
+        getArtistasList(state, pageVender) {
+            
+            state.artistaslist = [];
+
+            state.page = pageVender;
+            
+            let j = (state.filtro * state.page) -state.filtro;
+
+            for (let i = j; i < j + state.filtro; i++){
+                if (state.storeartistas[i]) {
+                    state.artistaslist.push(state.storeartistas[i])
                 } else {
                     break;
                 }

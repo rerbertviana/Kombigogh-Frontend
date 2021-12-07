@@ -29,7 +29,7 @@
             <div class="content">
                 <el-row >
                     <el-table :data="orders.filter(data => !search || data.nome.toLowerCase().includes(search.toLowerCase()) || data.email.toLowerCase().includes(search.toLowerCase()))" border stripe empty-text="CARRINHO VAZIO">
-                        <el-table-column  type="index" width="50"></el-table-column>
+                        <el-table-column label="ITEM"  type="index" width="60"></el-table-column>
                         <el-table-column label="PRODUTO" width="110">
                             <template slot-scope="scope">
                                 <v-avatar size="70" rounded>
@@ -39,7 +39,7 @@
                         </el-table-column>
                         <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
                         <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
-                        <el-table-column prop="preco" label="PREÇO" width="145"></el-table-column>
+                        <el-table-column prop="preco" label="PREÇO" width="100"></el-table-column>
                         <el-table-column label="QUANTIDADE" width="155">
                             <template slot-scope="scope">  
                                 <el-input-number size="small" v-model="orders[scope.$index].quantidade" controls-position="right" :step="1" :min="1" :max="scope.row.estoque"></el-input-number>
@@ -398,7 +398,7 @@ export default {
         align-items: center;
         color: white;
         height: 50px;
-        width: 160px;
+        width: 155px;
         background-color: #82D4D1;
         border-radius: 5px;
     }
@@ -410,4 +410,5 @@ export default {
     .cliente {
         width: 500px;
     }
+    
 </style>
