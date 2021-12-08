@@ -148,7 +148,7 @@ export default {
         align-content: center;
         padding-left: 7px; 
         margin-left: 3px;
-        margin-top: 90px;
+        margin-top: 85px;
         width: 190px;
         border-radius: 10px;
     }
@@ -162,7 +162,6 @@ export default {
     #menucontent {
         position: fixed;
         left: 0;
-        bottom: 90px;
     }
     
 </style>
