@@ -67,7 +67,7 @@ export default {
     
     .menuicones {
         color: white;
-        font-size: 2.3rem;
+        font-size: 2.2rem;
     }
 
     .barra {

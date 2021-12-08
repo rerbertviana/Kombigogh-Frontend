@@ -10,7 +10,7 @@
                     <el-input v-model="login.senha" name="password" type="password" class="inputslogin espaco" placeholder="SENHA" clearable></el-input>
                 </div>
                 <a class="end">Esqueceu a senha?</a>
-                <button @click="getLogar" class="entrar">ENTRAR</button>
+                <button @click="getLogar" v-on:keyup.enter="getLogar()" class="entrar">ENTRAR</button>
             </div>
         </div>
     </div>
