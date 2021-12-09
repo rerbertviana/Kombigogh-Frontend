@@ -287,7 +287,6 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.excluirCategoria()
-                this.getPesquisar()
             }).catch(() => {
                 this.$message({
                 type: 'info',

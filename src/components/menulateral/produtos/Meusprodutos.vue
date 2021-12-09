@@ -180,20 +180,20 @@
             </v-avatar>
           </template>
         </el-table-column>
-        <el-table-column prop="nome" label="NOME" width="170"></el-table-column>
+        <el-table-column prop="nome" label="NOME" width="160"></el-table-column>
         <el-table-column prop="descricao" label="DESCRIÇÃO" ></el-table-column>
-        <el-table-column prop="preco" label="PREÇO" width="130"></el-table-column>
+        <el-table-column prop="preco" label="PREÇO" width="80"></el-table-column>
         <el-table-column prop="quantidade" label="QUANTIDADE" width="130"></el-table-column>
-        <el-table-column label="STATUS" width="100">
+        <el-table-column label="STATUS" width="80">
           <template slot-scope="scope">
             <span>{{scope.row.ativo == true ? 'ATIVO' : 'INATIVO'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="AÇÕES" width="245">
+        <el-table-column label="AÇÕES" width="190">
           <template slot-scope="scope">
             <div class="acoes">
-              <el-button @click="getEditar(scope.row)" class="botao b2">EDITAR</el-button>
-              <el-button @click="getExcluir(scope.row)" class="botao b3">EXCLUIR</el-button>
+              <el-button @click="getEditar(scope.row)" class="botao2 b2">EDITAR</el-button>
+              <el-button @click="getExcluir(scope.row)" class="botao2 b3">EXCLUIR</el-button>
             </div>
           </template>
         </el-table-column>
@@ -596,6 +596,17 @@ export default {
   align-items: center;
   margin-left: 8px;
   width: 100px;
+  height: 40px;
+  background-color: #82D4D1;
+  color: white;
+  border: none;
+}
+
+.botao2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
   height: 40px;
   background-color: #82D4D1;
   color: white;

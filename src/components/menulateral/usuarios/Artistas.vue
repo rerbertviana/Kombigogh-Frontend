@@ -329,7 +329,7 @@ export default {
 
     async getUsers() {
       await axios
-        .get(`${baseApiurl}/users`)
+        .get(`${baseApiurl}/users/adm`)
         .then(res => this.users = res.data);
 
       this.$store.commit('getArtistas', this.users);
